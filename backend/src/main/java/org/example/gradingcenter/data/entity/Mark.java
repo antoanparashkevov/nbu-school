@@ -18,10 +18,9 @@ import lombok.Setter;
 @Entity
 public class Mark extends BaseEntity {
 
-    //@Column(precision = 3, scale = 2)
     @DecimalMin("2.00")
     @DecimalMax("6.00")
-    @Digits(integer = 1, fraction = 2)
+    //@Digits(integer = 1, fraction = 2)
     @Column(nullable = false)
     private double mark;
 

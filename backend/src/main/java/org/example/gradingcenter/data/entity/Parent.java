@@ -1,9 +1,6 @@
 package org.example.gradingcenter.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +15,11 @@ import java.util.List;
 public class Parent extends User {
 
     @ManyToMany
+    @JoinTable(
+            name = "parents_children",
+            joinColumns = @JoinColumn(name = "parent_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "student_id", nullable = false)
+    )
     private List<Student> children;
 
 }

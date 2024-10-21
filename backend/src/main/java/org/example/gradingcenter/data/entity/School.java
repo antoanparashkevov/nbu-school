@@ -21,7 +21,7 @@ public class School extends BaseEntity {
     @Column(nullable = false)
     private String address;
 
-    @OneToOne(mappedBy = "school")
+    @OneToOne
     private Headmaster headMaster;
 
 }
