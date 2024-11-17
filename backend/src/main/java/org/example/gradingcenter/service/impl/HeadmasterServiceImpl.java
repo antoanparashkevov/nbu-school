@@ -6,6 +6,8 @@ import org.example.gradingcenter.data.mappers.HeadmasterMapper;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.HeadmasterService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +50,10 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     @Override
     public void deleteHeadmaster(long id) {
         headmasterRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return headmasterRepository.findByUsername(username);
     }
 }

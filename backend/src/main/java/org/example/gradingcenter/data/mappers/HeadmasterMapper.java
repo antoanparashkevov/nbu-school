@@ -1,19 +1,18 @@
 package org.example.gradingcenter.data.mappers;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.Headmaster;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@NoArgsConstructor
 @Component
-public class HeadmasterMapper {
+@RequiredArgsConstructor
+public class HeadmasterMapper extends UserMapper {
+
+    private final ModelMapper modelMapper;
 
     public void mapHeadmasterUpdateDtoToHeadmaster(final Headmaster headmasterFrom, Headmaster headmasterTo) {
-        headmasterTo.setSchool(headmasterFrom.getSchool());
-        headmasterTo.setFirstName(headmasterFrom.getFirstName());
-        headmasterTo.setLastName(headmasterFrom.getLastName());
-        headmasterTo.setUsername(headmasterFrom.getUsername());
-        headmasterTo.setPassword(headmasterFrom.getPassword());
+        modelMapper.map(headmasterFrom, headmasterTo);
     }
 
 }
