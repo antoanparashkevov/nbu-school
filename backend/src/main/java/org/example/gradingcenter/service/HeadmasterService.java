@@ -1,10 +1,11 @@
 package org.example.gradingcenter.service;
 
 import org.example.gradingcenter.data.entity.Headmaster;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface HeadmasterService {
+public interface HeadmasterService extends UserDetailsService {
 
     List<Headmaster> getHeadmasters();
 
