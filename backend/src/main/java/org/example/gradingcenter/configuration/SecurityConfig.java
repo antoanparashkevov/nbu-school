@@ -1,7 +1,7 @@
 package org.example.gradingcenter.configuration;
 
 import lombok.AllArgsConstructor;
-import org.example.gradingcenter.service.HeadmasterService;
+import org.example.gradingcenter.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @AllArgsConstructor
 public class SecurityConfig {
 
-    private final HeadmasterService userService;
+    private final UserService userService;
 
     @Bean
     public InMemoryUserDetailsManager userDetailsInMemory() {
@@ -55,17 +55,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests
-                        (
-                                authz -> authz
-                        .requestMatchers("/recipes/**").hasAuthority("DOCTOR")
-                        .requestMatchers("/medicines/**").hasAuthority("SELLER")
-                        .requestMatchers(HttpMethod.GET, "/medicines").hasAuthority("CUSTOMER")
-                        .anyRequest().authenticated()
-                )
+        http.authorizeHttpRequests(
+                        authz -> authz
+                                .requestMatchers("/recipes/**").hasAuthority("DOCTOR")
+                                .requestMatchers("/medicines/**").hasAuthority("SELLER")
+                                .requestMatchers(HttpMethod.GET, "/medicines").hasAuthority("CUSTOMER")
+                                .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
-        ;
+                .formLogin(Customizer.withDefaults());
         return http.build();
     }
 }

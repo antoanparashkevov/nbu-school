@@ -52,8 +52,4 @@ public class HeadmasterServiceImpl implements HeadmasterService {
         headmasterRepository.deleteById(id);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return headmasterRepository.findByUsername(username);
-    }
 }
