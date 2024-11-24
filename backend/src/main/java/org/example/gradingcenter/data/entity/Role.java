@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
