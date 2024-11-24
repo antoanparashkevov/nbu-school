@@ -39,4 +39,12 @@ public class EntityMapper {
         modelMapper.map(markFrom, markTo);
     }
 
+    public void mapProgramUpdateDtoToProgram(final Program programFrom, Program programTo){
+        modelMapper.map(programFrom, programTo);
+    }
+
+    public void mapSubjectUpdateDtoToSubject(final Subject subjectFrom, Subject subjectTo){
+        modelMapper.map(subjectFrom, subjectTo);
+    }
+
 }
