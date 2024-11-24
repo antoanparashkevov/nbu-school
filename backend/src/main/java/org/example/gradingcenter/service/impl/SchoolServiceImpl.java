@@ -2,7 +2,7 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.School;
-import org.example.gradingcenter.data.mappers.SchoolMapper;
+import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.SchoolService;
@@ -15,7 +15,7 @@ import java.util.List;
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
-    private final SchoolMapper schoolMapper;
+    private final EntityMapper entityMapper;
 
     @Override
     public List<School> getSchools() {
@@ -38,7 +38,7 @@ public class SchoolServiceImpl implements SchoolService {
     public School updateSchool(School School, long id) {
         return this.schoolRepository.findById(id)
                 .map(School1 -> {
-                    schoolMapper.mapSchoolUpdateDtoToSchool(School, School1);
+                    entityMapper.mapSchoolUpdateDtoToSchool(School, School1);
                     return schoolRepository.save(School1);
                 }).orElseGet(() ->
                         schoolRepository.save(School)

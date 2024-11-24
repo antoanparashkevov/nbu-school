@@ -2,12 +2,10 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.Headmaster;
-import org.example.gradingcenter.data.mappers.HeadmasterMapper;
+import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.HeadmasterService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +15,7 @@ import java.util.List;
 public class HeadmasterServiceImpl implements HeadmasterService {
 
     private final HeadmasterRepository headmasterRepository;
-    private final HeadmasterMapper headmasterMapper;
+    private final EntityMapper mapper;
 
     @Override
     public List<Headmaster> getHeadmasters() {
@@ -40,7 +38,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     public Headmaster updateHeadmaster(Headmaster headmaster, long id) {
         return this.headmasterRepository.findById(id)
                 .map(headmaster1 -> {
-                    headmasterMapper.mapHeadmasterUpdateDtoToHeadmaster(headmaster, headmaster1);
+                    mapper.mapHeadmasterUpdateDtoToHeadmaster(headmaster, headmaster1);
                     return this.headmasterRepository.save(headmaster1);
                 }).orElseGet(() ->
                         this.headmasterRepository.save(headmaster)
