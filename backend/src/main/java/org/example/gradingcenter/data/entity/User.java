@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     private String firstName;
@@ -30,12 +29,19 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Set<Role> roles = new HashSet<>();
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    private Set<Role> authorities;
 
-    @ManyToOne(optional = false)
-    private School school;
+    @Column(nullable = false)
+    private boolean isAccountNonExpired;
+
+    @Column(nullable = false)
+    private boolean isAccountNonLocked;
+
+    @Column(nullable = false)
+    private boolean isCredentialsNonExpired;
+
+    @Column(nullable = false)
+    private boolean isEnabled;
 
 }

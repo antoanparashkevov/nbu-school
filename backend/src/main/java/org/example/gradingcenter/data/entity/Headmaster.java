@@ -9,15 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Headmaster extends User {
 
-    @OneToOne(optional = false)
+    @OneToOne
     private School school;
 
 }
