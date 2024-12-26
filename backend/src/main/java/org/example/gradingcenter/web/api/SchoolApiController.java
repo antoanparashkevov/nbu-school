@@ -1,15 +1,21 @@
 package org.example.gradingcenter.web.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.service.SchoolService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.example.gradingcenter.util.DataUtil.getDefaultMessages;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/schools")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class SchoolApiController {
 
     private final SchoolService schoolService;
@@ -25,8 +31,11 @@ public class SchoolApiController {
     }
 
     @PostMapping
-    public School createSchool(@RequestBody School school) {
-        return schoolService.createSchool(school);
+    public ResponseEntity<?> createSchool(@Valid @RequestBody School school, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(getDefaultMessages(result));
+        }
+        return ResponseEntity.ok().body(schoolService.createSchool(school));
     }
 
     @PutMapping("/{id}")
