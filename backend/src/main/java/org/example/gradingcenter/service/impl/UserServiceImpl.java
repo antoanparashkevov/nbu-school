@@ -2,7 +2,7 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.example.gradingcenter.data.entity.User;
-import org.example.gradingcenter.data.mappers.EntityMapper;
+import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.UserService;
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private final EntityMapper mapper;
+    private final UserMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

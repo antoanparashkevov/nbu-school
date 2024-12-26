@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.UserLoginDto;
 import org.example.gradingcenter.data.dto.UserOutDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
-import org.example.gradingcenter.data.mappers.EntityMapper;
+import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.exceptions.AuthenticationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
@@ -24,7 +24,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    private final EntityMapper userMapper;
+    private final UserMapper userMapper;
 
     @GetMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDto userLoginDto, BindingResult errors) {

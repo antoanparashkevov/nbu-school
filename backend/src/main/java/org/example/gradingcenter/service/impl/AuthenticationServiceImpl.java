@@ -7,7 +7,7 @@ import org.example.gradingcenter.data.dto.UserRegisterDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.User;
 import org.example.gradingcenter.data.entity.enums.Roles;
-import org.example.gradingcenter.data.mappers.EntityMapper;
+import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.service.AuthenticationService;
 import org.example.gradingcenter.service.TokenService;
@@ -28,7 +28,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final EntityMapper mapper;
+    private final UserMapper mapper;
 
     private PasswordEncoder passwordEncoder;
 
