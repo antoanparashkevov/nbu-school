@@ -15,6 +15,7 @@ import java.util.List;
 public class MarkServiceImpl implements MarkService {
 
     private final MarkRepository markRepository;
+
     private final EntityMapper mapper;
 
     @Override

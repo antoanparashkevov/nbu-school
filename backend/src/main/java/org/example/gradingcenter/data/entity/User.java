@@ -1,5 +1,8 @@
 package org.example.gradingcenter.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +36,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @ManyToMany
     private Set<Role> authorities;
 
     @Column(nullable = false)
@@ -44,4 +52,15 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private boolean isEnabled;
 
+    public User(String firstName, String lastName, String username, String password, Set<Role> authorities) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
+    }
 }

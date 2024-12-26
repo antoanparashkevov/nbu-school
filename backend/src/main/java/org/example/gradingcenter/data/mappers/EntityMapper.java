@@ -1,6 +1,7 @@
 package org.example.gradingcenter.data.mappers;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserOutDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
 import org.example.gradingcenter.data.entity.*;
@@ -65,6 +66,12 @@ public class EntityMapper {
 
     public UserOutDto mapUserToUserOutDto(final User userFrom){
         UserOutDto userTo = new UserOutDto();
+        modelMapper.map(userFrom, userTo);
+        return userTo;
+    }
+
+    public UserLoginResponseDto mapUserToUserLoginResponseDto(final User userFrom){
+        UserLoginResponseDto userTo = new UserLoginResponseDto();
         modelMapper.map(userFrom, userTo);
         return userTo;
     }

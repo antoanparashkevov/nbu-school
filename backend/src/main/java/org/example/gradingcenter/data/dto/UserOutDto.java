@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.entity.Role;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,4 +21,15 @@ public class UserOutDto {
     private String lastName;
 
     private String username;
+
+    private Set<Role> authorities;
+
+    private boolean isAccountNonExpired;
+
+    private boolean isAccountNonLocked;
+
+    private boolean isCredentialsNonExpired;
+
+    private boolean isEnabled;
+
 }

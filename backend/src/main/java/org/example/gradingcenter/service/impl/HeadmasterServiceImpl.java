@@ -15,6 +15,7 @@ import java.util.List;
 public class HeadmasterServiceImpl implements HeadmasterService {
 
     private final HeadmasterRepository headmasterRepository;
+
     private final EntityMapper mapper;
 
     @Override

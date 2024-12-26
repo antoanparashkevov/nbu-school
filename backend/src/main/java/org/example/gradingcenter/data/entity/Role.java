@@ -1,8 +1,7 @@
 package org.example.gradingcenter.data.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +19,19 @@ import java.util.Set;
 public class Role extends BaseEntity implements GrantedAuthority {
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Roles authority;
 
-    @ManyToMany
+    @JsonBackReference
+    @ManyToMany(mappedBy = "authorities", fetch = FetchType.EAGER)
     private Set<User> users;
 
     @Override
     public String getAuthority() {
         return authority.name();
+    }
+
+    public Role(Roles authority) {
+        this.authority = authority;
     }
 }

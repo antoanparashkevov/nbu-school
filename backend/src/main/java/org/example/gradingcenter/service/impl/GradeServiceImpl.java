@@ -15,6 +15,7 @@ import java.util.List;
 public class GradeServiceImpl implements GradeService {
     
     private final GradeRepository gradeRepository;
+
     private final EntityMapper mapper;
 
     @Override

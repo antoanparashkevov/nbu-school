@@ -15,6 +15,7 @@ import java.util.List;
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
+
     private final EntityMapper entityMapper;
 
     @Override
