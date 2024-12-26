@@ -1,6 +1,6 @@
 package org.example.gradingcenter.data.repository;
 
-import org.example.gradingcenter.data.entity.User;
+import org.example.gradingcenter.data.entity.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

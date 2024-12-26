@@ -1,4 +1,4 @@
-package org.example.gradingcenter.data.entity;
+package org.example.gradingcenter.data.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.entity.BaseEntity;
+import org.example.gradingcenter.data.entity.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;

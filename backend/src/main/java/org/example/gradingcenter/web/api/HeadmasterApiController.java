@@ -1,7 +1,7 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.entity.Headmaster;
+import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ public class HeadmasterApiController {
     }
 
     @PutMapping("/{id}")
-    public Headmaster createHeadmaster(@RequestBody Headmaster headmaster, @PathVariable long id) {
+    public Headmaster updateHeadmaster(@RequestBody Headmaster headmaster, @PathVariable long id) {
         return headmasterService.updateHeadmaster(headmaster, id);
     }
 

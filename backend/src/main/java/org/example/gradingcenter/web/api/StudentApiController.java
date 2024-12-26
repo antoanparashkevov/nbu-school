@@ -1,7 +1,7 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.entity.Student;
+import org.example.gradingcenter.data.entity.users.Student;
 import org.example.gradingcenter.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ public class StudentApiController {
     }
 
     @PutMapping("/{id}")
-    public Student createStudent(@RequestBody Student student, @PathVariable long id) {
+    public Student updateStudent(@RequestBody Student student, @PathVariable long id) {
         return studentService.updateStudent(student, id);
     }
 

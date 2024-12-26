@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserOutDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
-import org.example.gradingcenter.data.entity.User;
+import org.example.gradingcenter.data.entity.users.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

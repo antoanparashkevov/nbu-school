@@ -2,6 +2,10 @@ package org.example.gradingcenter.data.mappers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.*;
+import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.data.entity.users.Parent;
+import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

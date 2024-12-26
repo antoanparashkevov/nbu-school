@@ -1,6 +1,6 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.User;
+import org.example.gradingcenter.data.entity.users.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

@@ -1,9 +1,10 @@
-package org.example.gradingcenter.data.entity;
+package org.example.gradingcenter.data.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.entity.School;
 
 @Getter
 @Setter

@@ -1,6 +1,6 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Parent;
+import org.example.gradingcenter.data.entity.users.Parent;
 
 import java.util.List;
 

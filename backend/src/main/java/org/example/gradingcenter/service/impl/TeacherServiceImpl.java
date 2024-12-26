@@ -1,7 +1,7 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.entity.Teacher;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.TeacherRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;

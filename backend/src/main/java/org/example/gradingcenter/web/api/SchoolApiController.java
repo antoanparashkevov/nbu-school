@@ -30,7 +30,7 @@ public class SchoolApiController {
     }
 
     @PutMapping("/{id}")
-    public School createSchool(@RequestBody School school, @PathVariable long id) {
+    public School updateSchool(@RequestBody School school, @PathVariable long id) {
         return schoolService.updateSchool(school, id);
     }
 

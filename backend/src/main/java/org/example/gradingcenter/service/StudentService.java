@@ -1,6 +1,6 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Student;
+import org.example.gradingcenter.data.entity.users.Student;
 
 import java.util.List;
 

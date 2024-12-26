@@ -1,4 +1,4 @@
-package org.example.gradingcenter.data.entity;
+package org.example.gradingcenter.data.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Getter;

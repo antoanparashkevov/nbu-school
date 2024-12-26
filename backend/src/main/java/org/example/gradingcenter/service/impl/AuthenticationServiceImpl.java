@@ -5,7 +5,7 @@ import org.example.gradingcenter.data.dto.UserLoginDto;
 import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
 import org.example.gradingcenter.data.entity.Role;
-import org.example.gradingcenter.data.entity.User;
+import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.RoleRepository;

@@ -1,6 +1,6 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Headmaster;
+import org.example.gradingcenter.data.entity.users.Headmaster;
 
 import java.util.List;
 
