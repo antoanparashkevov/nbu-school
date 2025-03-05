@@ -26,6 +26,7 @@ public class AuthenticationController {
 
     private final UserMapper userMapper;
 
+    //todo da vryshata rolite pri login i register
     @GetMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDto userLoginDto, BindingResult errors) {
         try {
@@ -39,6 +40,7 @@ public class AuthenticationController {
         }
     }
 
+    //todo da vryshata rolite pri login i register
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto register, BindingResult errors) {
         try {

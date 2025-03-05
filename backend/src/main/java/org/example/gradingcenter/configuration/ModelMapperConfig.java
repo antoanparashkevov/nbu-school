@@ -12,5 +12,8 @@ public class ModelMapperConfig {
         return new ModelMapper();
     }
 
+    private static void addSpecialityMappings(ModelMapper modelMapper) {
+        modelMapper.createTypeMap(Speciality.class, SpecialityDto.class).setConverter(MapConverters.SPECIALITY_TO_STRING);
+    }
 }
 

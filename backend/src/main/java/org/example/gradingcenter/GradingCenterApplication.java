@@ -1,8 +1,8 @@
 package org.example.gradingcenter;
 
 import org.example.gradingcenter.data.entity.Role;
-import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.entity.enums.Roles;
+import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -34,7 +34,7 @@ public class GradingCenterApplication {
             Set<Role> roles = new HashSet<>();
             roles.add(adminRole);
             User admin = new User("adminFirstName", "adminLastName",
-                    "admin", passwordEncode.encode("nimda"), roles);
+                    "admin", passwordEncode.encode("nimda5555"), roles);
 
             userRepository.save(admin);
         };

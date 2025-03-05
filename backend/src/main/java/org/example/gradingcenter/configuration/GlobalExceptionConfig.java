@@ -1,18 +1,18 @@
 package org.example.gradingcenter.configuration;
 
-import org.example.gradingcenter.exceptions.AuthenticationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionConfig {
 
-    @ExceptionHandler(AuthenticationFailureException.class)
-    public ResponseEntity<String> handleUnauthorizedOperationException(AuthenticationFailureException ex) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleUnauthorizedOperationException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 

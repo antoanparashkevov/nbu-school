@@ -5,8 +5,8 @@ import org.example.gradingcenter.data.dto.UserLoginDto;
 import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
 import org.example.gradingcenter.data.entity.Role;
-import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.entity.enums.Roles;
+import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.service.AuthenticationService;
@@ -15,7 +15,6 @@ import org.example.gradingcenter.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,18 +54,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserLoginResponseDto loginUser(UserLoginDto userLoginDto) {
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
-                            userLoginDto.getPassword()));
-            String token = tokenService.generateJwt(auth);
-            User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
-            UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(loggedUser);
-            loginResponse.setJwt(token);
-            return loginResponse;
-        } catch (AuthenticationException e) {
-            return new UserLoginResponseDto();
-        }
+//        try {
+//            Authentication auth = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
+//                            userLoginDto.getPassword()));
+//            String token = tokenService.generateJwt(auth);
+//            User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
+//            UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(loggedUser);
+//            loginResponse.setJwt(token);
+//            return loginResponse;
+//        } catch (AuthenticationException e) {
+//            return new UserLoginResponseDto();
+//        }
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
+                        userLoginDto.getPassword()));
+        String token = tokenService.generateJwt(auth);
+        User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
+        UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(loggedUser);
+        loginResponse.setJwt(token);
+        return loginResponse;
     }
 
 }

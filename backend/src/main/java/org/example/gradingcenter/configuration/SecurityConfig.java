@@ -53,17 +53,7 @@ public class SecurityConfig {
         return new ProviderManager(authProvider);
     }
 
-    //        http.csrf(AbstractHttpConfigurer::disable);
-//        http.authorizeHttpRequests(authz -> authz
-//                        //.requestMatchers("/headmasters/**").hasAuthority(Roles.HEADMASTER.name())
-////                                .requestMatchers(HttpMethod.POST,"/auth/signup").permitAll()
-////                                .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-////                                .requestMatchers(HttpMethod.GET, "/medicines").hasAuthority("CUSTOMER")
-//                        .requestMatchers("/auth/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .httpBasic(Customizer.withDefaults());
-////                .formLogin(Customizer.withDefaults());
-//        return http.build();
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -76,10 +66,10 @@ public class SecurityConfig {
                     auth.anyRequest().authenticated();
                 })
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout")               // The path for the logout request
-                        .logoutSuccessUrl("/auth/login")          // Redirect or forward location after logout
-                        .invalidateHttpSession(true)                // Invalidate session
-                        .deleteCookies("JSESSIONID")                // Delete cookies if needed
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
