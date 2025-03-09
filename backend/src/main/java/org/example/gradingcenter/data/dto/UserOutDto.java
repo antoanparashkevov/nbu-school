@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.gradingcenter.data.entity.Role;
 
 import java.util.Set;
 
@@ -22,6 +21,6 @@ public class UserOutDto {
 
     private String username;
 
-    private Set<Role> authorities;
+    private Set<String> authorities;
 
 }
