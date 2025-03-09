@@ -24,12 +24,4 @@ public class UserOutDto {
 
     private Set<Role> authorities;
 
-    private boolean isAccountNonExpired;
-
-    private boolean isAccountNonLocked;
-
-    private boolean isCredentialsNonExpired;
-
-    private boolean isEnabled;
-
 }
