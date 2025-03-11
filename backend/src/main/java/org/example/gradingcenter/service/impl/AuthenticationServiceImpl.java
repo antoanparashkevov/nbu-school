@@ -27,7 +27,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserMapper mapper;
+    private UserMapper mapper;
 
     private PasswordEncoder passwordEncoder;
 
@@ -40,32 +40,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User registerUser(UserRegisterDto userRegisterDto) {
+    public UserLoginResponseDto register(UserRegisterDto userRegisterDto) {
         User user = mapper.mapUserRegisterDtoToUser(userRegisterDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByAuthority(Roles.STUDENT).get();
-
         Set<Role> authorities = new HashSet<>();
         authorities.add(userRole);
         user.setAuthorities(authorities);
+        User savedUser = userService.createUser(user);
 
-        return userService.createUser(user);
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userRegisterDto.getUsername(),
+                        userRegisterDto.getPassword()));
+        String token = tokenService.generateJwt(auth);
+        UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(savedUser);
+        loginResponse.setJwt(token);
+        return loginResponse;
     }
 
     @Override
-    public UserLoginResponseDto loginUser(UserLoginDto userLoginDto) {
-//        try {
-//            Authentication auth = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
-//                            userLoginDto.getPassword()));
-//            String token = tokenService.generateJwt(auth);
-//            User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
-//            UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(loggedUser);
-//            loginResponse.setJwt(token);
-//            return loginResponse;
-//        } catch (AuthenticationException e) {
-//            return new UserLoginResponseDto();
-//        }
+    public UserLoginResponseDto login(UserLoginDto userLoginDto) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
                         userLoginDto.getPassword()));

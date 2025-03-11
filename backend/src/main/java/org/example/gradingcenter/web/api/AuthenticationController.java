@@ -3,14 +3,13 @@ package org.example.gradingcenter.web.api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.UserLoginDto;
-import org.example.gradingcenter.data.dto.UserOutDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
-import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.exceptions.AuthenticationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,23 +23,19 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    private final UserMapper userMapper;
-
-    //todo da vryshata rolite pri login i register
     @GetMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDto userLoginDto, BindingResult errors) {
         try {
             if (errors.hasErrors()) {
                 return ResponseEntity.badRequest().body(getDefaultMessages(errors));
             }
-            return ResponseEntity.ok().body(authenticationService.loginUser(userLoginDto));
+            return ResponseEntity.ok().body(authenticationService.login(userLoginDto));
         } catch (AuthenticationFailureException e) {
             errors.rejectValue("username", "auth.error", e.getMessage());
             return ResponseEntity.badRequest().body(getDefaultMessages(errors));
         }
     }
 
-    //todo da vryshata rolite pri login i register
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto register, BindingResult errors) {
         try {
@@ -52,14 +47,19 @@ public class AuthenticationController {
                         "Password confirmation should match password.");
                 return ResponseEntity.badRequest().body(getDefaultMessages(errors));
             }
-            UserOutDto newUser = userMapper.mapUserToUserOutDto(authenticationService.registerUser(register));
-            return ResponseEntity.ok().body(newUser);
+            return ResponseEntity.ok().body(authenticationService.register(register));
         } catch (DuplicateEntityException | EntityNotFoundException ex) {
             String[] exceptionMessage = ex.getMessage().split(" ");
             String fieldName = exceptionMessage[2];
             errors.rejectValue(fieldName, "user_error", ex.getMessage());
             return ResponseEntity.badRequest().body(getDefaultMessages(errors));
         }
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> handleLogout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
     }
 
 }

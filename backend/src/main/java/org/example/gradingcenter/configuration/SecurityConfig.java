@@ -62,15 +62,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/headmasters/**").hasRole(Roles.ADMIN.name());
                     auth.requestMatchers("/grades/**").hasRole(Roles.ADMIN.name());
-                    //auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 })
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth/login")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
