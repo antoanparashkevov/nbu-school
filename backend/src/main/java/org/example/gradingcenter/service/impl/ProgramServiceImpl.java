@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.entity.Program;
-import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.ProgramRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ProgramService;
@@ -16,7 +16,7 @@ public class ProgramServiceImpl implements ProgramService {
 
     private final ProgramRepository programRepository;
 
-    private final EntityMapper mapper;
+    private final ModelMapperConfig mapperConfig;
 
     @Override
     public List<Program> getPrograms() {
@@ -39,7 +39,7 @@ public class ProgramServiceImpl implements ProgramService {
     public Program updateProgram(Program program, long id) {
         return this.programRepository.findById(id)
                 .map(program1 -> {
-                    mapper.mapProgramUpdateDtoToProgram(program, program1);
+                    mapperConfig.getModelMapper().map(program, program1);
                     return this.programRepository.save(program1);
                 }).orElseGet(() ->
                         this.programRepository.save(program)

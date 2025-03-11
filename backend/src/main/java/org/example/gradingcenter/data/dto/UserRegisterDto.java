@@ -21,4 +21,12 @@ public class UserRegisterDto {
 
     private String confirmPassword;
 
+    private boolean isAccountNonExpired = true;
+
+    private boolean isAccountNonLocked = true;
+
+    private boolean isCredentialsNonExpired = true;
+
+    private boolean isEnabled = true;
+
 }

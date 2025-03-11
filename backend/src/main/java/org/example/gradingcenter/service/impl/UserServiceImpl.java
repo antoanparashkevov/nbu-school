@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.entity.users.User;
-import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private final UserMapper mapper;
+    private final ModelMapperConfig mapperConfig;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User User, long id) {
         return this.userRepository.findById(id)
                 .map(User1 -> {
-                    mapper.mapUserUpdateDtoToUser(User, User1);
+                    mapperConfig.getModelMapper().map(User, User1);
                     return this.userRepository.save(User1);
                 }).orElseGet(() ->
                         this.userRepository.save(User)

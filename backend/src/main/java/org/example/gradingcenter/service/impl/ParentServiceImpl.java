@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.entity.users.Parent;
-import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.ParentRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ParentService;
@@ -16,7 +16,7 @@ public class ParentServiceImpl implements ParentService {
 
     private final ParentRepository parentRepository;
 
-    private final EntityMapper mapper;
+    private final ModelMapperConfig mapperConfig;
 
     @Override
     public List<Parent> getParents() {
@@ -39,7 +39,7 @@ public class ParentServiceImpl implements ParentService {
     public Parent updateParent(Parent parent, long id) {
         return this.parentRepository.findById(id)
                 .map(parent1 -> {
-                    mapper.mapParentUpdateDtoToParent(parent, parent1);
+                    mapperConfig.getModelMapper().map(parent, parent1);
                     return this.parentRepository.save(parent1);
                 }).orElseGet(() ->
                         this.parentRepository.save(parent)

@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.entity.users.Teacher;
-import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.TeacherRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.TeacherService;
@@ -16,7 +16,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
 
-    private final EntityMapper mapper;
+    private final ModelMapperConfig mapperConfig;
 
     @Override
     public List<Teacher> getTeachers() {
@@ -38,9 +38,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher updateTeacher(Teacher teacher, long id) {
         return this.teacherRepository.findById(id)
-                .map(teacher1 -> {
-                    mapper.mapTeacherUpdateDtoToTeacher(teacher, teacher1);
-                    return this.teacherRepository.save(teacher1);
+                .map(teacherToUpdate -> {
+                    mapperConfig.getModelMapper().map(teacher, teacherToUpdate);
+                    return this.teacherRepository.save(teacherToUpdate);
                 }).orElseGet(() ->
                         this.teacherRepository.save(teacher)
                 );

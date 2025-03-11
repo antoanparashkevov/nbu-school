@@ -1,13 +1,13 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.UserLoginDto;
 import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.User;
-import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.service.AuthenticationService;
 import org.example.gradingcenter.service.TokenService;
@@ -27,7 +27,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private UserMapper mapper;
+    private ModelMapperConfig mapperConfig;
 
     private PasswordEncoder passwordEncoder;
 
@@ -41,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserLoginResponseDto register(UserRegisterDto userRegisterDto) {
-        User user = mapper.mapUserRegisterDtoToUser(userRegisterDto);
+        User user = mapperConfig.getModelMapper().map(userRegisterDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByAuthority(Roles.STUDENT).get();
         Set<Role> authorities = new HashSet<>();
@@ -53,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new UsernamePasswordAuthenticationToken(userRegisterDto.getUsername(),
                         userRegisterDto.getPassword()));
         String token = tokenService.generateJwt(auth);
-        UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(savedUser);
+        UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(savedUser, UserLoginResponseDto.class);
         loginResponse.setJwt(token);
         return loginResponse;
     }
@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         userLoginDto.getPassword()));
         String token = tokenService.generateJwt(auth);
         User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
-        UserLoginResponseDto loginResponse = mapper.mapUserToUserLoginResponseDto(loggedUser);
+        UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(loggedUser, UserLoginResponseDto.class);
         loginResponse.setJwt(token);
         return loginResponse;
     }

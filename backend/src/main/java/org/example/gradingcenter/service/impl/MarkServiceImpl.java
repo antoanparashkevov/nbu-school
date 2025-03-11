@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.entity.Mark;
-import org.example.gradingcenter.data.mappers.EntityMapper;
 import org.example.gradingcenter.data.repository.MarkRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.MarkService;
@@ -16,7 +16,7 @@ public class MarkServiceImpl implements MarkService {
 
     private final MarkRepository markRepository;
 
-    private final EntityMapper mapper;
+    private final ModelMapperConfig mapperConfig;
 
     @Override
     public List<Mark> getMarks() {
@@ -39,7 +39,7 @@ public class MarkServiceImpl implements MarkService {
     public Mark updateMark(Mark mark, long id) {
         return this.markRepository.findById(id)
                 .map(mark1 -> {
-                    mapper.mapMarkUpdateDtoToMark(mark, mark1);
+                    mapperConfig.getModelMapper().map(mark, mark1);
                     return this.markRepository.save(mark1);
                 }).orElseGet(() ->
                         this.markRepository.save(mark)
