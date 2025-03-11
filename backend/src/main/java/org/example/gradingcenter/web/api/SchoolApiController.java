@@ -2,6 +2,7 @@ package org.example.gradingcenter.web.api;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.service.SchoolService;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +32,11 @@ public class SchoolApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSchool(@Valid @RequestBody School school, BindingResult result) {
+    public ResponseEntity<?> createSchool(@Valid @RequestBody SchoolDto schoolDto, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(getDefaultMessages(result));
         }
-        return ResponseEntity.ok().body(schoolService.createSchool(school));
+        return ResponseEntity.ok().body(schoolService.createSchool(schoolDto));
     }
 
     @PutMapping("/{id}")

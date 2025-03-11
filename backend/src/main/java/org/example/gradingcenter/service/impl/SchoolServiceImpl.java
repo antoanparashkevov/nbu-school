@@ -2,6 +2,7 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
+import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
@@ -31,8 +32,8 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public School createSchool(School school) {
-        return schoolRepository.save(school);
+    public School createSchool(SchoolDto schoolDto) {
+        return schoolRepository.save(mapperConfig.getModelMapper().map(schoolDto, School.class));
     }
 
     @Override
