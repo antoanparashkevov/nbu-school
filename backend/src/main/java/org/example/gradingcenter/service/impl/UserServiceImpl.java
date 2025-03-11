@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.mappers.UserMapper;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -40,6 +42,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        Optional<User> duplicatedUser = userRepository.findByUsername(user.getUsername());
+        if (duplicatedUser.isPresent()) {
+            throw new DuplicateEntityException("User", "username", user.getUsername());
+        }
         return userRepository.save(user);
     }
 
