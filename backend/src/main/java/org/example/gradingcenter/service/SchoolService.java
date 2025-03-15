@@ -1,19 +1,18 @@
 package org.example.gradingcenter.service;
 
 import org.example.gradingcenter.data.dto.SchoolDto;
-import org.example.gradingcenter.data.entity.School;
 
 import java.util.List;
 
 public interface SchoolService {
 
-    List<School> getSchools();
+    List<SchoolDto> getSchools();
 
-    School getSchool(long id);
+    SchoolDto getSchool(long id);
 
-    School createSchool(SchoolDto schoolDto);
+    SchoolDto createSchool(SchoolDto schoolDto);
 
-    School updateSchool(School school, long id);
+    SchoolDto updateSchool(SchoolDto schoolDto, long id);
 
     void deleteSchool(long id);
     

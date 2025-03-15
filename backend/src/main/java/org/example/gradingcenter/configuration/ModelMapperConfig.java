@@ -15,6 +15,7 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper getModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
         addRoleMappings(modelMapper);
         return modelMapper;
     }

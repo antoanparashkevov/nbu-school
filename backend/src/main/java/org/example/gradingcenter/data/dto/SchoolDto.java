@@ -14,4 +14,6 @@ public class SchoolDto {
 
     private String address;
 
+    private Long headmasterId;
+
 }

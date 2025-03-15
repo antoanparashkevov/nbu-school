@@ -16,7 +16,7 @@ import org.example.gradingcenter.data.entity.users.Headmaster;
 @Entity
 public class School extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
