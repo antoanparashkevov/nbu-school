@@ -18,7 +18,7 @@ import org.example.gradingcenter.data.entity.School;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Headmaster extends User {
 
-    @OneToOne
+    @OneToOne(mappedBy = "headmaster")
     private School school;
 
 }

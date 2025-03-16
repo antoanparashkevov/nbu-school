@@ -1,11 +1,9 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.service.HeadmasterService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,27 +13,23 @@ public class HeadmasterApiController {
     private final HeadmasterService headmasterService;
 
     @GetMapping
-    public List<Headmaster> getHeadmasters() {
-        return headmasterService.getHeadmasters();
+    public ResponseEntity<?> getHeadmasters() {
+        return ResponseEntity.ok().body(headmasterService.getHeadmasters());
     }
 
     @GetMapping("/{id}")
-    public Headmaster getHeadmaster(@PathVariable long id) {
-        return headmasterService.getHeadmaster(id);
+    public ResponseEntity<?> getHeadmaster(@PathVariable long id) {
+        return ResponseEntity.ok().body(headmasterService.getHeadmaster(id));
     }
 
-    @PostMapping
-    public Headmaster createHeadmaster(@RequestBody Headmaster headmaster) {
-        return headmasterService.createHeadmaster(headmaster);
-    }
-
-    @PutMapping("/{id}")
-    public Headmaster updateHeadmaster(@RequestBody Headmaster headmaster, @PathVariable long id) {
-        return headmasterService.updateHeadmaster(headmaster, id);
+    @PostMapping("/{userId}")
+    public ResponseEntity<?> createHeadmaster(@PathVariable long userId) {
+        return ResponseEntity.ok().body(headmasterService.createHeadmaster(userId));
     }
 
     @DeleteMapping("/{id}")
     public void deleteHeadmaster(@PathVariable long id) {
+        ResponseEntity.ok().build();
         headmasterService.deleteHeadmaster(id);
     }
 

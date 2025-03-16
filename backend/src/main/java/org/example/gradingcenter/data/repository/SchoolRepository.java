@@ -9,6 +9,6 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
     Optional<School> findByName(String name);
 
-    Optional<School> findByHeadMasterId(Long id);
+    Optional<School> findByHeadmasterId(Long id);
 
 }

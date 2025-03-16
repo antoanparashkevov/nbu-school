@@ -7,6 +7,7 @@ import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class SchoolServiceImpl implements SchoolService {
     private final SchoolRepository schoolRepository;
 
     private final ModelMapperConfig mapperConfig;
+
+    private final HeadmasterService headmasterService;
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -39,8 +42,9 @@ public class SchoolServiceImpl implements SchoolService {
     public SchoolDto createSchool(SchoolDto schoolDto) {
         validateHeadmaster(schoolDto.getHeadmasterId(), null);
         validateName(schoolDto.getName(), null);
-        School createdSchool = schoolRepository.save(mapperConfig.getModelMapper().map(schoolDto, School.class));
-        return mapperConfig.getModelMapper().map(createdSchool, SchoolDto.class);
+        School school = mapperConfig.getModelMapper().map(schoolDto, School.class);
+        school.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
+        return mapperConfig.getModelMapper().map(schoolRepository.save(school), SchoolDto.class);
     }
 
     @Override
@@ -48,14 +52,10 @@ public class SchoolServiceImpl implements SchoolService {
     public SchoolDto updateSchool(SchoolDto schoolDto, long id) {
         validateHeadmaster(schoolDto.getHeadmasterId(), id);
         validateName(schoolDto.getName(), id);
-        School updatedSchool = this.schoolRepository.findById(id)
-                .map(schoolToUpdate -> {
-                    mapperConfig.getModelMapper().map(schoolDto, schoolToUpdate);
-                    return schoolRepository.save(schoolToUpdate);
-                }).orElseGet(() ->
-                        schoolRepository.save(mapperConfig.getModelMapper().map(schoolDto, School.class)
-                ));
-        return mapperConfig.getModelMapper().map(updatedSchool, SchoolDto.class);
+        School updatedSchool = fetchSchool(id);
+        mapperConfig.getModelMapper().map(schoolDto, updatedSchool);
+        updatedSchool.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
+        return mapperConfig.getModelMapper().map(schoolRepository.save(updatedSchool), SchoolDto.class);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SchoolServiceImpl implements SchoolService {
         if (headmasterId == null) {
             return;
         }
-        Optional<School> existingSchoolWithSameHeadmaster = schoolRepository.findByHeadMasterId(headmasterId);
+        Optional<School> existingSchoolWithSameHeadmaster = schoolRepository.findByHeadmasterId(headmasterId);
         if (existingSchoolWithSameHeadmaster.isPresent() &&
                 (id == null || existingSchoolWithSameHeadmaster.get().getId() != id)) {
             throw new DuplicateEntityException("School", "headmaster id", headmasterId.toString());

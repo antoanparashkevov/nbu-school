@@ -5,8 +5,6 @@ import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.UserLoginDto;
 import org.example.gradingcenter.data.dto.UserLoginResponseDto;
 import org.example.gradingcenter.data.dto.UserRegisterDto;
-import org.example.gradingcenter.data.entity.Role;
-import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.service.AuthenticationService;
@@ -18,9 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -43,10 +38,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserLoginResponseDto register(UserRegisterDto userRegisterDto) {
         User user = mapperConfig.getModelMapper().map(userRegisterDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByAuthority(Roles.STUDENT).get();
-        Set<Role> authorities = new HashSet<>();
-        authorities.add(userRole);
-        user.setAuthorities(authorities);
         User savedUser = userService.createUser(user);
 
         Authentication auth = authenticationManager.authenticate(

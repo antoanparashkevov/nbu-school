@@ -23,6 +23,6 @@ public class School extends BaseEntity {
     private String address;
 
     @OneToOne
-    private Headmaster headMaster;
+    private Headmaster headmaster;
 
 }

@@ -1,19 +1,19 @@
 package org.example.gradingcenter.service;
 
+import org.example.gradingcenter.data.dto.HeadmasterDto;
 import org.example.gradingcenter.data.entity.users.Headmaster;
 
 import java.util.List;
 
 public interface HeadmasterService {
 
-    List<Headmaster> getHeadmasters();
+    List<HeadmasterDto> getHeadmasters();
 
-    Headmaster getHeadmaster(long id);
+    HeadmasterDto getHeadmaster(long id);
 
-    Headmaster createHeadmaster(Headmaster headmaster);
-
-    Headmaster updateHeadmaster(Headmaster headmaster, long id);
+    HeadmasterDto createHeadmaster(Long userId);
 
     void deleteHeadmaster(long id);
-    
+
+    Headmaster fetchHeadmaster(long id);
 }
