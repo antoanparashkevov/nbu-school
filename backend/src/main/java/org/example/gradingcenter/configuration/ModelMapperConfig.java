@@ -1,7 +1,9 @@
 package org.example.gradingcenter.configuration;
 
-import org.example.gradingcenter.data.dto.HeadmasterDto;
+import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
+import org.example.gradingcenter.data.dto.users.HeadmasterDto;
+import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.users.Headmaster;
@@ -24,6 +26,7 @@ public class ModelMapperConfig {
         addRoleMappings(modelMapper);
         addHeadmasterMappings(modelMapper);
         addSchoolMappings(modelMapper);
+        addGradeMappings(modelMapper);
         return modelMapper;
     }
 
@@ -46,6 +49,15 @@ public class ModelMapperConfig {
 
     private static void addHeadmasterMappings(ModelMapper modelMapper) {
         modelMapper.addMappings(new PropertyMap<Headmaster, HeadmasterDto>() {
+            @Override
+            protected void configure() {
+                map(source.getSchool().getId(), destination.getSchoolId());
+            }
+        });
+    }
+
+    private static void addGradeMappings(ModelMapper modelMapper) {
+        modelMapper.addMappings(new PropertyMap<Grade, GradeDto>() {
             @Override
             protected void configure() {
                 map(source.getSchool().getId(), destination.getSchoolId());

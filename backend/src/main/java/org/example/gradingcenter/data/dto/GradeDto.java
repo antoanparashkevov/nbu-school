@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.gradingcenter.data.entity.School;
 
 @Getter
 @Setter
@@ -16,6 +15,6 @@ public class GradeDto {
 
     private String name;
 
-    private School school;
+    private Long schoolId;
 
 }

@@ -11,6 +11,7 @@ import org.example.gradingcenter.data.repository.GradeRepository;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.GradeService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public GradeDto createGrade(GradeCreateDto gradeCreateDto) {
         Grade grade = mapperConfig.getModelMapper().map(gradeCreateDto, Grade.class);
         School school = schoolRepository.findById(gradeCreateDto.getSchoolId())
@@ -48,6 +50,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public GradeDto updateGrade(GradeUpdateDto gradeUpdateDto) {
         return gradeRepository.findById(gradeUpdateDto.getId())
                 .map(existingGrade -> {
@@ -60,6 +63,7 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteGrade(long id) {
         gradeRepository.deleteById(id);
     }

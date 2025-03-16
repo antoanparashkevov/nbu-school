@@ -1,7 +1,7 @@
 package org.example.gradingcenter.data.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GradeCreateDto {
 
-    @Size(min = 2, max = 2, message = "Name should be 2 symbols")
+    @Pattern(
+            regexp = "^(?:[1-9]|1[0-2])[A-Za-z]$",
+            message = "Invalid grade name format."
+    )
     private String name;
 
     @NotNull(message = "School Id cannot be null")

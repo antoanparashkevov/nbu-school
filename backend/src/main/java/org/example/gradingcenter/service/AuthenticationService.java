@@ -1,8 +1,8 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.dto.UserLoginDto;
-import org.example.gradingcenter.data.dto.UserLoginResponseDto;
-import org.example.gradingcenter.data.dto.UserRegisterDto;
+import org.example.gradingcenter.data.dto.users.UserLoginDto;
+import org.example.gradingcenter.data.dto.users.UserLoginResponseDto;
+import org.example.gradingcenter.data.dto.users.UserRegisterDto;
 
 public interface AuthenticationService {
 

@@ -5,7 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
-import org.example.gradingcenter.data.dto.HeadmasterDto;
+import org.example.gradingcenter.data.dto.users.HeadmasterDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Headmaster;

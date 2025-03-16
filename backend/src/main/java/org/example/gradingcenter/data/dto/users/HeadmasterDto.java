@@ -1,4 +1,4 @@
-package org.example.gradingcenter.data.dto;
+package org.example.gradingcenter.data.dto.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

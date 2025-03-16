@@ -25,7 +25,7 @@ public class GradeApiController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGrade(@PathVariable long id) {
-        return ResponseEntity.ok().body(this.gradeService.getGrade(id));
+        return ResponseEntity.ok().body(gradeService.getGrade(id));
     }
 
     @PostMapping
@@ -45,8 +45,9 @@ public class GradeApiController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteGrade(@PathVariable long id) {
+    public ResponseEntity<?> deleteGrade(@PathVariable long id) {
         gradeService.deleteGrade(id);
+        return ResponseEntity.ok().build();
     }
 
 }

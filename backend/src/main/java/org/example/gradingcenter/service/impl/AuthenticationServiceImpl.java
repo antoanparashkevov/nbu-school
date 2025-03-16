@@ -2,9 +2,9 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
-import org.example.gradingcenter.data.dto.UserLoginDto;
-import org.example.gradingcenter.data.dto.UserLoginResponseDto;
-import org.example.gradingcenter.data.dto.UserRegisterDto;
+import org.example.gradingcenter.data.dto.users.UserLoginDto;
+import org.example.gradingcenter.data.dto.users.UserLoginResponseDto;
+import org.example.gradingcenter.data.dto.users.UserRegisterDto;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.service.AuthenticationService;
