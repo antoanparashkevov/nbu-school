@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.GradeCreateDto;
 import org.example.gradingcenter.data.dto.GradeDto;
-import org.example.gradingcenter.data.dto.GradeUpdateDto;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.repository.GradeRepository;
@@ -51,7 +50,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public GradeDto updateGrade(GradeUpdateDto gradeUpdateDto) {
+    public GradeDto updateGrade(GradeDto gradeUpdateDto) {
         return gradeRepository.findById(gradeUpdateDto.getId())
                 .map(existingGrade -> {
                     mapperConfig.getModelMapper().map(gradeUpdateDto, existingGrade);

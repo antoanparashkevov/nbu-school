@@ -3,7 +3,7 @@ package org.example.gradingcenter.web.api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.GradeCreateDto;
-import org.example.gradingcenter.data.dto.GradeUpdateDto;
+import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.service.GradeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -37,7 +37,7 @@ public class GradeApiController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateGrade(@RequestBody GradeUpdateDto grade, BindingResult result) {
+    public ResponseEntity<?> updateGrade(@RequestBody GradeDto grade, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(getDefaultMessages(result));
         }

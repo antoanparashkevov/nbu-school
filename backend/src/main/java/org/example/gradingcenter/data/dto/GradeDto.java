@@ -9,12 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GradeDto {
+public class GradeDto extends GradeCreateDto {
 
     private long id;
-
-    private String name;
-
-    private Long schoolId;
 
 }

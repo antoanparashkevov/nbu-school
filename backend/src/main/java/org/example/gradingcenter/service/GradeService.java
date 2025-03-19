@@ -2,7 +2,6 @@ package org.example.gradingcenter.service;
 
 import org.example.gradingcenter.data.dto.GradeCreateDto;
 import org.example.gradingcenter.data.dto.GradeDto;
-import org.example.gradingcenter.data.dto.GradeUpdateDto;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface GradeService {
 
     GradeDto createGrade(GradeCreateDto gradeCreateDto);
 
-    GradeDto updateGrade(GradeUpdateDto gradeUpdateDto);
+    GradeDto updateGrade(GradeDto gradeUpdateDto);
 
     void deleteGrade(long id);
     

@@ -3,10 +3,13 @@ package org.example.gradingcenter.configuration;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.users.HeadmasterDto;
+import org.example.gradingcenter.data.dto.users.StudentDto;
+import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.data.entity.users.Student;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -19,6 +22,12 @@ import java.util.stream.Collectors;
 @Configuration(enforceUniqueMethods = false)
 public class ModelMapperConfig {
 
+    public static final Converter<Role, String> ROLE_TO_STRING =
+            context -> {
+                Role source = context.getSource();
+                return (source == null) ? null : source.getAuthority();
+            };
+
     @Bean
     public ModelMapper getModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -27,6 +36,7 @@ public class ModelMapperConfig {
         addHeadmasterMappings(modelMapper);
         addSchoolMappings(modelMapper);
         addGradeMappings(modelMapper);
+        addStudentMappings(modelMapper);
         return modelMapper;
     }
 
@@ -36,12 +46,6 @@ public class ModelMapperConfig {
                 .map(element -> getModelMapper().map(element, targetClass))
                 .collect(Collectors.toList());
     }
-
-    public static final Converter<Role, String> ROLE_TO_STRING =
-            context -> {
-                Role source = context.getSource();
-                return (source == null) ? null : source.getAuthority();
-            };
 
     private static void addRoleMappings(ModelMapper modelMapper) {
         modelMapper.createTypeMap(Role.class, String.class).setConverter(ROLE_TO_STRING);
@@ -61,6 +65,17 @@ public class ModelMapperConfig {
             @Override
             protected void configure() {
                 map(source.getSchool().getId(), destination.getSchoolId());
+            }
+        });
+    }
+
+    private static void addStudentMappings(ModelMapper modelMapper) {
+        modelMapper.addMappings(new PropertyMap<Student, StudentDto>() {
+            @Override
+            protected void configure() {
+                map(source.getGrade().getName(), destination.getGradeName());
+                map(source.getGrade().getSchool().getName(), destination.getSchoolName());
+                map(source.getParents().stream().map(BaseEntity::getId).collect(Collectors.toList()), destination.getParentIds());
             }
         });
     }
