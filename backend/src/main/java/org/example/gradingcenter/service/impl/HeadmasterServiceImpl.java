@@ -11,10 +11,10 @@ import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
-import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.HeadmasterService;
+import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     private final ModelMapperConfig mapperConfig;
 
@@ -62,8 +62,8 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public HeadmasterDto createHeadmaster(Long userId) {
-        User user = fetchUser(userId);
-        Role userRole = fetchRole(Roles.HEADMASTER);
+        User user = userService.fetchUser(userId);
+        Role userRole = roleService.fetchRole(Roles.HEADMASTER);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(
@@ -79,18 +79,6 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteHeadmaster(long id) {
         headmasterRepository.deleteById(id);
-    }
-
-    private User fetchUser(long id) {
-        return userRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(User.class, "id", id));
-    }
-
-    private Role fetchRole(Roles authority) {
-        return roleRepository
-                .findByAuthority(authority)
-                .orElseThrow(() -> new EntityNotFoundException(Role.class, "authority", authority));
     }
 
 }

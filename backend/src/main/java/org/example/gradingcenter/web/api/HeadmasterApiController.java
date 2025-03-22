@@ -28,9 +28,9 @@ public class HeadmasterApiController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHeadmaster(@PathVariable long id) {
-        ResponseEntity.ok().build();
+    public ResponseEntity<?> deleteHeadmaster(@PathVariable long id) {
         headmasterService.deleteHeadmaster(id);
+        return ResponseEntity.ok().build();
     }
 
 }

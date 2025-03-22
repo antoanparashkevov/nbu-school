@@ -3,7 +3,7 @@ package org.example.gradingcenter.configuration;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.users.HeadmasterDto;
-import org.example.gradingcenter.data.dto.users.StudentDto;
+import org.example.gradingcenter.data.dto.users.StudentOutDto;
 import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
@@ -27,6 +27,11 @@ public class ModelMapperConfig {
                 Role source = context.getSource();
                 return (source == null) ? null : source.getAuthority();
             };
+
+    private static final Converter<List<BaseEntity>, List<Long>> PARENT_IDS_CONVERTER =
+            ctx -> ctx.getSource() == null ? null : ctx.getSource().stream()
+                    .map(BaseEntity::getId)
+                    .collect(Collectors.toList());
 
     @Bean
     public ModelMapper getModelMapper() {
@@ -70,12 +75,12 @@ public class ModelMapperConfig {
     }
 
     private static void addStudentMappings(ModelMapper modelMapper) {
-        modelMapper.addMappings(new PropertyMap<Student, StudentDto>() {
+        modelMapper.addMappings(new PropertyMap<Student, StudentOutDto>() {
             @Override
             protected void configure() {
                 map(source.getGrade().getName(), destination.getGradeName());
                 map(source.getGrade().getSchool().getName(), destination.getSchoolName());
-                map(source.getParents().stream().map(BaseEntity::getId).collect(Collectors.toList()), destination.getParentIds());
+                using(PARENT_IDS_CONVERTER).map(source.getParents(), destination.getParentIds());
             }
         });
     }

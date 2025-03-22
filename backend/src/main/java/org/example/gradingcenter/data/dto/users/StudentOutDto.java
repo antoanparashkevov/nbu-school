@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto extends UserOutDto{
+public class StudentOutDto extends UserOutDto {
 
     private Integer absences;
 

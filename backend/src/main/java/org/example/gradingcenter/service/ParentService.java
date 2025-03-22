@@ -1,18 +1,19 @@
 package org.example.gradingcenter.service;
 
+import org.example.gradingcenter.data.dto.users.ParentDto;
 import org.example.gradingcenter.data.entity.users.Parent;
 
 import java.util.List;
 
 public interface ParentService {
 
-    List<Parent> getParents();
+    List<ParentDto> getParents();
 
-    Parent getParent(long id);
+    ParentDto getParent(long id);
 
-    Parent createParent(Parent Parent);
+    Parent fetchParent(long id);
 
-    Parent updateParent(Parent Parent, long id);
+    ParentDto createParent(Long userId);
 
     void deleteParent(long id);
     

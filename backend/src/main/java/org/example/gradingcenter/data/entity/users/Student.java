@@ -17,11 +17,12 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Student extends User {
 
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int absences;
 
     @ManyToMany(mappedBy = "children")
     private List<Parent> parents;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Grade grade;
 }

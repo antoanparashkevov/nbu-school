@@ -11,6 +11,8 @@ public interface UserService extends UserDetailsService {
 
     User getUser(long id);
 
+    User fetchUser(long id);
+
     User createUser(User user);
 
     User updateUser(User user, long id);

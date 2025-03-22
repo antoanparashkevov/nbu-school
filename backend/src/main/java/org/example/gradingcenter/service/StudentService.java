@@ -1,18 +1,19 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.dto.users.StudentInDto;
+import org.example.gradingcenter.data.dto.users.StudentOutDto;
 
 import java.util.List;
 
 public interface StudentService {
     
-    List<Student> getStudents();
+    List<StudentOutDto> getStudents();
 
-    Student getStudent(long id);
+    StudentOutDto getStudent(long id);
 
-    Student createStudent(Student student);
+    StudentOutDto createStudent(StudentInDto student);
 
-    Student updateStudent(Student student, long id);
+    StudentOutDto updateStudent(StudentInDto student, long id);
 
     void deleteStudent(long id);
     

@@ -1,54 +1,126 @@
 package org.example.gradingcenter.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
+import org.example.gradingcenter.data.dto.users.StudentInDto;
+import org.example.gradingcenter.data.dto.users.StudentOutDto;
+import org.example.gradingcenter.data.entity.Grade;
+import org.example.gradingcenter.data.entity.Role;
+import org.example.gradingcenter.data.entity.enums.Roles;
+import org.example.gradingcenter.data.entity.users.Parent;
 import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.User;
+import org.example.gradingcenter.data.repository.GradeRepository;
 import org.example.gradingcenter.data.repository.StudentRepository;
+import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.example.gradingcenter.service.ParentService;
+import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.StudentService;
+import org.example.gradingcenter.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final StudentRepository studentRepository;
+
+    private final RoleService roleService;
+
+    private final UserService userService;
+
+    private final UserRepository userRepository;
+
+    private final ParentService parentService;
+
+    private final GradeRepository gradeRepository;
 
     private final ModelMapperConfig mapperConfig;
 
     @Override
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public List<StudentOutDto> getStudents() {
+        return mapperConfig.mapList(studentRepository.findAll(), StudentOutDto.class);
     }
 
     @Override
-    public Student getStudent(long id) {
+    public StudentOutDto getStudent(long id) {
+        return mapperConfig.getModelMapper().map(fetchStudent(id), StudentOutDto.class);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
+    public StudentOutDto createStudent(StudentInDto student) {
+        User user = userService.fetchUser(student.getUserId());
+        Role userRole = roleService.fetchRole(Roles.STUDENT);
+        user.getAuthorities().add(userRole);
+        userRepository.save(user);
+        entityManager.createNativeQuery(
+                        " INSERT INTO student (id) VALUES (:userId) ")
+                .setParameter("userId", user.getId())
+                .executeUpdate();
+        entityManager.flush();
+        entityManager.clear();
+
+        Student newStudent = fetchStudent(student.getUserId());
+        return modifyUser(student, newStudent);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
+    public StudentOutDto updateStudent(StudentInDto student, long id) {
+        return this.studentRepository.findById(id)
+                .map(studentToUpdate -> modifyUser(student, studentToUpdate))
+                .orElseThrow(() -> new EntityNotFoundException(Student.class, "id", id));
+    }
+
+    private StudentOutDto modifyUser(StudentInDto student, Student studentToUpdate) {
+        studentToUpdate.setAbsences(student.getAbsences());
+        setParents(studentToUpdate, student.getParentIds());
+        studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolName()));
+        return mapperConfig.getModelMapper().map(studentRepository.save(studentToUpdate), StudentOutDto.class);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
+    }
+
+    private Student fetchStudent(long id) {
         return studentRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Student.class, "id", id));
     }
 
-    @Override
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    private Grade fetchGrade(String name, String schoolName) {
+        return gradeRepository
+                .findByNameAndSchoolName(name, schoolName)
+                .orElseThrow(() -> new EntityNotFoundException(Grade.class,
+                                                               "name and school",
+                                                                name + " and " + schoolName));
     }
 
-    @Override
-    public Student updateStudent(Student student, long id) {
-        return this.studentRepository.findById(id)
-                .map(studentToUpdate -> {
-                    mapperConfig.getModelMapper().map(student, studentToUpdate);
-                    return studentRepository.save(studentToUpdate);
-                }).orElseGet(() ->
-                        studentRepository.save(student)
-                );
+    private void setParents(Student student, List<Long> parentIds) {
+        if (parentIds == null || parentIds.isEmpty()) {
+            return;
+        }
+        List<Parent> parents = new ArrayList<>();
+        for (Long parentId : parentIds) {
+            parents.add(parentService.fetchParent(parentId));
+        }
+        student.setParents(parents);
     }
 
-    @Override
-    public void deleteStudent(long id) {
-        studentRepository.deleteById(id);
-    }
-    
 }

@@ -41,6 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User fetchUser(long id) {
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(User.class, "id", id));
+    }
+
+    @Override
     public User createUser(User user) {
         Optional<User> duplicatedUser = userRepository.findByUsername(user.getUsername());
         if (duplicatedUser.isPresent()) {
