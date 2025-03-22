@@ -39,5 +39,5 @@ public class GradingCenterApplication {
             userRepository.save(admin);
         };
     }
-
+//.
 }
