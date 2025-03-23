@@ -106,7 +106,7 @@ public class StudentServiceImpl implements StudentService {
 
     private Grade fetchGrade(String name, String schoolName) {
         return gradeRepository
-                .findByNameAndSchoolName(name, schoolName)
+                .findByNameAndSchool_Name(name, schoolName)
                 .orElseThrow(() -> new EntityNotFoundException(Grade.class,
                                                                "name and school",
                                                                 name + " and " + schoolName));

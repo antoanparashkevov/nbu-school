@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParentDto {
+public class ParentDto extends UserOutDto {
 
     private List<Long> childrenIds;
 

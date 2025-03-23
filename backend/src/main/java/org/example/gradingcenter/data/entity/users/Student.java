@@ -20,7 +20,7 @@ public class Student extends User {
     @Column(columnDefinition = "INT DEFAULT 0")
     private int absences;
 
-    @ManyToMany(mappedBy = "children")
+    @ManyToMany
     private List<Parent> parents;
 
     @ManyToOne

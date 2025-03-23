@@ -2,6 +2,7 @@ package org.example.gradingcenter.service.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.users.ParentDto;
@@ -15,6 +16,7 @@ import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +56,8 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
     public ParentDto createParent(Long userId) {
         User user = userService.fetchUser(userId);
         Role userRole = roleService.fetchRole(Roles.PARENT);
