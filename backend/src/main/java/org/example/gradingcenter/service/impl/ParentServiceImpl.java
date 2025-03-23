@@ -12,6 +12,7 @@ import org.example.gradingcenter.data.entity.users.Parent;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.ParentRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.RoleService;
@@ -20,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +61,11 @@ public class ParentServiceImpl implements ParentService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public ParentDto createParent(Long userId) {
+        Optional<Parent> existingParent = parentRepository.findById(userId);
+        if (existingParent.isPresent()) {
+            throw new DuplicateEntityException(Parent.class, "id", userId);
+        }
+
         User user = userService.fetchUser(userId);
         Role userRole = roleService.fetchRole(Roles.PARENT);
         user.getAuthorities().add(userRole);

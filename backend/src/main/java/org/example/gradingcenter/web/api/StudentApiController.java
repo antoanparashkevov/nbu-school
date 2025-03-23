@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.users.StudentInDto;
 import org.example.gradingcenter.service.StudentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import static org.example.gradingcenter.util.DataUtil.getDefaultMessages;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +27,18 @@ public class StudentApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createStudent(@RequestBody StudentInDto student) {
+    public ResponseEntity<?> createStudent(@RequestBody StudentInDto student, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(getDefaultMessages(result));
+        }
         return ResponseEntity.ok().body(studentService.createStudent(student));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@RequestBody StudentInDto student, @PathVariable long id) {
+    public ResponseEntity<?> updateStudent(@RequestBody StudentInDto student, BindingResult result, @PathVariable long id) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(getDefaultMessages(result));
+        }
         return ResponseEntity.ok().body(studentService.updateStudent(student, id));
     }
 

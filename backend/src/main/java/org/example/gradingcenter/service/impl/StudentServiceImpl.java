@@ -16,6 +16,7 @@ import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.GradeRepository;
 import org.example.gradingcenter.data.repository.StudentRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.RoleService;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +64,11 @@ public class StudentServiceImpl implements StudentService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public StudentOutDto createStudent(StudentInDto student) {
+        Optional<Student> existingStudent = studentRepository.findById(student.getUserId());
+        if (existingStudent.isPresent()) {
+            throw new DuplicateEntityException(Student.class, "id", student.getUserId());
+        }
+
         User user = userService.fetchUser(student.getUserId());
         Role userRole = roleService.fetchRole(Roles.STUDENT);
         user.getAuthorities().add(userRole);

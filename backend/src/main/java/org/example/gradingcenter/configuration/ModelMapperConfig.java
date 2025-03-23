@@ -3,13 +3,17 @@ package org.example.gradingcenter.configuration;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.users.HeadmasterDto;
+import org.example.gradingcenter.data.dto.users.ParentDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
+import org.example.gradingcenter.data.dto.users.TeacherDto;
 import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.data.entity.users.Parent;
 import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -28,7 +32,7 @@ public class ModelMapperConfig {
                 return (source == null) ? null : source.getAuthority();
             };
 
-    private static final Converter<List<BaseEntity>, List<Long>> PARENT_IDS_CONVERTER =
+    private static final Converter<List<BaseEntity>, List<Long>> ENTITY_IDS_CONVERTER =
             ctx -> ctx.getSource() == null ? null : ctx.getSource().stream()
                     .map(BaseEntity::getId)
                     .collect(Collectors.toList());
@@ -42,6 +46,8 @@ public class ModelMapperConfig {
         addSchoolMappings(modelMapper);
         addGradeMappings(modelMapper);
         addStudentMappings(modelMapper);
+        addParentMappings(modelMapper);
+        addTeacherMappings(modelMapper);
         return modelMapper;
     }
 
@@ -65,6 +71,15 @@ public class ModelMapperConfig {
         });
     }
 
+    private static void addTeacherMappings(ModelMapper modelMapper) {
+        modelMapper.addMappings(new PropertyMap<Teacher, TeacherDto>() {
+            @Override
+            protected void configure() {
+                map(source.getSchool().getId(), destination.getSchoolId());
+            }
+        });
+    }
+
     private static void addGradeMappings(ModelMapper modelMapper) {
         modelMapper.addMappings(new PropertyMap<Grade, GradeDto>() {
             @Override
@@ -80,16 +95,22 @@ public class ModelMapperConfig {
             protected void configure() {
                 map(source.getGrade().getName(), destination.getGradeName());
                 map(source.getGrade().getSchool().getName(), destination.getSchoolName());
-                using(PARENT_IDS_CONVERTER).map(source.getParents(), destination.getParentIds());
+                using(ENTITY_IDS_CONVERTER).map(source.getParents(), destination.getParentIds());
+            }
+        });
+    }
+
+    private static void addParentMappings(ModelMapper modelMapper) {
+        modelMapper.addMappings(new PropertyMap<Parent, ParentDto>() {
+            @Override
+            protected void configure() {
+                using(ENTITY_IDS_CONVERTER).map(source.getChildren(), destination.getChildrenIds());
             }
         });
     }
 
     private static void addSchoolMappings(ModelMapper modelMapper) {
-        modelMapper.typeMap(SchoolDto.class, School.class)
-                .addMappings(mapper -> {
-                    mapper.skip(School::setId);
-                });
+        modelMapper.typeMap(SchoolDto.class, School.class).addMappings(mapper -> {mapper.skip(School::setId);});
     }
 
 }

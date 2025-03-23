@@ -2,12 +2,12 @@ package org.example.gradingcenter.exceptions;
 
 public class DuplicateEntityException extends RuntimeException {
 
-    public DuplicateEntityException(String type, String attribute, String value) {
-        super(String.format("%s with %s %s already exists", type, attribute, value));
+    public <T> DuplicateEntityException(Class<T> type, String attribute, Object value) {
+        throw new EntityNotFoundException(type.getSimpleName(), attribute, value);
     }
 
-    public DuplicateEntityException(String message) {
-        super(message);
+    public DuplicateEntityException(String className, String attribute, Object value) {
+        super(String.format("%s with %s %s already exists", className, attribute, value));
     }
 
 }

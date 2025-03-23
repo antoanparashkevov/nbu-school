@@ -3,6 +3,7 @@ package org.example.gradingcenter.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.SchoolDto;
+import org.example.gradingcenter.data.dto.SchoolOutDto;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
@@ -27,35 +28,35 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<SchoolDto> getSchools() {
-        return mapperConfig.mapList(schoolRepository.findAll(), SchoolDto.class);
+    public List<SchoolOutDto> getSchools() {
+        return mapperConfig.mapList(schoolRepository.findAll(), SchoolOutDto.class);
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public SchoolDto getSchool(long id) {
-        return mapperConfig.getModelMapper().map(fetchSchool(id), SchoolDto.class);
+    public SchoolOutDto getSchool(long id) {
+        return mapperConfig.getModelMapper().map(fetchSchool(id), SchoolOutDto.class);
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public SchoolDto createSchool(SchoolDto schoolDto) {
+    public SchoolOutDto createSchool(SchoolDto schoolDto) {
         validateHeadmaster(schoolDto.getHeadmasterId(), null);
         validateName(schoolDto.getName(), null);
         School school = mapperConfig.getModelMapper().map(schoolDto, School.class);
         school.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
-        return mapperConfig.getModelMapper().map(schoolRepository.save(school), SchoolDto.class);
+        return mapperConfig.getModelMapper().map(schoolRepository.save(school), SchoolOutDto.class);
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public SchoolDto updateSchool(SchoolDto schoolDto, long id) {
+    public SchoolOutDto updateSchool(SchoolDto schoolDto, long id) {
         validateHeadmaster(schoolDto.getHeadmasterId(), id);
         validateName(schoolDto.getName(), id);
         School updatedSchool = fetchSchool(id);
         mapperConfig.getModelMapper().map(schoolDto, updatedSchool);
         updatedSchool.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
-        return mapperConfig.getModelMapper().map(schoolRepository.save(updatedSchool), SchoolDto.class);
+        return mapperConfig.getModelMapper().map(schoolRepository.save(updatedSchool), SchoolOutDto.class);
     }
 
     @Override

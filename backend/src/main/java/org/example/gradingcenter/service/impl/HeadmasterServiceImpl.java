@@ -12,6 +12,7 @@ import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.RoleService;
@@ -20,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +64,11 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public HeadmasterDto createHeadmaster(Long userId) {
+        Optional<Headmaster> existingHeadmaster = headmasterRepository.findById(userId);
+        if (existingHeadmaster.isPresent()) {
+            throw new DuplicateEntityException(Headmaster.class, "id", userId);
+        }
+
         User user = userService.fetchUser(userId);
         Role userRole = roleService.fetchRole(Roles.HEADMASTER);
         user.getAuthorities().add(userRole);
