@@ -11,4 +11,6 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
 
     Optional<Grade> findByNameAndSchool_Name(String name, String schoolName);
 
+    Optional<Grade> findByNameAndSchool_Id(String name, Long schoolId);
+
 }

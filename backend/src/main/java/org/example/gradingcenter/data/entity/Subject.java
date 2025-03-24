@@ -25,4 +25,7 @@ public class Subject extends BaseEntity {
     @ManyToOne(optional = false)
     private Grade grade;
 
+    @ManyToOne(optional = false)
+    private School school;
+
 }

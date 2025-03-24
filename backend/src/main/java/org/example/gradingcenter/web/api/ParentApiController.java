@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/parents")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ParentApiController {
 
     private final ParentService parentService;

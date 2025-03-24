@@ -1,6 +1,16 @@
 package org.example.gradingcenter.exceptions;
 
+import java.util.List;
+
 public class EntityNotFoundException extends RuntimeException {
+
+    public <T> EntityNotFoundException(Class<T> type, List<String> attributes, List<Object> values) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object value : values) {
+            stringBuilder.append(value.toString()).append(", ");
+        }
+        throw new EntityNotFoundException(type.getSimpleName(), String.join(",", attributes), stringBuilder);
+    }
 
     public <T> EntityNotFoundException(Class<T> type, String attribute, Object value) {
         throw new EntityNotFoundException(type.getSimpleName(), attribute, value);

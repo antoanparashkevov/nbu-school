@@ -1,5 +1,7 @@
 package org.example.gradingcenter.util;
 
+import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -75,6 +77,12 @@ public class DataUtil {
      */
     public static Stream<String> getDefaultMessages(BindingResult errors) {
         return errors.getFieldErrors().stream().map(FieldError::getDefaultMessage);
+    }
+
+    public static <T, R extends JpaRepository<T, Long>> T fetchObjectFromDb(R repository, long id, Class<T> clazz) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(clazz.getSimpleName(), "id", id));
     }
 
 }

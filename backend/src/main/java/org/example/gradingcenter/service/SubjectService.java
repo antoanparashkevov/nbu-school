@@ -1,18 +1,19 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Subject;
+import org.example.gradingcenter.data.dto.SubjectDto;
+import org.example.gradingcenter.data.dto.SubjectOutDto;
 
 import java.util.List;
 
 public interface SubjectService {
 
-    List<Subject> getSubjects();
+    List<SubjectOutDto> getSubjects();
 
-    Subject getSubject(long id);
+    SubjectOutDto getSubject(long id);
 
-    Subject createSubject(Subject Subject);
+    SubjectOutDto createSubject(SubjectDto Subject);
 
-    Subject updateSubject(Subject Subject, long id);
+    SubjectOutDto updateSubject(SubjectDto Subject, long id);
 
     void deleteSubject(long id);
     

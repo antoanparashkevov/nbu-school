@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/headmasters")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class HeadmasterApiController {
 
     private final HeadmasterService headmasterService;
