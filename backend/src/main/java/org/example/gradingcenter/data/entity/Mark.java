@@ -3,6 +3,7 @@ package org.example.gradingcenter.data.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.Teacher;
 
 @Getter
 @Setter
@@ -20,7 +22,6 @@ public class Mark extends BaseEntity {
 
     @DecimalMin("2.00")
     @DecimalMax("6.00")
-    //@Digits(integer = 1, fraction = 2)
     @Column(nullable = false)
     private double mark;
 
@@ -29,5 +30,8 @@ public class Mark extends BaseEntity {
 
     @ManyToOne(optional = false)
     private Student student;
+
+    @OneToOne
+    private Teacher teacher;
 
 }

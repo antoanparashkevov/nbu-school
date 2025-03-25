@@ -1,18 +1,17 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Mark;
+import org.example.gradingcenter.data.dto.MarkDto;
+import org.example.gradingcenter.data.dto.MarkOutDto;
 
 import java.util.List;
 
 public interface MarkService {
     
-    List<Mark> getMarks();
+    List<MarkOutDto> getMarks();
 
-    Mark getMark(long id);
+    MarkOutDto getMark(long id);
 
-    Mark createMark(Mark Mark);
-
-    Mark updateMark(Mark Mark, long id);
+    MarkOutDto createMark(MarkDto mark);
 
     void deleteMark(long id);
     

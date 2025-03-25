@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.gradingcenter.data.entity.Grade;
+import org.example.gradingcenter.data.entity.School;
 
 import java.util.List;
 
@@ -25,4 +26,7 @@ public class Student extends User {
 
     @ManyToOne
     private Grade grade;
+
+    @ManyToOne(optional = false)
+    private School school;
 }

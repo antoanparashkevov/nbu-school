@@ -21,6 +21,6 @@ public class StudentInDto {
 
     private String gradeName;
 
-    private String schoolName;
+    private Long schoolId;
 
 }

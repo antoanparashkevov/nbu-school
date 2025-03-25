@@ -9,11 +9,13 @@ import org.example.gradingcenter.data.dto.users.StudentInDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
+import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Parent;
 import org.example.gradingcenter.data.entity.users.Student;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.GradeRepository;
+import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.data.repository.StudentRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
@@ -22,6 +24,7 @@ import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.util.DataUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,8 @@ public class StudentServiceImpl implements StudentService {
     private EntityManager entityManager;
 
     private final StudentRepository studentRepository;
+
+    private final SchoolRepository schoolRepository;
 
     private final RoleService roleService;
 
@@ -73,9 +78,11 @@ public class StudentServiceImpl implements StudentService {
         Role userRole = roleService.fetchRole(Roles.STUDENT);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
+        DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class);
         entityManager.createNativeQuery(
-                        " INSERT INTO student (id) VALUES (:userId) ")
+                        " INSERT INTO student (id, school_id) VALUES (:userId, :school_id) ")
                 .setParameter("userId", user.getId())
+                .setParameter("school_id", student.getSchoolId())
                 .executeUpdate();
         entityManager.flush();
         entityManager.clear();
@@ -95,7 +102,8 @@ public class StudentServiceImpl implements StudentService {
     private StudentOutDto modifyUser(StudentInDto student, Student studentToUpdate) {
         studentToUpdate.setAbsences(student.getAbsences());
         setParents(studentToUpdate, student.getParentIds());
-        studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolName()));
+        studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
+        studentToUpdate.setSchool(DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class));
         return mapperConfig.getModelMapper().map(studentRepository.save(studentToUpdate), StudentOutDto.class);
     }
 
@@ -111,12 +119,12 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new EntityNotFoundException(Student.class, "id", id));
     }
 
-    private Grade fetchGrade(String name, String schoolName) {
+    private Grade fetchGrade(String name, Long schoolId) {
         return gradeRepository
-                .findByNameAndSchool_Name(name, schoolName)
+                .findByNameAndSchool_Id(name, schoolId)
                 .orElseThrow(() -> new EntityNotFoundException(Grade.class,
-                                                               "name and school",
-                                                                name + " and " + schoolName));
+                                                               "name and school Id",
+                                                                name + " and " + schoolId));
     }
 
     private void setParents(Student student, List<Long> parentIds) {

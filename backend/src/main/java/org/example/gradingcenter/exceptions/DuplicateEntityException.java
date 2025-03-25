@@ -20,4 +20,8 @@ public class DuplicateEntityException extends RuntimeException {
         super(String.format("%s with %s %s already exists", className, attribute, value));
     }
 
+    public DuplicateEntityException(String message) {
+        super(message);
+    }
+
 }

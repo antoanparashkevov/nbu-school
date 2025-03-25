@@ -64,6 +64,7 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectOutDto updateSubject(SubjectDto subject, long id) {
         return subjectRepository.findById(id)
                 .map(subjectToUpdate -> {
+                    subjectToUpdate.setName(subject.getName());
                     if (subject.getSchoolId() != null) {
                         subjectToUpdate.setSchool(fetchObjectFromDb(schoolRepository, subject.getSchoolId(), School.class));
                     }
