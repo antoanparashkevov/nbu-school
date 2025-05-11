@@ -1,0 +1,24 @@
+services:
+  mysql:
+    image: "mysql/mysql-server:8.0"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - "nbu-school-mysql:/var/lib/mysql"
+    networks:
+      - dev
+
+networks:
+  dev:
+    external: true
+
+volumes:
+  nbu-school-mysql:
+    driver: local
