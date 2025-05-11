@@ -23,18 +23,18 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDto userLoginDto, BindingResult errors) {
-        try {
-            if (errors.hasErrors()) {
-                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
-            }
-            return ResponseEntity.ok().body(authenticationService.login(userLoginDto));
-        } catch (AuthenticationFailureException e) {
-            errors.rejectValue("username", "auth.error", e.getMessage());
-            return ResponseEntity.badRequest().body(getDefaultMessages(errors));
-        }
-    }
+//    @GetMapping("/login")
+//    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDto userLoginDto, BindingResult errors) {
+//        try {
+//            if (errors.hasErrors()) {
+//                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
+//            }
+//            return ResponseEntity.ok().body(authenticationService.login(userLoginDto));
+//        } catch (AuthenticationFailureException e) {
+//            errors.rejectValue("username", "auth.error", e.getMessage());
+//            return ResponseEntity.badRequest().body(getDefaultMessages(errors));
+//        }
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto register, BindingResult errors) {

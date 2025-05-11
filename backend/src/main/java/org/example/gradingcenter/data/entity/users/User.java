@@ -39,7 +39,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @JsonManagedReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> authorities;
 
     @Column(nullable = false)

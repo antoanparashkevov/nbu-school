@@ -75,7 +75,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         User user = userService.fetchUser(student.getUserId());
-        Role userRole = roleService.fetchRole(Roles.STUDENT);
+        Role userRole = roleService.fetchRole(Roles.ROLE_STUDENT);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class);

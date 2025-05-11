@@ -70,7 +70,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
         }
 
         User user = userService.fetchUser(userId);
-        Role userRole = roleService.fetchRole(Roles.HEADMASTER);
+        Role userRole = roleService.fetchRole(Roles.ROLE_HEADMASTER);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(

@@ -43,22 +43,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userRegisterDto.getUsername(),
                         userRegisterDto.getPassword()));
-        String token = tokenService.generateJwt(auth);
+        //String token = tokenService.generateJwt(auth);
         UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(savedUser, UserLoginResponseDto.class);
-        loginResponse.setJwt(token);
+        //loginResponse.setJwt(token);
         return loginResponse;
     }
 
-    @Override
-    public UserLoginResponseDto login(UserLoginDto userLoginDto) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
-                        userLoginDto.getPassword()));
-        String token = tokenService.generateJwt(auth);
-        User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
-        UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(loggedUser, UserLoginResponseDto.class);
-        loginResponse.setJwt(token);
-        return loginResponse;
-    }
+//    @Override
+//    public UserLoginResponseDto login(UserLoginDto userLoginDto) {
+//        Authentication auth = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(),
+//                        userLoginDto.getPassword()));
+//        String token = tokenService.generateJwt(auth);
+//        User loggedUser = (User) userService.loadUserByUsername(userLoginDto.getUsername());
+//        UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(loggedUser, UserLoginResponseDto.class);
+//        loginResponse.setJwt(token);
+//        return loginResponse;
+//    }
 
 }

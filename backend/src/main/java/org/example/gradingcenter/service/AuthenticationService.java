@@ -8,6 +8,6 @@ public interface AuthenticationService {
 
     UserLoginResponseDto register(UserRegisterDto userRegisterDto);
 
-    UserLoginResponseDto login(UserLoginDto userLoginDto);
+    //UserLoginResponseDto login(UserLoginDto userLoginDto);
 
 }

@@ -63,7 +63,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         User user = userService.fetchUser(teacher.getUserId());
-        Role userRole = roleService.fetchRole(Roles.TEACHER);
+        Role userRole = roleService.fetchRole(Roles.ROLE_TEACHER);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(

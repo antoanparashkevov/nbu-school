@@ -67,7 +67,7 @@ public class ParentServiceImpl implements ParentService {
         }
 
         User user = userService.fetchUser(userId);
-        Role userRole = roleService.fetchRole(Roles.PARENT);
+        Role userRole = roleService.fetchRole(Roles.ROLE_PARENT);
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(

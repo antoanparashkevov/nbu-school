@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TokenServiceImpl implements TokenService {
 
-    private JwtEncoder jwtEncoder;
+    //private JwtEncoder jwtEncoder;
 
-    private JwtDecoder jwtDecoder;
+    //private JwtDecoder jwtDecoder;
 
     /**
      * Generates a JSON Web Token (JWT) from the provided {@link Authentication} object.
@@ -47,7 +47,8 @@ public class TokenServiceImpl implements TokenService {
                 .claim("roles", scope)
                 .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        //return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return "";
     }
 
 }
