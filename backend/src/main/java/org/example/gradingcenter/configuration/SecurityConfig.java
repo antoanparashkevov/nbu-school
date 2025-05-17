@@ -60,17 +60,22 @@ public class SecurityConfig {
         return http
                 //.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/.well-known/**").permitAll();
-                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/.well-known/**").permitAll(); // Chrome PWA probes
+                    auth.requestMatchers("/error").permitAll(); // Spring’s error page
+                    auth.requestMatchers("/auth/**", "/css/**", "/js/**", "/assets/**")
+                            .permitAll();
                     auth.requestMatchers("/headmasters/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/grades/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/schools/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
-                    auth.requestMatchers("/auth/signup").permitAll();
-                    auth.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll();
                     auth.requestMatchers("/").permitAll();
                     auth.anyRequest().authenticated();
                 })
-                .formLogin(Customizer.withDefaults())
+                .formLogin(fl -> fl
+                        .loginPage("/auth/login")        // <-- your custom page
+                        .loginProcessingUrl("/auth/login")// <-- where the form POSTs
+                        .defaultSuccessUrl("/", true)     // <-- always go to index
+                        .permitAll()
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
