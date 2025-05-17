@@ -60,15 +60,24 @@ public class SecurityConfig {
         return http
                 //.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/.well-known/**").permitAll();
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/headmasters/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/grades/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/schools/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
-                    auth.requestMatchers("/api/auth/signup").permitAll();
+                    auth.requestMatchers("/auth/signup").permitAll();
                     auth.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll();
+                    auth.requestMatchers("/").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
 //                .oauth2ResourceServer(oauth2 -> oauth2
 //                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
