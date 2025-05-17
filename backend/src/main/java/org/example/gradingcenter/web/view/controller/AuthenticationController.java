@@ -50,7 +50,7 @@ public class AuthenticationController {
             userRegisterDto.setConfirmPassword(signupViewModel.getConfirmPassword());
 
             authenticationService.register(userRegisterDto);
-            return "redirect:/"; // TODO: Redirect to the login page
+            return "redirect:/";
         } catch (DuplicateEntityException | EntityNotFoundException ex) {
             String[] exceptionMessage = ex.getMessage().split(" ");
             String fieldName = exceptionMessage[2];
