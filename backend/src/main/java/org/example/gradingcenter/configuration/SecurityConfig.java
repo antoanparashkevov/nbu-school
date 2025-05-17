@@ -64,6 +64,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/headmasters/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/grades/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/schools/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
+                    auth.requestMatchers("/api/auth/signup").permitAll();
+                    auth.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
