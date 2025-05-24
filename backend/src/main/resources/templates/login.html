@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+
+    <link rel="canonical" th:href="@{https://getbootstrap.com/docs/5.3/examples/sign-in/}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/@docsearch/css@3}">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/sign-up.css}" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+
+<main class="form-signin w-100 m-auto">
+    <form th:action="@{/auth/login}" method="post">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username" required>
+            <label for="floatingUsername">Username</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div th:if="${param.error}" class="text-danger my-2">
+            Invalid username or password.
+        </div>
+        <div th:if="${param.logout}" class="text-success my-2">
+            You have been logged out.
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+        <a href="#" th:href="@{/auth/signup}">Don't have an account? Sign up</a>
+    </form>
+</main>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>
