@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Users</title>
+
+  <!-- Bootstrap CSS -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Optional: Custom CSS -->
+  <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="mb-4">All Users</h2>
+  <table class="table table-dark table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}">1</td>
+      <td th:text="${user.username}">john_doe</td>
+      <td th:text="${user.firstName + ' ' + user.lastName}">John Doe</td>
+      <td th:text="${#strings.listJoin(user.authorities, ', ')}">ROLE_USER</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
