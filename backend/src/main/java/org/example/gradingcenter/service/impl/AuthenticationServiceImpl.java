@@ -2,16 +2,17 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
-import org.example.gradingcenter.data.dto.users.UserLoginResponseDto;
-import org.example.gradingcenter.data.dto.users.UserOutDto;
-import org.example.gradingcenter.data.dto.users.UserRegisterDto;
+import org.example.gradingcenter.data.dto.users.*;
 import org.example.gradingcenter.data.entity.Role;
+import org.example.gradingcenter.data.entity.enums.Roles;
+import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.RoleRepository;
+import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.AuthorizationFailureException;
-import org.example.gradingcenter.service.AuthenticationService;
-import org.example.gradingcenter.service.TokenService;
-import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.service.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,19 +32,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private PasswordEncoder passwordEncoder;
 
-    private RoleRepository roleRepository;
-
     private AuthenticationManager authenticationManager;
 
-    private TokenService tokenService;
+   // private TokenService tokenService;
 
     private UserService userService;
+
+    private ParentService parentService;
+
+    private HeadmasterService headmasterService;
+
+    private StudentService studentService;
+
+    private TeacherService teacherService;
 
     @Override
     public UserLoginResponseDto register(UserRegisterDto userRegisterDto) {
         User user = mapperConfig.getModelMapper().map(userRegisterDto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userService.createUser(user);
+        assignRole(user.getId(), userRegisterDto.getRole(), userRegisterDto.getSchoolId());
 
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userRegisterDto.getUsername(),
@@ -72,6 +80,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         throw new AuthorizationFailureException("There is not a logged in user");
+    }
+
+    private void assignRole(Long userId, Roles roles, Long schoolId) {
+        switch (roles) {
+            case Roles.ROLE_TEACHER -> {
+                teacherService.createTeacher(new TeacherInDto(userId, schoolId));
+            }
+            case Roles.ROLE_PARENT -> {
+                parentService.createParent(userId);
+            }
+            case Roles.ROLE_HEADMASTER -> {
+                headmasterService.createHeadmaster(userId);
+            }
+            case Roles.ROLE_STUDENT -> {
+                studentService.createStudent(new StudentInDto(userId, schoolId));
+            }
+            case Roles.ROLE_ADMIN -> {
+                System.out.println("Admins cannot be systematically created");
+            }
+        }
     }
 
 //    @Override

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.entity.enums.Roles;
 
 @Getter
 @Setter
@@ -20,6 +21,10 @@ public class UserRegisterDto {
     private String password;
 
     private String confirmPassword;
+
+    private Roles role;
+
+    private Long schoolId;
 
     private boolean isAccountNonExpired = true;
 

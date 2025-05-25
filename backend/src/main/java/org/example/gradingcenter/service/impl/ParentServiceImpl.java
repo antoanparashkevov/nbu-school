@@ -20,6 +20,7 @@ import org.example.gradingcenter.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,6 +69,9 @@ public class ParentServiceImpl implements ParentService {
 
         User user = userService.fetchUser(userId);
         Role userRole = roleService.fetchRole(Roles.ROLE_PARENT);
+        if (user.getAuthorities() == null){
+            user.setAuthorities(new HashSet<>());
+        }
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(

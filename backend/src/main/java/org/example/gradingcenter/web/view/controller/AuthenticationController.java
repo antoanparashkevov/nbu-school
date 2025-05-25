@@ -3,10 +3,14 @@ package org.example.gradingcenter.web.view.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.users.UserRegisterDto;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.AuthenticationService;
+import org.example.gradingcenter.service.SchoolService;
+import org.example.gradingcenter.util.MapperUtil;
 import org.example.gradingcenter.web.view.model.SignupViewModel;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,9 +26,13 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    private final SchoolService schoolService;
+
     @GetMapping("/signup")
     public String showRegisterPage(Model model) {
         model.addAttribute("signupViewModel", new SignupViewModel());
+        model.addAttribute("roles", Roles.valuesWithoutAdmin());
+        model.addAttribute("schools", schoolService.getSchools());
         return "sign-up";
     }
 
@@ -41,14 +49,7 @@ public class AuthenticationController {
                 return "sign-up";
             }
 
-            UserRegisterDto userRegisterDto = new UserRegisterDto();
-
-            userRegisterDto.setFirstName(signupViewModel.getFirstName());
-            userRegisterDto.setLastName(signupViewModel.getLastName());
-            userRegisterDto.setUsername(signupViewModel.getUsername());
-            userRegisterDto.setPassword(signupViewModel.getPassword());
-            userRegisterDto.setConfirmPassword(signupViewModel.getConfirmPassword());
-
+            UserRegisterDto userRegisterDto = MapperUtil.viewModelToDto(signupViewModel);
             authenticationService.register(userRegisterDto);
             return "redirect:/";
         } catch (DuplicateEntityException | EntityNotFoundException ex) {

@@ -45,12 +45,50 @@
             <label for="floatingPassword">Confirm Password</label>
         </div>
 
+        <div class="col-md-5">
+            <select class="form-select" id="role" required th:field="*{role}">
+                <option value="">Role</option>
+                <option th:each="role : ${roles}" th:text="${role}" th:value="${role.name()}">United States</option>
+            </select>
+            <span class="text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+        </div>
+
+        <div class="col-md-5" id="schoolContainer">
+            <select class="form-select" id="school" required th:field="*{schoolId}">
+                <option value="">School</option>
+                <option th:each="school : ${schools}" th:text="${school.name}" th:value="${school.id}"></option>
+            </select>
+            <span class="text-danger" th:if="${#fields.hasErrors('schoolId')}" th:errors="*{schoolId}"></span>
+        </div>
+
         <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
         <a href="#" th:href="@{/login}">Already have an account? Login</a>
     </form>
 </main>
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleSelect = document.getElementById('role');
+        const schoolContainer = document.getElementById('schoolContainer');
+
+        const rolesThatNeedSchool = ['ROLE_TEACHER', 'ROLE_STUDENT'];
+
+        function toggleSchoolVisibility() {
+            const selectedRole = roleSelect.value;
+            if (rolesThatNeedSchool.includes(selectedRole)) {
+                schoolContainer.style.display = 'block';
+            } else {
+                schoolContainer.style.display = 'none';
+            }
+        }
+
+        roleSelect.addEventListener('change', toggleSchoolVisibility);
+
+        // Trigger on page load in case a role is already selected (e.g., form error)
+        toggleSchoolVisibility();
+    });
+</script>
 
 </body>
 </html>
