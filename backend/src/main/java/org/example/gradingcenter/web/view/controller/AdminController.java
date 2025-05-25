@@ -1,5 +1,6 @@
 package org.example.gradingcenter.web.view.controller;
 
+import org.example.gradingcenter.data.dto.users.UserOutDto;
 import org.springframework.ui.Model;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.service.UserService;
@@ -23,7 +24,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        List<User> allUsers = userService.getAllUsers(); // Replace with your logic
+        List<UserOutDto> allUsers = userService.getUsers(); // Replace with your logic
         model.addAttribute("users", allUsers);
         return "admin"; // maps to admin.html
     }

@@ -20,7 +20,7 @@ public class IndexController {
          * 2. Depending on its role, redirect the user to the appropriate page (e.g. student role -> /student)
          * 3. If the role is admin, proceed with the home page that will display a dialog window letting user to choose the wanted view
          */
-        UserOutDto user = authService.getLoggedInUser();
+        //UserOutDto user = authService.getLoggedInUser();
 
         return "index";
     }
