@@ -62,7 +62,7 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // Refers to templates/login.html
+        return "login";
     }
 
 }
