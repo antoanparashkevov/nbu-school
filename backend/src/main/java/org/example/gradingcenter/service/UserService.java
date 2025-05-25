@@ -20,4 +20,8 @@ public interface UserService extends UserDetailsService {
     void deleteUser(long id);
 
     List<User> getAllUsers();
+
+    void addRoleToUser(Long id, String role);
+
+    void removeRoleFromUser(Long id, String role);
 }

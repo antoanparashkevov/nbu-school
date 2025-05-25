@@ -11,6 +11,8 @@
   <link th:href="@{/css/admin.css}" rel="stylesheet">
 </head>
 <body>
+
+<!--All Users Table-->
 <div class="container mt-5">
   <h2 class="mb-4">All Users</h2>
   <table class="table table-dark table-bordered table-striped">
@@ -19,6 +21,7 @@
       <th>ID</th>
       <th>Username</th>
       <th>Full Name</th>
+      <th>Actions</th>
       <th>Roles</th>
     </tr>
     </thead>
@@ -27,11 +30,37 @@
       <td th:text="${user.id}">1</td>
       <td th:text="${user.username}">john_doe</td>
       <td th:text="${user.firstName + ' ' + user.lastName}">John Doe</td>
-      <td th:text="${#strings.listJoin(user.authorities, ', ')}">ROLE_USER</td>
+
+      <!-- Действия -->
+      <td>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-primary" th:href="@{'/admin/users/' + ${user.id} + '/add-role/STUDENT'}">Make Student</a>
+          <a class="btn btn-sm btn-primary" th:href="@{'/admin/users/' + ${user.id} + '/add-role/PARENT'}">Make Parent</a>
+          <a class="btn btn-sm btn-primary" th:href="@{'/admin/users/' + ${user.id} + '/add-role/TEACHER'}">Make Teacher</a>
+          <a class="btn btn-sm btn-primary" th:href="@{'/admin/users/' + ${user.id} + '/add-role/DIRECTOR'}">Make Director</a>
+        </div>
+      </td>
+
+      <td>
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              th:each="role : ${user.authorities}">
+<!--            <span th:text="${role.authority}">ADMIN</span>-->
+            <span th:text="${role.authority.startsWith('ROLE_') ? #strings.substring(role.authority, 5) : role.authority}">ADMIN</span>
+            <!-- Shows remove button only if role is NOT ADMIN -->
+            <a class="btn-close btn-close-white ms-2"
+               th:if="${!(role.authority == 'ROLE_ADMIN')}"
+               th:href="@{'/admin/users/' + ${user.id} + '/remove-role/' + ${role.authority}}"
+               title="Remove Role"></a>
+          </li>
+        </ul>
+      </td>
+
     </tr>
     </tbody>
   </table>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
