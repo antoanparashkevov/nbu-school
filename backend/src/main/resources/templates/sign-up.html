@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-md-5" id="schoolContainer">
-            <select class="form-select" id="school" required th:field="*{schoolId}">
+            <select class="form-select" id="school"  th:field="*{schoolId}">
                 <option value="">School</option>
                 <option th:each="school : ${schools}" th:text="${school.name}" th:value="${school.id}"></option>
             </select>
