@@ -27,7 +27,7 @@ public class SchoolServiceImpl implements SchoolService {
     private final HeadmasterService headmasterService;
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<SchoolOutDto> getSchools() {
         return mapperConfig.mapList(schoolRepository.findAll(), SchoolOutDto.class);
     }

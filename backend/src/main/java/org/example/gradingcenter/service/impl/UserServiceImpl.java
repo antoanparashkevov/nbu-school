@@ -2,17 +2,24 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
+import org.example.gradingcenter.data.dto.users.UserOutDto;
+import org.example.gradingcenter.data.entity.Role;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.User;
+import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.util.MapperUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserOutDto> getUsers() {
+        return userRepository.findAll().stream().map(MapperUtil::entityToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -70,6 +77,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long id) {
         userRepository.deleteById(id);
+    }
+
+    private final RoleRepository roleRepository;
+
+    @Override
+    public void addRoleToUser(Long userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Roles roleEnum = Roles.valueOf(roleName.toUpperCase());
+
+        Role role = roleRepository.findByAuthority(roleEnum)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        if (!user.getAuthorities().contains(role)) {
+            user.getAuthorities().add(role);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void removeRoleFromUser(Long userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Roles roleEnum = Roles.valueOf(roleName.toUpperCase());
+
+        Role role = roleRepository.findByAuthority(roleEnum)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        if (user.getAuthorities().contains(role)) {
+            user.getAuthorities().remove(role);
+            userRepository.save(user);
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import org.example.gradingcenter.service.UserService;
 import org.example.gradingcenter.util.RSAKeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -62,8 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/.well-known/**").permitAll(); // Chrome PWA probes
                     auth.requestMatchers("/error").permitAll(); // Spring’s error page
-                    auth.requestMatchers("/auth/**", "/css/**", "/js/**", "/assets/**")
-                            .permitAll();
+                    auth.requestMatchers("/auth/**", "/css/**", "/js/**", "/assets/**").permitAll();
                     auth.requestMatchers("/headmasters/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/grades/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
                     auth.requestMatchers("/schools/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());

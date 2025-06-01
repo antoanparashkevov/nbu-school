@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.users.HeadmasterDto;
+import org.example.gradingcenter.data.dto.users.HeadmasterInDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Headmaster;
@@ -20,8 +21,10 @@ import org.example.gradingcenter.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +64,6 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public HeadmasterDto createHeadmaster(Long userId) {
         Optional<Headmaster> existingHeadmaster = headmasterRepository.findById(userId);
@@ -71,6 +73,9 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
         User user = userService.fetchUser(userId);
         Role userRole = roleService.fetchRole(Roles.ROLE_HEADMASTER);
+        if (user.getAuthorities() == null){
+            user.setAuthorities(new HashSet<>());
+        }
         user.getAuthorities().add(userRole);
         userRepository.save(user);
         entityManager.createNativeQuery(

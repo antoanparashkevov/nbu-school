@@ -1,6 +1,7 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.dto.users.HeadmasterInDto;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

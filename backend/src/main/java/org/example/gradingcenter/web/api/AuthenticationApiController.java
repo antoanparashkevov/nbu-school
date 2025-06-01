@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.example.gradingcenter.util.DataUtil.getDefaultMessages;
 
 @RestController
-@RequestMapping("/api/auth")
+//@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthenticationApiController {
@@ -34,31 +34,31 @@ public class AuthenticationApiController {
 //        }
 //    }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto register, BindingResult errors) {
-        try {
-            if (errors.hasErrors()) {
-                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
-            }
-            if (!register.getPassword().equals(register.getConfirmPassword())) {
-                errors.rejectValue("confirmPassword", "password_error",
-                        "Password confirmation should match password.");
-                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
-            }
-            return ResponseEntity.ok().body(authenticationService.register(register));
-        } catch (DuplicateEntityException | EntityNotFoundException ex) {
-            String[] exceptionMessage = ex.getMessage().split(" ");
-            String fieldName = exceptionMessage[2];
-            errors.rejectValue(fieldName, "user_error", ex.getMessage());
-            return ResponseEntity.badRequest().body(getDefaultMessages(errors));
-        }
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<?> handleLogout() {
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDto register, BindingResult errors) {
+//        try {
+//            if (errors.hasErrors()) {
+//                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
+//            }
+//            if (!register.getPassword().equals(register.getConfirmPassword())) {
+//                errors.rejectValue("confirmPassword", "password_error",
+//                        "Password confirmation should match password.");
+//                return ResponseEntity.badRequest().body(getDefaultMessages(errors));
+//            }
+//            return ResponseEntity.ok().body(authenticationService.register(register));
+//        } catch (DuplicateEntityException | EntityNotFoundException ex) {
+//            String[] exceptionMessage = ex.getMessage().split(" ");
+//            String fieldName = exceptionMessage[2];
+//            errors.rejectValue(fieldName, "user_error", ex.getMessage());
+//            return ResponseEntity.badRequest().body(getDefaultMessages(errors));
+//        }
+//    }
+//
+//    @GetMapping("/logout")
+//    public ResponseEntity<?> handleLogout() {
+//        SecurityContextHolder.clearContext();
+//        return ResponseEntity.ok().build();
+//    }
 
 }
 

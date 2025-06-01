@@ -1,9 +1,11 @@
 package org.example.gradingcenter.web.view.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.example.gradingcenter.data.entity.enums.Roles;
 
 @EqualsAndHashCode
 @Getter
@@ -36,4 +38,10 @@ public class SignupViewModel {
             message = "Password must be at least 8 chars long, contain uppercase, lowercase, digit, and special character."
     )
     private String confirmPassword;
+
+    @NotBlank
+    private String role;
+
+    private Long schoolId;
+
 }
