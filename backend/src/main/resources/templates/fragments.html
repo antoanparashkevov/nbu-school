@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<header data-bs-theme="dark" th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:if="${user != null}" th:href="@{/}" th:text="${user.username}"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/students}">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/teachers}">Teachers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/headmasters}">Headmasters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/schools}">Schools</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/parents}">Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER', 'ROLE_STUDENT')"
+                           class="nav-link active" aria-current="page" href="#" th:href="@{/programs}">Programs</a>
+                    </li>
+                </ul>
+                <form sec:authorize="isAuthenticated()" class="d-flex" role="search" th:action="@{/logout}"
+                      method="post">
+                    <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger" type="submit">Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+</html>
