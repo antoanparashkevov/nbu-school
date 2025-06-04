@@ -93,8 +93,8 @@ public class ModelMapperConfig {
         modelMapper.addMappings(new PropertyMap<Student, StudentOutDto>() {
             @Override
             protected void configure() {
-                map(source.getGrade().getName(), destination.getGradeName());
-                map(source.getGrade().getSchool().getName(), destination.getSchoolName());
+                map(source.getGrade(), destination.getGrade());
+                map(source.getGrade().getSchool(), destination.getSchool());
                 using(ENTITY_IDS_CONVERTER).map(source.getParents(), destination.getParentIds());
             }
         });

@@ -22,12 +22,12 @@ public class IndexController {
          */
         //UserOutDto user = authService.getLoggedInUser();
 
-        if (user == null) {
-            return "redirect:/auth/login"; // or throw unauthorized
-        }
-
-        // Pass the user to Thymeleaf
-        model.addAttribute("user", user);
+//        if (user == null) {
+//            return "redirect:/auth/login"; // or throw unauthorized
+//        }
+//
+//        // Pass the user to Thymeleaf
+//        model.addAttribute("user", user);
 
         return "index";
     }

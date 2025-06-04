@@ -24,15 +24,17 @@ public class GradingCenterApplication {
     @Bean
     public CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncode) {
         return args -> {
-            if (roleRepository.findByAuthority(Roles.ROLE_ADMIN).isPresent()) return;
-            Role adminRole = roleRepository.save(new Role(Roles.ROLE_ADMIN));
-            roleRepository.save(new Role(Roles.ROLE_HEADMASTER));
-            roleRepository.save(new Role(Roles.ROLE_PARENT));
-            roleRepository.save(new Role(Roles.ROLE_STUDENT));
-            roleRepository.save(new Role(Roles.ROLE_TEACHER));
+            if (roleRepository.findByAuthority(Roles.ROLE_ADMIN).isEmpty()) {
+                roleRepository.save(new Role(Roles.ROLE_ADMIN));
+                roleRepository.save(new Role(Roles.ROLE_HEADMASTER));
+                roleRepository.save(new Role(Roles.ROLE_PARENT));
+                roleRepository.save(new Role(Roles.ROLE_STUDENT));
+                roleRepository.save(new Role(Roles.ROLE_TEACHER));
+            }
 
+            if (userRepository.findByUsername("admin").isPresent()) return;
             Set<Role> roles = new HashSet<>();
-            roles.add(adminRole);
+            roles.add(roleRepository.findByAuthority(Roles.ROLE_ADMIN).get());
             User admin = new User("adminFirstName", "adminLastName",
                     "admin", passwordEncode.encode("nimda5555"), roles);
 

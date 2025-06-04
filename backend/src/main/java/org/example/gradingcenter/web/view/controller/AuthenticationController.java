@@ -38,12 +38,16 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public String register(@Valid @ModelAttribute("signupViewModel") SignupViewModel signupViewModel,
-                           BindingResult errors) {
+                           BindingResult errors, Model model) {
         try {
             if (errors.hasErrors()) {
+                model.addAttribute("roles", Roles.valuesWithoutAdmin());
+                model.addAttribute("schools", schoolService.getSchools());
                 return "sign-up";
             }
             if (!signupViewModel.getPassword().equals(signupViewModel.getConfirmPassword())) {
+                model.addAttribute("roles", Roles.valuesWithoutAdmin());
+                model.addAttribute("schools", schoolService.getSchools());
                 errors.rejectValue("confirmPassword", "password_error",
                         "Password confirmation should match password.");
                 return "sign-up";
@@ -53,6 +57,8 @@ public class AuthenticationController {
             authenticationService.register(userRegisterDto);
             return "redirect:/";
         } catch (DuplicateEntityException | EntityNotFoundException ex) {
+            model.addAttribute("roles", Roles.valuesWithoutAdmin());
+            model.addAttribute("schools", schoolService.getSchools());
             String[] exceptionMessage = ex.getMessage().split(" ");
             String fieldName = exceptionMessage[2];
             errors.rejectValue(fieldName, "user_error", ex.getMessage());

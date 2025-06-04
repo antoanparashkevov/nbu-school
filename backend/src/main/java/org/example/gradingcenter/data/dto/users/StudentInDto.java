@@ -15,7 +15,7 @@ public class StudentInDto {
 
     private Long userId;
 
-    private Integer absences;
+    private int absences;
 
     private List<Long> parentIds;
 

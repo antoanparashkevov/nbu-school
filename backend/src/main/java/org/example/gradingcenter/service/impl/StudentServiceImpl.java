@@ -25,6 +25,7 @@ import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.service.UserService;
 import org.example.gradingcenter.util.DataUtil;
+import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -54,20 +55,17 @@ public class StudentServiceImpl implements StudentService {
 
     private final GradeRepository gradeRepository;
 
-    private final ModelMapperConfig mapperConfig;
-
     @Override
     public List<StudentOutDto> getStudents() {
-        return mapperConfig.mapList(studentRepository.findAll(), StudentOutDto.class);
+        return MapperUtil.entityToDtoAsList(studentRepository.findAll());
     }
 
     @Override
     public StudentOutDto getStudent(long id) {
-        return mapperConfig.getModelMapper().map(fetchStudent(id), StudentOutDto.class);
+        return MapperUtil.entityToDto(fetchStudent(id));
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public StudentOutDto createStudent(StudentInDto student) {
         Optional<Student> existingStudent = studentRepository.findById(student.getUserId());
@@ -106,9 +104,14 @@ public class StudentServiceImpl implements StudentService {
     private StudentOutDto modifyUser(StudentInDto student, Student studentToUpdate) {
         studentToUpdate.setAbsences(student.getAbsences());
         setParents(studentToUpdate, student.getParentIds());
-        studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
+        if (DataUtil.isNotEmpty(student.getGradeName())){
+            studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
+        }
+        if (DataUtil.isNotEmpty(student.getGradeName())){
+            studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
+        }
         studentToUpdate.setSchool(DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class));
-        return mapperConfig.getModelMapper().map(studentRepository.save(studentToUpdate), StudentOutDto.class);
+        return MapperUtil.entityToDto(studentRepository.save(studentToUpdate));
     }
 
     @Override
