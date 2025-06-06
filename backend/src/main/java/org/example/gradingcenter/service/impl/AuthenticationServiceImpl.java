@@ -13,6 +13,7 @@ import org.example.gradingcenter.data.repository.RoleRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.AuthorizationFailureException;
 import org.example.gradingcenter.service.*;
+import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserLoginResponseDto register(UserRegisterDto userRegisterDto) {
-        User user = mapperConfig.getModelMapper().map(userRegisterDto, User.class);
+        User user = MapperUtil.dtoToEntity(userRegisterDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userService.createUser(user);
         assignRole(savedUser.getId(), userRegisterDto.getRole(), userRegisterDto.getSchoolId());

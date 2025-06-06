@@ -1,7 +1,9 @@
 package org.example.gradingcenter.web.view.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.repository.specification.StudentSpecification;
+import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.util.MapperUtil;
 import org.example.gradingcenter.web.view.model.StudentSearchViewModel;
@@ -9,11 +11,9 @@ import org.example.gradingcenter.web.view.model.StudentViewModel;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,36 +22,38 @@ public class StudentController {
 
     private final StudentService studentService;
 
+    private final SchoolService schoolService;
+
     @GetMapping
     public String getStudents(Model model) {
-        List<StudentViewModel> students = studentService.getStudents().stream().map(MapperUtil::dtoToViewModel).collect(Collectors.toList());
+        List<StudentViewModel> students = MapperUtil.dtoToViewModelAsList(studentService.getStudents());
         model.addAttribute("students", students);
-        model.addAttribute("searchStudents", new StudentSearchViewModel());
-        //model.addAttribute("gps", mapperUtil.mapList(doctorService.getGps(), DoctorViewModel.class));
+        model.addAttribute("searchStudent", new StudentSearchViewModel());
+        model.addAttribute("schools", MapperUtil.mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
         return "students";
     }
 
-//    @PostMapping("/filter")
-//    public String getFilteredPatients(Model model, @ModelAttribute("searchPatient") PatientSearchModel searchPatient) {
-//        Specification<Patient> spec = PatientSpecification.filterRecords(
-//                searchPatient.getFirstName(),
-//                searchPatient.getLastName(),
-//                searchPatient.getEgn(),
-//                searchPatient.getGpId(),
-//                localDateToDate(searchPatient.getLastPaidMedicalFrom()),
-//                localDateToDate(searchPatient.getLastPaidMedicalTo()));
-//        List<PatientViewModel> patients = mapperUtil.mapList(patientService.filterPatients(spec), PatientViewModel.class);
-//        model.addAttribute("patients", patients);
+    @PostMapping("/filter")
+    public String getFilteredStudents(Model model, @ModelAttribute("searchStudent") StudentSearchViewModel searchStudent) {
+        Specification<Student> spec = StudentSpecification.filterRecords(
+                searchStudent.getFirstName(),
+                searchStudent.getLastName(),
+                searchStudent.getGradeName(),
+                searchStudent.getSchoolId(),
+                searchStudent.getAbsencesFrom(),
+                searchStudent.getAbsencesTo());
+        List<StudentViewModel> students = MapperUtil.dtoToViewModelAsList(studentService.filterStudents(spec));
+        model.addAttribute("students", students);
+        model.addAttribute("schools", MapperUtil.mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
+        return "students";
+    }
+
+//    @GetMapping("/edit-student/{id}")
+//    public String showEditstudentForm(Model model, @PathVariable Long id) {
+//        model.addAttribute("student", mapperUtil.getModelMapper()
+//                .map(studentService.getstudent(id), studentViewModel.class));
 //        model.addAttribute("gps", mapperUtil.mapList(doctorService.getGps(), DoctorViewModel.class));
-//        return "patients";
-//    }
-//
-//    @GetMapping("/edit-patient/{id}")
-//    public String showEditPatientForm(Model model, @PathVariable Long id) {
-//        model.addAttribute("patient", mapperUtil.getModelMapper()
-//                .map(patientService.getPatient(id), PatientViewModel.class));
-//        model.addAttribute("gps", mapperUtil.mapList(doctorService.getGps(), DoctorViewModel.class));
-//        return "patient-profile";
+//        return "student-profile";
 //    }
 //
 //    @PostMapping("/update/{id}")

@@ -13,6 +13,8 @@ import lombok.*;
 @ToString
 public class SchoolViewModel {
 
+    private long id;
+
     @NotBlank(message = "School name is required")
     @Size(min = 3, max = 50, message = "School name must be between 3 and 50 characters")
     private String name;

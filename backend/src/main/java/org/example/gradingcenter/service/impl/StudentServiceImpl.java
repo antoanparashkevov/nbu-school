@@ -26,6 +26,7 @@ import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.service.UserService;
 import org.example.gradingcenter.util.DataUtil;
 import org.example.gradingcenter.util.MapperUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +65,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentOutDto getStudent(long id) {
         return MapperUtil.entityToDto(fetchStudent(id));
+    }
+
+    @Override
+    public List<StudentOutDto> filterStudents(Specification<Student> specification) {
+        return MapperUtil.entityToDtoAsList(studentRepository.findAll(specification));
     }
 
     @Override
