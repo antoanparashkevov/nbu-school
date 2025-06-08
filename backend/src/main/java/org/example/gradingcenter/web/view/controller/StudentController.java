@@ -48,13 +48,12 @@ public class StudentController {
         return "students";
     }
 
-//    @GetMapping("/edit-student/{id}")
-//    public String showEditstudentForm(Model model, @PathVariable Long id) {
-//        model.addAttribute("student", mapperUtil.getModelMapper()
-//                .map(studentService.getstudent(id), studentViewModel.class));
-//        model.addAttribute("gps", mapperUtil.mapList(doctorService.getGps(), DoctorViewModel.class));
-//        return "student-profile";
-//    }
+    @GetMapping("/edit-student/{id}")
+    public String showEditStudentForm(Model model, @PathVariable Long id) {
+        model.addAttribute("student", MapperUtil.dtoToViewModel(studentService.getStudent(id)));
+        model.addAttribute("schools", MapperUtil.mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
+        return "student-profile";
+    }
 //
 //    @PostMapping("/update/{id}")
 //    public String updatePatient(@PathVariable Long id,

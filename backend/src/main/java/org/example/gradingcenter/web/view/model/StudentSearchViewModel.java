@@ -19,9 +19,9 @@ public class StudentSearchViewModel {
 
     private String lastName;
 
-    private int absencesFrom;
+    private Integer absencesFrom;
 
-    private int absencesTo;
+    private Integer absencesTo;
 
     private String gradeName;
 
