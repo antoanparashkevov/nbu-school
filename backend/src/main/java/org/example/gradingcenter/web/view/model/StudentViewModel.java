@@ -25,12 +25,12 @@ public class StudentViewModel {
 
     private String lastName;
 
-    private int absences;
+    private Integer absences;
 
-    private List<Long> parentIds;
+    private String gradeName;
 
-    private GradeDto grade;
+    private Long schoolId;
 
-    private SchoolDto school;
+    private String schoolName;
 
 }

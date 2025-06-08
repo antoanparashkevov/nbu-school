@@ -9,6 +9,8 @@ public interface ParentService {
 
     List<ParentDto> getParents();
 
+    List<ParentDto> getParents(List<Long> parentIds);
+
     ParentDto getParent(long id);
 
     Parent fetchParent(long id);

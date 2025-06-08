@@ -47,6 +47,11 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
+    public List<ParentDto> getParents(List<Long> parentIds) {
+        return mapperConfig.mapList(parentRepository.findAllById(parentIds), ParentDto.class);
+    }
+
+    @Override
     public ParentDto getParent(long id) {
         return mapperConfig.getModelMapper().map(fetchParent(id), ParentDto.class);
     }
@@ -59,7 +64,7 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public ParentDto createParent(Long userId) {
         Optional<Parent> existingParent = parentRepository.findById(userId);

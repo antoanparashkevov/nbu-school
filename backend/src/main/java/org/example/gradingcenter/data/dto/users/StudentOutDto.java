@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
+import org.example.gradingcenter.data.dto.SchoolOutDto;
 
 import java.util.List;
 
@@ -23,6 +24,6 @@ public class StudentOutDto extends UserOutDto {
 
     private GradeDto grade;
 
-    private SchoolDto school;
+    private SchoolOutDto school;
 
 }

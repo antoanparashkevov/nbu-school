@@ -1,8 +1,10 @@
 package org.example.gradingcenter.web.view.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.dto.users.StudentOutDto;
 import org.example.gradingcenter.data.entity.users.Student;
 import org.example.gradingcenter.data.repository.specification.StudentSpecification;
+import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.util.MapperUtil;
@@ -21,6 +23,8 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+
+    private final ParentService parentService;
 
     private final SchoolService schoolService;
 
@@ -50,11 +54,13 @@ public class StudentController {
 
     @GetMapping("/edit-student/{id}")
     public String showEditStudentForm(Model model, @PathVariable Long id) {
-        model.addAttribute("student", MapperUtil.dtoToViewModel(studentService.getStudent(id)));
+        StudentOutDto student = studentService.getStudent(id);
+        model.addAttribute("student", MapperUtil.dtoToViewModel(student));
         model.addAttribute("schools", MapperUtil.mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
+        model.addAttribute("parents", MapperUtil.mapList(parentService.getParents(student.getParentIds()), MapperUtil::dtoToViewModel));
         return "student-profile";
     }
-//
+
 //    @PostMapping("/update/{id}")
 //    public String updatePatient(@PathVariable Long id,
 //                                @Valid @ModelAttribute("patient") PatientViewModel patientViewModel,
@@ -68,11 +74,11 @@ public class StudentController {
 //                .map(patientViewModel, PatientDto.class), id);
 //        return "redirect:/patients";
 //    }
-//
-//    @GetMapping("/delete/{id}")
-//    public String deletePatient(@PathVariable Long id) {
-//        patientService.deletePatient(id);
-//        return "redirect:/patients";
-//    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return "redirect:/students";
+    }
 
 }

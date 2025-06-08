@@ -87,13 +87,13 @@
                              alt="Custom Icon"/>
                         <div class="card-body">
                             <h5 class="card-title" th:text="${student.firstName} + ' ' + ${student.lastName}"></h5>
-                            <h5 class="card-title" th:text="${student.grade?.name ?: 'NA'}"></h5>
+                            <h5 class="card-title" th:text="${student?.gradeName ?: 'NA'}"></h5>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a type="button" class="btn btn-sm btn-outline-secondary"
                                        th:href="@{'/students/edit-student/'+${student.id}}">Edit</a>
                                 </div>
-                                <small class="text-body-secondary" th:text="${student.school.name}">9
+                                <small class="text-body-secondary" th:text="${student.schoolName}">9
                                     visits</small>
                             </div>
                         </div>
