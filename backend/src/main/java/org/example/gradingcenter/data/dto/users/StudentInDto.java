@@ -15,6 +15,10 @@ public class StudentInDto {
 
     private Long userId;
 
+    private String firstName;
+
+    private String lastName;
+
     private int absences;
 
     private List<Long> parentIds;

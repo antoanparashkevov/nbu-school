@@ -3,6 +3,7 @@ package org.example.gradingcenter.service;
 import org.example.gradingcenter.data.dto.users.StudentInDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
 import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface StudentService {
 
     StudentOutDto createStudent(StudentInDto student);
 
-    StudentOutDto updateStudent(StudentInDto student, long id);
+    StudentOutDto updateStudent(StudentInDto student, long id) throws EntityNotFoundException;
 
     void deleteStudent(long id);
     

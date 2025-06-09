@@ -33,4 +33,6 @@ public class StudentViewModel {
 
     private String schoolName;
 
+    private List<Long> parentIds;
+
 }

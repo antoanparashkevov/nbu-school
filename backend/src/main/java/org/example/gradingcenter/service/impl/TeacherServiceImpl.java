@@ -55,7 +55,6 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     @Transactional
     public TeacherDto createTeacher(TeacherInDto teacher) {
         Optional<Teacher> existingTeacher = teacherRepository.findById(teacher.getUserId());

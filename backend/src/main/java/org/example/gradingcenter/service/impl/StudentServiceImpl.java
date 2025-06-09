@@ -95,29 +95,28 @@ public class StudentServiceImpl implements StudentService {
                 .executeUpdate();
         entityManager.flush();
         entityManager.clear();
-
-        Student newStudent = fetchStudent(student.getUserId());
-        return modifyUser(student, newStudent);
+        return MapperUtil.entityToDto(studentRepository.save(fetchStudent(student.getUserId())));
     }
 
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public StudentOutDto updateStudent(StudentInDto student, long id) {
+    public StudentOutDto updateStudent(StudentInDto student, long id) throws EntityNotFoundException {
         return this.studentRepository.findById(id)
                 .map(studentToUpdate -> modifyUser(student, studentToUpdate))
                 .orElseThrow(() -> new EntityNotFoundException(Student.class, "id", id));
     }
 
     private StudentOutDto modifyUser(StudentInDto student, Student studentToUpdate) {
+        studentToUpdate.setFirstName(student.getFirstName());
+        studentToUpdate.setLastName(student.getLastName());
         studentToUpdate.setAbsences(student.getAbsences());
         setParents(studentToUpdate, student.getParentIds());
         if (DataUtil.isNotEmpty(student.getGradeName())){
             studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
         }
-        if (DataUtil.isNotEmpty(student.getGradeName())){
-            studentToUpdate.setGrade(fetchGrade(student.getGradeName(), student.getSchoolId()));
+        if (student.getSchoolId() != null){
+            studentToUpdate.setSchool(DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class));
         }
-        studentToUpdate.setSchool(DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class));
         return MapperUtil.entityToDto(studentRepository.save(studentToUpdate));
     }
 

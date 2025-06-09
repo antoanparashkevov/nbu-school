@@ -3,10 +3,7 @@ package org.example.gradingcenter.util;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.SchoolOutDto;
-import org.example.gradingcenter.data.dto.users.ParentDto;
-import org.example.gradingcenter.data.dto.users.StudentOutDto;
-import org.example.gradingcenter.data.dto.users.UserOutDto;
-import org.example.gradingcenter.data.dto.users.UserRegisterDto;
+import org.example.gradingcenter.data.dto.users.*;
 import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
@@ -26,6 +23,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MapperUtil {
+
+    public static <D, V> List<V> mapList(List<D> source, Function<? super D, ? extends V> mapper) {
+        return source.stream()
+                .map(mapper)
+                .collect(Collectors.toList());
+    }
 
     public static UserRegisterDto viewModelToDto(SignupViewModel signupViewModel) {
         UserRegisterDto userRegisterDto = new UserRegisterDto();
@@ -90,27 +93,27 @@ public class MapperUtil {
         return schoolDto;
     }
 
-    public static List<StudentViewModel> dtoToViewModelAsList(List<StudentOutDto> studentOutDtoList) {
-        return studentOutDtoList.stream().map(MapperUtil::dtoToViewModel).collect(Collectors.toList());
-    }
-
-    public static <D, V> List<V> mapList(List<D> source,
-                                         Function<? super D, ? extends V> mapper) {
-        return source.stream()
-                .map(mapper)
-                .collect(Collectors.toList());
-    }
-
     public static StudentViewModel dtoToViewModel(StudentOutDto studentOutDto) {
         StudentViewModel studentViewModel = new StudentViewModel();
         studentViewModel.setId(studentOutDto.getId());
         studentViewModel.setFirstName(studentOutDto.getFirstName());
         studentViewModel.setLastName(studentOutDto.getLastName());
         studentViewModel.setAbsences(studentOutDto.getAbsences());
+        studentViewModel.setParentIds(studentOutDto.getParentIds());
         studentViewModel.setGradeName(Optional.ofNullable(studentOutDto.getGrade()).map(GradeDto::getName).orElse(null));
         studentViewModel.setSchoolId(Optional.ofNullable(studentOutDto.getSchool()).map(SchoolOutDto::getId).orElse(null));
         studentViewModel.setSchoolName(Optional.ofNullable(studentOutDto.getSchool()).map(SchoolOutDto::getName).orElse(null));
         return studentViewModel;
+    }
+
+    public static StudentInDto dtoToViewModel(StudentViewModel studentViewModel) {
+        StudentInDto studentInDto = new StudentInDto();
+        studentInDto.setFirstName(studentViewModel.getFirstName());
+        studentInDto.setLastName(studentViewModel.getLastName());
+        studentInDto.setAbsences(studentViewModel.getAbsences());
+        studentInDto.setGradeName(studentViewModel.getGradeName());
+        studentInDto.setSchoolId(studentViewModel.getSchoolId());
+        return studentInDto;
     }
 
     public static SchoolViewModel dtoToViewModel(SchoolOutDto schoolOutDto) {
