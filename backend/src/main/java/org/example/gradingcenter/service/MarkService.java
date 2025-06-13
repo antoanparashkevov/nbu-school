@@ -9,6 +9,8 @@ public interface MarkService {
     
     List<MarkOutDto> getMarks();
 
+    List<MarkOutDto> getMarks(Long studentId);
+
     MarkOutDto getMark(long id);
 
     MarkOutDto createMark(MarkDto mark);

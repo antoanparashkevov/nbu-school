@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MarkOutDto extends MarkDto{
+public class MarkOutDto extends MarkDto {
 
     private Long id;
 

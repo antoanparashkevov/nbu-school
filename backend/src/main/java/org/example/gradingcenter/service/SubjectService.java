@@ -9,6 +9,8 @@ public interface SubjectService {
 
     List<SubjectOutDto> getSubjects();
 
+    List<SubjectOutDto> getSubjects(String gradeName, Long schoolId);
+
     SubjectOutDto getSubject(long id);
 
     SubjectOutDto createSubject(SubjectDto Subject);

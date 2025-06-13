@@ -42,6 +42,11 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
+    public List<MarkOutDto> getMarks(Long studentId) {
+        return mapperConfig.mapList(markRepository.findAllByStudent_Id(studentId), MarkOutDto.class);
+    }
+
+    @Override
     public MarkOutDto getMark(long id) {
         return mapperConfig.getModelMapper().map(fetchObjectFromDb(markRepository, id, Mark.class), MarkOutDto.class);
     }

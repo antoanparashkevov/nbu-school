@@ -1,20 +1,27 @@
 package org.example.gradingcenter.util;
 
 import org.example.gradingcenter.data.dto.GradeDto;
+import org.example.gradingcenter.data.dto.MarkOutDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.SchoolOutDto;
+import org.example.gradingcenter.data.dto.SubjectDto;
+import org.example.gradingcenter.data.dto.SubjectOutDto;
 import org.example.gradingcenter.data.dto.users.*;
 import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Student;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.entity.users.User;
+import org.example.gradingcenter.web.view.model.MarkViewModel;
 import org.example.gradingcenter.web.view.model.ParentViewModel;
 import org.example.gradingcenter.web.view.model.SchoolViewModel;
 import org.example.gradingcenter.web.view.model.SignupViewModel;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.web.view.model.StudentViewModel;
+import org.example.gradingcenter.web.view.model.SubjectViewModel;
+import org.example.gradingcenter.web.view.model.TeacherViewModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -128,6 +135,31 @@ public class MapperUtil {
         parentViewModel.setFirstName(parentDto.getFirstName());
         parentViewModel.setLastName(parentDto.getLastName());
         return parentViewModel;
+    }
+
+    public static TeacherViewModel dtoToViewModel(TeacherDto teacherDto) {
+        TeacherViewModel teacherViewModel = new TeacherViewModel();
+        teacherViewModel.setId(teacherDto.getId());
+        teacherViewModel.setFirstName(teacherDto.getFirstName());
+        teacherViewModel.setLastName(teacherDto.getLastName());
+        return teacherViewModel;
+    }
+
+    public static SubjectViewModel dtoToViewModel(SubjectOutDto subjectOutDto) {
+        SubjectViewModel subjectViewModel = new SubjectViewModel();
+        subjectViewModel.setId(subjectOutDto.getId());
+        subjectViewModel.setName(subjectOutDto.getName().toString());
+        return subjectViewModel;
+    }
+
+    public static MarkViewModel dtoToViewModel(MarkOutDto markOutDto) {
+        MarkViewModel markViewModel = new MarkViewModel();
+        markViewModel.setId(markOutDto.getId());
+        markViewModel.setMark(markOutDto.getMark());
+        markViewModel.setStudentId(markOutDto.getStudentId());
+        markViewModel.setTeacherId(markOutDto.getTeacherId());
+        markViewModel.setSubjectName(markOutDto.getSubjectName());
+        return markViewModel;
     }
 
     public static User dtoToEntity(UserRegisterDto userRegisterDto) {

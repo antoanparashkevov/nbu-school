@@ -42,6 +42,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<SubjectOutDto> getSubjects(String gradeName, Long schoolId) {
+        return mapperConfig.mapList(subjectRepository.findAllByGrade_NameAndSchool_Id(gradeName, schoolId), SubjectOutDto.class);
+    }
+
+    @Override
     public SubjectOutDto getSubject(long id) {
         return mapperConfig.getModelMapper().map(fetchObjectFromDb(subjectRepository, id, Subject.class), SubjectOutDto.class);
     }
