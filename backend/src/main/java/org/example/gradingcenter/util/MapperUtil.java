@@ -1,6 +1,7 @@
 package org.example.gradingcenter.util;
 
 import org.example.gradingcenter.data.dto.GradeDto;
+import org.example.gradingcenter.data.dto.MarkDto;
 import org.example.gradingcenter.data.dto.MarkOutDto;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.SchoolOutDto;
@@ -24,10 +25,13 @@ import org.example.gradingcenter.web.view.model.SubjectViewModel;
 import org.example.gradingcenter.web.view.model.TeacherViewModel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 public class MapperUtil {
 
@@ -35,6 +39,10 @@ public class MapperUtil {
         return source.stream()
                 .map(mapper)
                 .collect(Collectors.toList());
+    }
+
+    public static List<StudentOutDto> entityToDtoAsList(List<Student> students) {
+        return students.stream().map(MapperUtil::entityToDto).collect(Collectors.toList());
     }
 
     public static UserRegisterDto viewModelToDto(SignupViewModel signupViewModel) {
@@ -49,8 +57,13 @@ public class MapperUtil {
         return userRegisterDto;
     }
 
-    public static List<StudentOutDto> entityToDtoAsList(List<Student> students) {
-        return students.stream().map(MapperUtil::entityToDto).collect(Collectors.toList());
+    public static MarkDto viewModelToDto(MarkViewModel markViewModel) {
+        MarkDto markDto = new MarkDto();
+        markDto.setMark(markViewModel.getMark());
+        markDto.setStudentId(markViewModel.getStudentId());
+        markDto.setSubjectName(markViewModel.getSubjectName());
+        markDto.setTeacherId(markViewModel.getTeacherId());
+        return markDto;
     }
 
     public static UserOutDto entityToDto(User user) {
@@ -152,12 +165,14 @@ public class MapperUtil {
         return subjectViewModel;
     }
 
-    public static MarkViewModel dtoToViewModel(MarkOutDto markOutDto) {
+    public static MarkViewModel dtoToViewModel(MarkOutDto markOutDto, List<TeacherDto> teacherDtoList) {
+        Map<Long, TeacherDto> idToTeacherMap = teacherDtoList.stream().collect(toMap(TeacherDto::getId, Function.identity()));
         MarkViewModel markViewModel = new MarkViewModel();
         markViewModel.setId(markOutDto.getId());
         markViewModel.setMark(markOutDto.getMark());
         markViewModel.setStudentId(markOutDto.getStudentId());
         markViewModel.setTeacherId(markOutDto.getTeacherId());
+        markViewModel.setTeacherName(idToTeacherMap.get(markOutDto.getTeacherId()).getFirstName() + " " + idToTeacherMap.get(markOutDto.getTeacherId()).getLastName());
         markViewModel.setSubjectName(markOutDto.getSubjectName());
         return markViewModel;
     }

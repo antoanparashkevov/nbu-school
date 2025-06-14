@@ -24,9 +24,7 @@ public class MarkViewModel {
 
     private String subjectName;
 
-    private String teacherFirstName;
-
-    private String teacherLastName;
+    private String teacherName;
 
     private Long teacherId;
 

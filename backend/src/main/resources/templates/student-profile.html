@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Patient Profile</title>
+    <title>Student Profile</title>
 
     <link rel="canonical" th:href="@{https://getbootstrap.com/docs/5.3/examples/checkout/}">
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/@docsearch/css@3}">
@@ -87,14 +87,8 @@
 
                     <hr class="my-4">
 
-                    <!-- ===================================================== -->
-                    <!-- STUDENT GRADES TABLE — place between the two <hr> tags -->
-                    <!-- ===================================================== -->
-
                     <div class="mt-4">
-
-                        <!-- Existing grades -->
-                        <h4 class="mb-3">Grades</h4>
+                        <h4 class="mb-3">Marks</h4>
                         <table class="table table-dark table-striped align-middle">
                             <thead>
                             <tr>
@@ -105,14 +99,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- 'marks' comes from the model (List<Mark>) -->
                             <tr th:each="mark : ${marks}">
                                 <td th:text="${mark.subjectName}">Mathematics</td>
                                 <td th:text="${#numbers.formatDecimal(mark.mark,1,'POINT',2,'POINT')}">5.50</td>
                                 <td th:text="${mark.teacherName != null ? mark.teacherName  : '—'}">Mr Smith</td>
                                 <td class="text-end">
                                     <a class="btn btn-sm btn-outline-danger"
-                                       th:href="@{/marks/delete/{id}(id=${mark.id})}">
+                                       th:href="@{/{studentId}/marks/delete/{markId}(studentId=${student.id}, markId=${mark.id})}">
                                         Delete
                                     </a>
                                 </td>
@@ -120,51 +113,51 @@
                             </tbody>
                         </table>
 
-                        <!-- Add a new grade -->
-                        <h5 class="mt-4">Add grade</h5>
+                        <h5 class="mt-4">Add mark</h5>
                         <form class="row g-3" th:action="@{/marks/add}" th:object="${newMark}" method="post">
 
-                        <input type="hidden" th:field="*{studentId}" th:value="${student.id}"/>
+                            <input type="hidden" th:field="*{studentId}" th:value="${student.id}"/>
 
-                        <div class="col-md-3">
-                            <label class="form-label">Subject</label>
-                            <select class="form-select" th:field="*{subjectId}" required>
-                                <option value="">Choose…</option>
-                                <option th:each="sub : ${subjects}"
-                                        th:value="${sub.id}"
-                                        th:text="${sub.name}">
-                                    Mathematics
-                                </option>
-                            </select>
-                        </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Subject</label>
+                                <select class="form-select" th:field="*{subjectId}" required>
+                                    <option value="">Choose…</option>
+                                    <option th:each="sub : ${subjects}"
+                                            th:value="${sub.id}"
+                                            th:text="${sub.name}">
+                                        Mathematics
+                                    </option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-2">
-                            <label class="form-label">Mark</label>
-                            <input type="number" step="0.01" min="2" max="6"
-                                   class="form-control" th:field="*{mark}" required/>
-                        </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Mark</label>
+                                <input type="number" step="0.01" min="2" max="6"
+                                       class="form-control" th:field="*{mark}" required/>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label class="form-label">Teacher</label>
-                            <select class="form-select" th:field="*{teacherId}">
-                                <option value="">—</option>
-                                <option th:each="t : ${teachers}"
-                                        th:value="${t.id}"
-                                        th:text="${t.firstName + ' ' + t.lastName}">
-                                    Mr Smith
-                                </option>
-                            </select>
-                        </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Teacher</label>
+                                <select class="form-select" th:field="*{teacherId}">
+                                    <option value="">—</option>
+                                    <option th:each="t : ${teachers}"
+                                            th:value="${t.id}"
+                                            th:text="${t.firstName + ' ' + t.lastName}">
+                                        Mr Smith
+                                    </option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-success w-100">Add</button>
-                        </div>
-                </form>
-            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-success w-100">Add</button>
+                            </div>
+                        </form>
+                    </div>
 
-            <hr class="my-4">
+                    <hr class="my-4">
 
                     <button class="w-100 btn btn-primary btn-lg" type="submit">Save</button>
+                    <br>
                 </form>
                 <br>
                 <a class="w-100 btn btn-danger btn-lg" th:href="@{/students/delete/{id}(id=${student.id})}">Delete</a>
