@@ -11,7 +11,7 @@ import static org.example.gradingcenter.util.DataUtil.getDefaultMessages;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/students")
+@RequestMapping("/api/students")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class StudentApiController {
 

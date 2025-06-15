@@ -66,20 +66,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserOutDto getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
             User loggedInUser = (User) authentication.getPrincipal();
-
-            UserOutDto userOutDto = new UserOutDto();
-            userOutDto.setId(loggedInUser.getId());
-            userOutDto.setFirstName(loggedInUser.getFirstName());
-            userOutDto.setLastName(loggedInUser.getLastName());
-            userOutDto.setUsername(loggedInUser.getUsername());
-            userOutDto.setAuthorities(loggedInUser.getAuthorities().stream().map(Role::getAuthority).collect(Collectors.toSet()));
-
-            return userOutDto;
+            return MapperUtil.entityToDto(loggedInUser);
         }
-
         throw new AuthorizationFailureException("There is not a logged in user");
     }
 

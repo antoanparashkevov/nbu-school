@@ -65,7 +65,7 @@ public class MarkServiceImpl implements MarkService {
         String studentGrade = gradeRepository.findGradeNameByStudentId(mark.getStudentId());
         Long schoolId = schoolRepository.findSchoolIdByStudentId(mark.getStudentId());
         Subject subject = subjectRepository.findByNameAndGrade_NameAndSchool_IdAndTeacher_Id(
-                        SubjectName.valueOf(mark.getSubjectName()),
+                        SubjectName.valueOf(mark.getSubjectName().toUpperCase()),
                         studentGrade,
                         schoolId,
                         mark.getTeacherId())

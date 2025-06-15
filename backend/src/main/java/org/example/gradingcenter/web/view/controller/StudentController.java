@@ -4,20 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.MarkDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
-import org.example.gradingcenter.data.entity.enums.SubjectName;
 import org.example.gradingcenter.data.entity.users.Student;
-import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.specification.StudentSpecification;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
-import org.example.gradingcenter.service.MarkService;
-import org.example.gradingcenter.service.ParentService;
-import org.example.gradingcenter.service.SchoolService;
-import org.example.gradingcenter.service.StudentService;
-import org.example.gradingcenter.service.SubjectService;
-import org.example.gradingcenter.service.TeacherService;
+import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.MapperUtil;
 import org.example.gradingcenter.web.view.model.MarkViewModel;
-import org.example.gradingcenter.web.view.model.ParentViewModel;
 import org.example.gradingcenter.web.view.model.StudentSearchViewModel;
 import org.example.gradingcenter.web.view.model.StudentViewModel;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 import static org.example.gradingcenter.util.MapperUtil.dtoToViewModel;
 import static org.example.gradingcenter.util.MapperUtil.mapList;
@@ -57,12 +48,12 @@ public class StudentController {
     @PostMapping("/filter")
     public String getFilteredStudents(Model model, @ModelAttribute("searchStudent") StudentSearchViewModel searchStudent) {
         Specification<Student> spec = StudentSpecification.filterRecords(
-            searchStudent.getFirstName(),
-            searchStudent.getLastName(),
-            searchStudent.getGradeName(),
-            searchStudent.getSchoolId(),
-            searchStudent.getAbsencesFrom(),
-            searchStudent.getAbsencesTo());
+                searchStudent.getFirstName(),
+                searchStudent.getLastName(),
+                searchStudent.getGradeName(),
+                searchStudent.getSchoolId(),
+                searchStudent.getAbsencesFrom(),
+                searchStudent.getAbsencesTo());
         List<StudentViewModel> students = mapList(studentService.filterStudents(spec), MapperUtil::dtoToViewModel);
         model.addAttribute("students", students);
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
@@ -81,9 +72,9 @@ public class StudentController {
 
     @PostMapping("/update/{id}")
     public String updateStudent(@PathVariable Long id,
-        @Valid @ModelAttribute("student") StudentViewModel student,
-        BindingResult bindingResult,
-        Model model) {
+                                @Valid @ModelAttribute("student") StudentViewModel student,
+                                BindingResult bindingResult,
+                                Model model) {
         if (bindingResult.hasErrors()) {
             addNeededAttributesForEditStudentProfileView(model, student);
             return "student-profile";
@@ -98,17 +89,21 @@ public class StudentController {
         return "redirect:/students";
     }
 
-    @PostMapping("/marks/add")
-    public String addMark(@ModelAttribute("newMark") @Valid MarkViewModel markViewModel, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "redirect:/students/profile/" + markViewModel.getStudentId();
-        markService.createMark(viewModelToDto(markViewModel));
-        return "redirect:/students/profile/" + markViewModel.getStudentId();
+    @PostMapping("/{studentId}/marks/add")
+    public String addMark(@PathVariable Long studentId,
+                          @ModelAttribute("newMark") @Valid MarkViewModel markViewModel,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "redirect:/students/edit-student/" + studentId;
+        MarkDto markDto = viewModelToDto(markViewModel);
+        markDto.setStudentId(studentId);
+        markService.createMark(markDto);
+        return "redirect:/students/edit-student/" + studentId;
     }
 
     @GetMapping("/{studentId}/marks/delete/{markId}")
     public String deleteMark(@PathVariable Long studentId, @PathVariable Long markId) {
         markService.deleteMark(markId);
-        return "redirect:/students/profile/" + studentId;
+        return "redirect:/students/edit-student/" + studentId;
     }
 
     @GetMapping("/delete/{id}")

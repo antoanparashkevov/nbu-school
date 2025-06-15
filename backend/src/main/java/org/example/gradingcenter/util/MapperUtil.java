@@ -3,9 +3,7 @@ package org.example.gradingcenter.util;
 import org.example.gradingcenter.data.dto.GradeDto;
 import org.example.gradingcenter.data.dto.MarkDto;
 import org.example.gradingcenter.data.dto.MarkOutDto;
-import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.SchoolOutDto;
-import org.example.gradingcenter.data.dto.SubjectDto;
 import org.example.gradingcenter.data.dto.SubjectOutDto;
 import org.example.gradingcenter.data.dto.users.*;
 import org.example.gradingcenter.data.entity.BaseEntity;
@@ -13,7 +11,6 @@ import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Student;
-import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.web.view.model.MarkViewModel;
 import org.example.gradingcenter.web.view.model.ParentViewModel;
@@ -27,7 +24,6 @@ import org.example.gradingcenter.web.view.model.TeacherViewModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -60,7 +56,6 @@ public class MapperUtil {
     public static MarkDto viewModelToDto(MarkViewModel markViewModel) {
         MarkDto markDto = new MarkDto();
         markDto.setMark(markViewModel.getMark());
-        markDto.setStudentId(markViewModel.getStudentId());
         markDto.setSubjectName(markViewModel.getSubjectName());
         markDto.setTeacherId(markViewModel.getTeacherId());
         return markDto;
@@ -170,7 +165,6 @@ public class MapperUtil {
         MarkViewModel markViewModel = new MarkViewModel();
         markViewModel.setId(markOutDto.getId());
         markViewModel.setMark(markOutDto.getMark());
-        markViewModel.setStudentId(markOutDto.getStudentId());
         markViewModel.setTeacherId(markOutDto.getTeacherId());
         markViewModel.setTeacherName(idToTeacherMap.get(markOutDto.getTeacherId()).getFirstName() + " " + idToTeacherMap.get(markOutDto.getTeacherId()).getLastName());
         markViewModel.setSubjectName(markOutDto.getSubjectName());

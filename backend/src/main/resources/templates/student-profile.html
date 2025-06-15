@@ -38,6 +38,71 @@
 
         <div class="row g-5">
             <div class="col-md-7 col-lg-8">
+
+                <div class="mt-4">
+                    <h4 class="mb-3">Marks</h4>
+                    <table class="table table-dark table-striped align-middle">
+                        <thead>
+                        <tr>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Mark</th>
+                            <th scope="col">Teacher</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="mark : ${marks}">
+                            <td th:text="${mark.subjectName}">Mathematics</td>
+                            <td th:text="${#numbers.formatDecimal(mark.mark,1,'POINT',2,'POINT')}">5.50</td>
+                            <td th:text="${mark.teacherName != null ? mark.teacherName  : '—'}">Mr Smith</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-danger"
+                                   th:href="@{/students/{studentId}/marks/delete/{markId}(studentId=${student.id}, markId=${mark.id})}">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h5 class="mt-4">Add mark</h5>
+                    <form class="row g-3" th:action="@{/students/{studentId}/marks/add(studentId=${student.id})}" th:object="${newMark}" method="post">
+                        <div class="col-md-3">
+                            <label class="form-label">Subject</label>
+                            <select class="form-select" th:field="*{subjectName}" required>
+                                <option value="">Choose…</option>
+                                <option th:each="sub : ${subjects}"
+                                        th:value="${sub.name}"
+                                        th:text="${sub.name}">
+                                    Mathematics
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Mark</label>
+                            <input type="number" step="0.01" min="2" max="6"
+                                   class="form-control" th:field="*{mark}" required/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Teacher</label>
+                            <select class="form-select" th:field="*{teacherId}">
+                                <option value="">—</option>
+                                <option th:each="t : ${teachers}"
+                                        th:value="${t.id}"
+                                        th:text="${t.firstName + ' ' + t.lastName}">
+                                    Mr Smith
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-success w-100">Add</button>
+                        </div>
+                    </form>
+                </div>
+                <hr class="my-4">
                 <h4 class="mb-3">Student Information</h4>
                 <form class="needs-validation" novalidate th:action="@{/students/update/{id}(id=${student.id})}" th:object="${student}" method="post">
                     <div class="row g-3">
@@ -83,75 +148,6 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <div class="mt-4">
-                        <h4 class="mb-3">Marks</h4>
-                        <table class="table table-dark table-striped align-middle">
-                            <thead>
-                            <tr>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Mark</th>
-                                <th scope="col">Teacher</th>
-                                <th scope="col" class="text-end">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="mark : ${marks}">
-                                <td th:text="${mark.subjectName}">Mathematics</td>
-                                <td th:text="${#numbers.formatDecimal(mark.mark,1,'POINT',2,'POINT')}">5.50</td>
-                                <td th:text="${mark.teacherName != null ? mark.teacherName  : '—'}">Mr Smith</td>
-                                <td class="text-end">
-                                    <a class="btn btn-sm btn-outline-danger"
-                                       th:href="@{/{studentId}/marks/delete/{markId}(studentId=${student.id}, markId=${mark.id})}">
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <h5 class="mt-4">Add mark</h5>
-                        <form class="row g-3" th:action="@{/marks/add}" th:object="${newMark}" method="post">
-
-                            <input type="hidden" th:field="*{studentId}" th:value="${student.id}"/>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Subject</label>
-                                <select class="form-select" th:field="*{subjectId}" required>
-                                    <option value="">Choose…</option>
-                                    <option th:each="sub : ${subjects}"
-                                            th:value="${sub.id}"
-                                            th:text="${sub.name}">
-                                        Mathematics
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label class="form-label">Mark</label>
-                                <input type="number" step="0.01" min="2" max="6"
-                                       class="form-control" th:field="*{mark}" required/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Teacher</label>
-                                <select class="form-select" th:field="*{teacherId}">
-                                    <option value="">—</option>
-                                    <option th:each="t : ${teachers}"
-                                            th:value="${t.id}"
-                                            th:text="${t.firstName + ' ' + t.lastName}">
-                                        Mr Smith
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button type="submit" class="btn btn-success w-100">Add</button>
-                            </div>
-                        </form>
                     </div>
 
                     <hr class="my-4">
