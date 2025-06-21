@@ -17,7 +17,6 @@ import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -49,6 +48,11 @@ public class ParentServiceImpl implements ParentService {
     @Override
     public List<ParentDto> getParents(List<Long> parentIds) {
         return mapperConfig.mapList(parentRepository.findAllById(parentIds), ParentDto.class);
+    }
+
+    @Override
+    public List<ParentDto> getParents(Long childId) {
+        return mapperConfig.mapList(parentRepository.findAllByChildrenId(childId), ParentDto.class);
     }
 
     @Override

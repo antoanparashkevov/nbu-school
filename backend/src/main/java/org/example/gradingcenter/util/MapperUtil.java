@@ -21,6 +21,7 @@ import org.example.gradingcenter.web.view.model.StudentViewModel;
 import org.example.gradingcenter.web.view.model.SubjectViewModel;
 import org.example.gradingcenter.web.view.model.TeacherViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +33,9 @@ import static java.util.stream.Collectors.toMap;
 public class MapperUtil {
 
     public static <D, V> List<V> mapList(List<D> source, Function<? super D, ? extends V> mapper) {
+        if (source == null || source.isEmpty()) {
+            return new ArrayList<>();
+        }
         return source.stream()
                 .map(mapper)
                 .collect(Collectors.toList());

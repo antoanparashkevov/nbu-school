@@ -77,6 +77,7 @@ public class StudentController {
                                 Model model) {
         if (bindingResult.hasErrors()) {
             addNeededAttributesForEditStudentProfileView(model, student);
+            model.addAttribute("newMark", new MarkViewModel());
             return "student-profile";
         }
         try {
@@ -84,6 +85,7 @@ public class StudentController {
         } catch (EntityNotFoundException ex) {
             bindingResult.rejectValue("gradeName", "record_error", ex.getMessage());
             addNeededAttributesForEditStudentProfileView(model, student);
+            model.addAttribute("newMark", new MarkViewModel());
             return "student-profile";
         }
         return "redirect:/students";
@@ -92,8 +94,15 @@ public class StudentController {
     @PostMapping("/{studentId}/marks/add")
     public String addMark(@PathVariable Long studentId,
                           @ModelAttribute("newMark") @Valid MarkViewModel markViewModel,
-                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "redirect:/students/edit-student/" + studentId;
+                          BindingResult bindingResult,
+                          Model model) {
+        if (bindingResult.hasErrors()){
+            StudentOutDto student = studentService.getStudent(studentId);
+            StudentViewModel studentViewModel = dtoToViewModel(student);
+            model.addAttribute("student", studentViewModel);
+            addNeededAttributesForEditStudentProfileView(model, studentViewModel);
+            return "student-profile";
+        }
         MarkDto markDto = viewModelToDto(markViewModel);
         markDto.setStudentId(studentId);
         markService.createMark(markDto);
@@ -114,7 +123,7 @@ public class StudentController {
 
     private void addNeededAttributesForEditStudentProfileView(Model model, StudentViewModel student) {
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
-        model.addAttribute("parents", mapList(parentService.getParents(student.getParentIds()), MapperUtil::dtoToViewModel));
+        model.addAttribute("parents", mapList(parentService.getParents(student.getId()), MapperUtil::dtoToViewModel));
         model.addAttribute("subjects", mapList(subjectService.getSubjects(student.getGradeName(), student.getSchoolId()), MapperUtil::dtoToViewModel));
         model.addAttribute("teachers", mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel));
         model.addAttribute("marks", mapList(markService.getMarks(student.getId()), markOutDto -> dtoToViewModel(markOutDto, teacherService.getTeachers())));
