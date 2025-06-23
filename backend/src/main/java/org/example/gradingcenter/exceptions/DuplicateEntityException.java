@@ -1,15 +1,23 @@
 package org.example.gradingcenter.exceptions;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class DuplicateEntityException extends RuntimeException {
 
     public <T> DuplicateEntityException(Class<T> type, List<String> attributes, List<Object> values) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Object value : values) {
-            stringBuilder.append(value.toString()).append(", ");
+
+        if (attributes.size() != values.size()) {
+            throw new IllegalArgumentException(
+                    "attributes and values lists must have the same length");
         }
-        throw new DuplicateEntityException(type.getSimpleName(), String.join(",", attributes), stringBuilder);
+
+        String message = IntStream.range(0, attributes.size())
+                .mapToObj(i -> attributes.get(i) + "=" + values.get(i))
+                .collect(Collectors.joining(", "));
+
+        throw new DuplicateEntityException(type.getSimpleName() + " with " + message + " already exists");
     }
 
     public <T> DuplicateEntityException(Class<T> type, String attribute, Object value) {

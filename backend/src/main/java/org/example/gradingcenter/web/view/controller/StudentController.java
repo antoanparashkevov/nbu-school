@@ -81,14 +81,14 @@ public class StudentController {
             return "student-profile";
         }
         try {
-            studentService.updateStudent(dtoToViewModel(student), id);
+            studentService.updateStudent(MapperUtil.viewModelToDto(student), id);
         } catch (EntityNotFoundException ex) {
-            bindingResult.rejectValue("gradeName", "record_error", ex.getMessage());
+            bindingResult.rejectValue("gradeName", "student_error", ex.getMessage());
             addNeededAttributesForEditStudentProfileView(model, student);
             model.addAttribute("newMark", new MarkViewModel());
             return "student-profile";
         }
-        return "redirect:/students";
+        return "redirect:/students/edit-student/" + id;
     }
 
     @PostMapping("/{studentId}/marks/add")

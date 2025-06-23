@@ -19,4 +19,6 @@ public class SubjectViewModel {
 
     private String name;
 
+    private String gradeName;
+
 }

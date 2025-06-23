@@ -75,7 +75,7 @@ public class ModelMapperConfig {
         modelMapper.addMappings(new PropertyMap<Teacher, TeacherDto>() {
             @Override
             protected void configure() {
-                map(source.getSchool().getId(), destination.getSchoolId());
+                //map(source.getSchool().getId(), destination.getSchoolId());
             }
         });
     }

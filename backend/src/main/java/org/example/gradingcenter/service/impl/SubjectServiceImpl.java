@@ -17,6 +17,7 @@ import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.SubjectService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,10 +53,16 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectOutDto createSubject(SubjectDto subject) {
-        if (subjectRepository.existsByNameAndGrade_NameAndSchool_Id(subject.getName(), subject.getGradeName(), subject.getSchoolId())) {
-            throw new DuplicateEntityException(Student.class, List.of("name", "grade", "schoolId"),
-                    List.of(subject.getName(), subject.getGradeName(), subject.getSchoolId()));
+    public List<SubjectOutDto> getSubjectsByTeacher(long teacherId) {
+        return mapperConfig.mapList(subjectRepository.findAllByTeacher_Id(teacherId), SubjectOutDto.class);
+    }
+
+    @Override
+    @Transactional
+    public SubjectOutDto createSubject(SubjectDto subject) throws DuplicateEntityException {
+        if (subjectRepository.existsByNameAndGrade_NameAndSchool_IdAndTeacher_Id(subject.getName(), subject.getGradeName(), subject.getSchoolId(), subject.getTeacherId())) {
+            throw new DuplicateEntityException(Subject.class, List.of("name", "grade", "schoolId", "teacherId"),
+                    List.of(subject.getName(), subject.getGradeName(), subject.getSchoolId(), subject.getTeacherId()));
         }
         Subject newSubject = new Subject();
         newSubject.setName(subject.getName());

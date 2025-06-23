@@ -1,8 +1,19 @@
 package org.example.gradingcenter.data.entity.enums;
 
 public enum SubjectName {
+
     MATHEMATICS("Mathematics"),
+    LITERATURE("Literature"),
+    GEOGRAPHY("Geography"),
+    PHILOSOPHY("Philosophy"),
+    DRAWING("Drawing"),
+    MUSIC("Music"),
+    BULGARIAN("Bulgarian"),
+    RUSSIAN("Russian"),
+    GERMAN("German"),
     ENGLISH("English"),
+    FRENCH("French"),
+    SPANISH("Spanish"),
     BIOLOGY("Biology"),
     CHEMISTRY("Chemistry"),
     PHYSICS("Physics");
@@ -17,4 +28,5 @@ public enum SubjectName {
     public String toString() {
         return capitalizedName;
     }
+
 }

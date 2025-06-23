@@ -69,7 +69,7 @@ public class MarkServiceImpl implements MarkService {
                         studentGrade,
                         schoolId,
                         mark.getTeacherId())
-                .orElseThrow(() -> new EntityNotFoundException("nqma takyv predmet"));
+                .orElseThrow(() -> new EntityNotFoundException("No such subject exits"));
         markToCreate.setSubject(subject);
     }
 

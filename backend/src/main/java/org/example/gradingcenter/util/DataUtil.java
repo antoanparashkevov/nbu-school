@@ -63,7 +63,7 @@ public class DataUtil {
      * @param value the double value to round
      * @return the rounded double value
      */
-    public static double getPrecision2Double(double value){
+    public static double getPrecision2Double(double value) {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();

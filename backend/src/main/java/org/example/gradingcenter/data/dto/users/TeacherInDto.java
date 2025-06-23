@@ -15,4 +15,12 @@ public class TeacherInDto {
 
     private Long schoolId;
 
+    private String firstName;
+
+    private String lastName;
+
+    public TeacherInDto(Long userId, Long schoolId) {
+        this.schoolId = schoolId;
+        this.userId = userId;
+    }
 }

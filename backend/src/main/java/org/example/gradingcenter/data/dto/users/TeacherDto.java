@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.gradingcenter.data.dto.SchoolOutDto;
 
 @Getter
 @Setter
@@ -11,6 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TeacherDto extends UserOutDto {
 
-    private Long schoolId;
+    private SchoolOutDto school;
 
 }

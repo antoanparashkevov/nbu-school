@@ -15,10 +15,14 @@ import lombok.ToString;
 @ToString
 public class TeacherViewModel {
 
-    private long id;
+    private Long id;
 
     private String firstName;
 
     private String lastName;
+
+    private Long schoolId;
+
+    private String schoolName;
 
 }

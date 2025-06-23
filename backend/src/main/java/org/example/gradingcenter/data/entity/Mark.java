@@ -31,7 +31,7 @@ public class Mark extends BaseEntity {
     @ManyToOne(optional = false)
     private Student student;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private Teacher teacher;
 
 }
