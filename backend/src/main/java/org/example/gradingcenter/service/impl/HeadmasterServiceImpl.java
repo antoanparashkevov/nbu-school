@@ -4,27 +4,34 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.configuration.ModelMapperConfig;
-import org.example.gradingcenter.data.dto.users.HeadmasterDto;
-import org.example.gradingcenter.data.dto.users.HeadmasterInDto;
+import org.example.gradingcenter.data.dto.users.EmployeeDto;
+import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.data.entity.Role;
+import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
+import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.example.gradingcenter.exceptions.InvalidBusinessDataException;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.util.MapperUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import static org.example.gradingcenter.util.DataUtil.fetchObjectFromDb;
+import static org.example.gradingcenter.util.MapperUtil.entityToDto;
+import static org.example.gradingcenter.util.MapperUtil.mapList;
 
 @Service
 @RequiredArgsConstructor
@@ -38,21 +45,26 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
     private final RoleService roleService;
 
-    private final ModelMapperConfig mapperConfig;
+    private final SchoolRepository schoolRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<HeadmasterDto> getHeadmasters() {
-        return mapperConfig.mapList(headmasterRepository.findAll(), HeadmasterDto.class);
+    public List<EmployeeDto> getHeadmasters() {
+        return mapList(headmasterRepository.findAll(), MapperUtil::entityToDto);
+    }
+
+    @Override
+    public List<EmployeeDto> filterHeadmasters(Specification<Headmaster> specification) {
+        return mapList(headmasterRepository.findAll(specification), MapperUtil::entityToDto);
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public HeadmasterDto getHeadmaster(long id) {
-        return mapperConfig.getModelMapper().map(fetchHeadmaster(id), HeadmasterDto.class);
+    public EmployeeDto getHeadmaster(long id) {
+        return entityToDto(fetchHeadmaster(id));
     }
 
     @Override
@@ -65,7 +77,8 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
     @Override
     @Transactional
-    public HeadmasterDto createHeadmaster(Long userId) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public EmployeeDto createHeadmaster(Long userId) {
         Optional<Headmaster> existingHeadmaster = headmasterRepository.findById(userId);
         if (existingHeadmaster.isPresent()) {
             throw new DuplicateEntityException(Headmaster.class, "id", userId);
@@ -84,7 +97,26 @@ public class HeadmasterServiceImpl implements HeadmasterService {
                 .executeUpdate();
         entityManager.flush();
         entityManager.clear();
-        return mapperConfig.getModelMapper().map(headmasterRepository.findById(userId), HeadmasterDto.class);
+        return entityToDto(fetchHeadmaster(userId));
+    }
+
+    @Override
+    public EmployeeDto updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException {
+        Headmaster headmaster = this.headmasterRepository.findById(id)
+                .map((headmasterToUpdate) -> {
+                    headmasterToUpdate.setFirstName(headmasterInDto.getFirstName());
+                    headmasterToUpdate.setLastName(headmasterInDto.getLastName());
+                    if (headmasterInDto.getSchoolId() != null) {
+                        School school = fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class);
+                        if (school.getHeadmaster() != null && school.getHeadmaster().getId() != headmasterToUpdate.getId()) {
+                            throw new InvalidBusinessDataException("School " + school.getName() + " already has a headmaster");
+                        }
+                        headmasterToUpdate.setSchool(fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class));
+                    }
+                    return headmasterRepository.save(headmasterToUpdate);
+                })
+                .orElseThrow(() -> new EntityNotFoundException(Headmaster.class, "id", id));
+        return entityToDto(headmaster);
     }
 
     @Override

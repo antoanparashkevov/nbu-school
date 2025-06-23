@@ -4,8 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.dto.users.TeacherDto;
-import org.example.gradingcenter.data.dto.users.TeacherInDto;
+import org.example.gradingcenter.data.dto.users.EmployeeDto;
+import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
@@ -19,7 +19,6 @@ import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.TeacherService;
 import org.example.gradingcenter.service.UserService;
-import org.example.gradingcenter.util.DataUtil;
 import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,24 +51,24 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
-    public List<TeacherDto> getTeachers() {
+    public List<EmployeeDto> getTeachers() {
         return mapList(teacherRepository.findAll(), MapperUtil::entityToDto);
     }
 
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
-    public TeacherDto getTeacher(long id) {
+    public EmployeeDto getTeacher(long id) {
         return entityToDto(fetchObjectFromDb(teacherRepository, id, Teacher.class));
     }
 
     @Override
-    public List<TeacherDto> filterTeachers(Specification<Teacher> specification) {
+    public List<EmployeeDto> filterTeachers(Specification<Teacher> specification) {
         return mapList(teacherRepository.findAll(specification), MapperUtil::entityToDto);
     }
 
     @Override
     @Transactional
-    public TeacherDto createTeacher(TeacherInDto teacher) {
+    public EmployeeDto createTeacher(EmployeeInDto teacher) {
         Optional<Teacher> existingTeacher = teacherRepository.findById(teacher.getUserId());
         if (existingTeacher.isPresent()) {
             throw new DuplicateEntityException(Teacher.class, "id", teacher.getUserId());
@@ -94,13 +93,13 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
-    public TeacherDto updateTeacher(TeacherInDto teacherInDto, long id) throws EntityNotFoundException {
+    public EmployeeDto updateTeacher(EmployeeInDto employeeInDto, long id) throws EntityNotFoundException {
         Teacher teacher = this.teacherRepository.findById(id)
                 .map((studentToUpdate) -> {
-                    studentToUpdate.setFirstName(teacherInDto.getFirstName());
-                    studentToUpdate.setLastName(teacherInDto.getLastName());
-                    if (teacherInDto.getSchoolId() != null) {
-                        studentToUpdate.setSchool(fetchObjectFromDb(schoolRepository, teacherInDto.getSchoolId(), School.class));
+                    studentToUpdate.setFirstName(employeeInDto.getFirstName());
+                    studentToUpdate.setLastName(employeeInDto.getLastName());
+                    if (employeeInDto.getSchoolId() != null) {
+                        studentToUpdate.setSchool(fetchObjectFromDb(schoolRepository, employeeInDto.getSchoolId(), School.class));
                     }
                     return teacherRepository.save(studentToUpdate);
                 })

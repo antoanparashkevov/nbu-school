@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherSearchViewModel {
+public class EmployeeSearchViewModel {
 
     private String firstName;
 

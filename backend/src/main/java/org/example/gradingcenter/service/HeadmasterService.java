@@ -1,17 +1,24 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.dto.users.HeadmasterDto;
+import org.example.gradingcenter.data.dto.users.EmployeeDto;
+import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
 public interface HeadmasterService {
 
-    List<HeadmasterDto> getHeadmasters();
+    List<EmployeeDto> getHeadmasters();
 
-    HeadmasterDto getHeadmaster(long id);
+    List<EmployeeDto> filterHeadmasters(Specification<Headmaster> specification);
 
-    HeadmasterDto createHeadmaster(Long userId);
+    EmployeeDto getHeadmaster(long id);
+
+    EmployeeDto createHeadmaster(Long userId);
+
+    EmployeeDto updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException;
 
     void deleteHeadmaster(long id);
 

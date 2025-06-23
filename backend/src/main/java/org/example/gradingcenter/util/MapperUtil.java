@@ -7,17 +7,9 @@ import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.enums.SubjectName;
-import org.example.gradingcenter.data.entity.users.Student;
-import org.example.gradingcenter.data.entity.users.Teacher;
-import org.example.gradingcenter.data.entity.users.User;
-import org.example.gradingcenter.web.view.model.MarkViewModel;
-import org.example.gradingcenter.web.view.model.ParentViewModel;
-import org.example.gradingcenter.web.view.model.SchoolViewModel;
-import org.example.gradingcenter.web.view.model.SignupViewModel;
+import org.example.gradingcenter.data.entity.users.*;
+import org.example.gradingcenter.web.view.model.*;
 import org.example.gradingcenter.data.entity.Role;
-import org.example.gradingcenter.web.view.model.StudentViewModel;
-import org.example.gradingcenter.web.view.model.SubjectViewModel;
-import org.example.gradingcenter.web.view.model.TeacherViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +65,12 @@ public class MapperUtil {
         return studentInDto;
     }
 
-    public static TeacherInDto viewModelToDto(TeacherViewModel teacherViewModel) {
-        TeacherInDto teacherInDto = new TeacherInDto();
-        teacherInDto.setFirstName(teacherViewModel.getFirstName());
-        teacherInDto.setLastName(teacherViewModel.getLastName());
-        teacherInDto.setSchoolId(teacherViewModel.getSchoolId());
-        return teacherInDto;
+    public static EmployeeInDto viewModelToDto(EmployeeViewModel employeeViewModel) {
+        EmployeeInDto employeeInDto = new EmployeeInDto();
+        employeeInDto.setFirstName(employeeViewModel.getFirstName());
+        employeeInDto.setLastName(employeeViewModel.getLastName());
+        employeeInDto.setSchoolId(employeeViewModel.getSchoolId());
+        return employeeInDto;
     }
 
     public static SubjectDto viewModelToDto(SubjectViewModel subjectViewModel) {
@@ -112,15 +104,23 @@ public class MapperUtil {
         return studentOut;
     }
 
-    public static TeacherDto entityToDto(Teacher teacher) {
-        TeacherDto teacherDto = new TeacherDto();
-        teacherDto.setId(teacher.getId());
-        teacherDto.setFirstName(teacher.getFirstName());
-        teacherDto.setLastName(teacher.getLastName());
-        teacherDto.setUsername(teacher.getUsername());
-        teacherDto.setAuthorities(teacher.getAuthorities().stream().map(Role::getAuthorityName).collect(Collectors.toSet()));
-        teacherDto.setSchool(entityToDto(teacher.getSchool()));
-        return teacherDto;
+    public static EmployeeDto entityToDto(Teacher teacher) {
+        return employeeDto(teacher);
+    }
+
+    public static EmployeeDto entityToDto(Headmaster headmaster) {
+        return employeeDto(headmaster);
+    }
+
+    private static <E extends Employee> EmployeeDto employeeDto(E employee) {
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(employee.getId());
+        employeeDto.setFirstName(employee.getFirstName());
+        employeeDto.setLastName(employee.getLastName());
+        employeeDto.setUsername(employee.getUsername());
+        employeeDto.setAuthorities(employee.getAuthorities().stream().map(Role::getAuthorityName).collect(Collectors.toSet()));
+        employeeDto.setSchool(entityToDto(employee.getSchool()));
+        return employeeDto;
     }
 
     public static GradeDto entityToDto(Grade grade) {
@@ -173,14 +173,14 @@ public class MapperUtil {
         return parentViewModel;
     }
 
-    public static TeacherViewModel dtoToViewModel(TeacherDto teacherDto) {
-        TeacherViewModel teacherViewModel = new TeacherViewModel();
-        teacherViewModel.setId(teacherDto.getId());
-        teacherViewModel.setFirstName(teacherDto.getFirstName());
-        teacherViewModel.setLastName(teacherDto.getLastName());
-        teacherViewModel.setSchoolId(teacherDto.getSchool().getId());
-        teacherViewModel.setSchoolName(teacherDto.getSchool().getName());
-        return teacherViewModel;
+    public static EmployeeViewModel dtoToViewModel(EmployeeDto employeeDto) {
+        EmployeeViewModel employeeViewModel = new EmployeeViewModel();
+        employeeViewModel.setId(employeeDto.getId());
+        employeeViewModel.setFirstName(employeeDto.getFirstName());
+        employeeViewModel.setLastName(employeeDto.getLastName());
+        employeeViewModel.setSchoolId(employeeDto.getSchool().getId());
+        employeeViewModel.setSchoolName(employeeDto.getSchool().getName());
+        return employeeViewModel;
     }
 
     public static SubjectViewModel dtoToViewModel(SubjectOutDto subjectOutDto) {
@@ -191,8 +191,8 @@ public class MapperUtil {
         return subjectViewModel;
     }
 
-    public static MarkViewModel dtoToViewModel(MarkOutDto markOutDto, List<TeacherDto> teacherDtoList) {
-        Map<Long, TeacherDto> idToTeacherMap = teacherDtoList.stream().collect(toMap(TeacherDto::getId, Function.identity()));
+    public static MarkViewModel dtoToViewModel(MarkOutDto markOutDto, List<EmployeeDto> employeeDtoList) {
+        Map<Long, EmployeeDto> idToTeacherMap = employeeDtoList.stream().collect(toMap(EmployeeDto::getId, Function.identity()));
         MarkViewModel markViewModel = new MarkViewModel();
         markViewModel.setId(markOutDto.getId());
         markViewModel.setMark(markOutDto.getMark());

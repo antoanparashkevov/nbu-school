@@ -9,10 +9,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HeadmasterInDto {
+public class EmployeeInDto {
 
     private Long userId;
 
     private Long schoolId;
 
+    private String firstName;
+
+    private String lastName;
+
+    public EmployeeInDto(Long userId, Long schoolId) {
+        this.schoolId = schoolId;
+        this.userId = userId;
+    }
 }

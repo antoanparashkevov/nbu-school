@@ -1,7 +1,7 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.dto.users.TeacherInDto;
+import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.service.TeacherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,7 +28,7 @@ public class TeacherApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTeacher(@RequestBody TeacherInDto teacher, BindingResult result) {
+    public ResponseEntity<?> createTeacher(@RequestBody EmployeeInDto teacher, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(getDefaultMessages(result));
         }

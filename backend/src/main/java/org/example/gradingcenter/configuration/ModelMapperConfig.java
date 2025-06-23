@@ -5,7 +5,7 @@ import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.users.HeadmasterDto;
 import org.example.gradingcenter.data.dto.users.ParentDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
-import org.example.gradingcenter.data.dto.users.TeacherDto;
+import org.example.gradingcenter.data.dto.users.EmployeeDto;
 import org.example.gradingcenter.data.entity.BaseEntity;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.Role;
@@ -42,12 +42,10 @@ public class ModelMapperConfig {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);
         addRoleMappings(modelMapper);
-        addHeadmasterMappings(modelMapper);
         addSchoolMappings(modelMapper);
         addGradeMappings(modelMapper);
         addStudentMappings(modelMapper);
         addParentMappings(modelMapper);
-        addTeacherMappings(modelMapper);
         return modelMapper;
     }
 
@@ -60,24 +58,6 @@ public class ModelMapperConfig {
 
     private static void addRoleMappings(ModelMapper modelMapper) {
         modelMapper.createTypeMap(Role.class, String.class).setConverter(ROLE_TO_STRING);
-    }
-
-    private static void addHeadmasterMappings(ModelMapper modelMapper) {
-        modelMapper.addMappings(new PropertyMap<Headmaster, HeadmasterDto>() {
-            @Override
-            protected void configure() {
-                map(source.getSchool().getId(), destination.getSchoolId());
-            }
-        });
-    }
-
-    private static void addTeacherMappings(ModelMapper modelMapper) {
-        modelMapper.addMappings(new PropertyMap<Teacher, TeacherDto>() {
-            @Override
-            protected void configure() {
-                //map(source.getSchool().getId(), destination.getSchoolId());
-            }
-        });
     }
 
     private static void addGradeMappings(ModelMapper modelMapper) {

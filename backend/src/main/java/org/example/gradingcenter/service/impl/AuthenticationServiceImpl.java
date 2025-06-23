@@ -3,14 +3,8 @@ package org.example.gradingcenter.service.impl;
 import lombok.AllArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.users.*;
-import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.enums.Roles;
-import org.example.gradingcenter.data.entity.users.Headmaster;
-import org.example.gradingcenter.data.entity.users.Student;
-import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.entity.users.User;
-import org.example.gradingcenter.data.repository.RoleRepository;
-import org.example.gradingcenter.data.repository.UserRepository;
 import org.example.gradingcenter.exceptions.AuthorizationFailureException;
 import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.MapperUtil;
@@ -21,8 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -76,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private void assignRole(Long userId, Roles roles, Long schoolId) {
         switch (roles) {
             case Roles.ROLE_TEACHER -> {
-                teacherService.createTeacher(new TeacherInDto(userId, schoolId));
+                teacherService.createTeacher(new EmployeeInDto(userId, schoolId));
             }
             case Roles.ROLE_PARENT -> {
                 parentService.createParent(userId);

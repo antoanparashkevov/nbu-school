@@ -1,16 +1,16 @@
 package org.example.gradingcenter.data.repository.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import org.example.gradingcenter.data.entity.users.Teacher;
+import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.util.DataUtil;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeacherSpecification {
+public class HeadmasterSpecification {
 
-    public static Specification<Teacher> filterRecords(String firstName, String lastName, Long schoolId) {
+    public static Specification<Headmaster> filterRecords(String firstName, String lastName, Long schoolId) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (DataUtil.isNotEmpty(firstName)) {

@@ -10,7 +10,7 @@ import org.example.gradingcenter.data.dto.SchoolOutDto;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherDto extends UserOutDto {
+public class EmployeeDto extends UserOutDto {
 
     private SchoolOutDto school;
 

@@ -1,14 +1,13 @@
 package org.example.gradingcenter.web.api;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.data.dto.users.HeadmasterInDto;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/headmasters")
+@RequestMapping("/headmasters/api")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class HeadmasterApiController {
 

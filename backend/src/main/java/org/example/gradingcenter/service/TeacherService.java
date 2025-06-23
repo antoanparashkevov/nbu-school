@@ -1,7 +1,7 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.dto.users.TeacherDto;
-import org.example.gradingcenter.data.dto.users.TeacherInDto;
+import org.example.gradingcenter.data.dto.users.EmployeeDto;
+import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface TeacherService {
     
-    List<TeacherDto> getTeachers();
+    List<EmployeeDto> getTeachers();
 
-    TeacherDto getTeacher(long id);
+    EmployeeDto getTeacher(long id);
 
-    List<TeacherDto> filterTeachers(Specification<Teacher> specification);
+    List<EmployeeDto> filterTeachers(Specification<Teacher> specification);
 
-    TeacherDto createTeacher(TeacherInDto teacher);
+    EmployeeDto createTeacher(EmployeeInDto teacher);
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
-    TeacherDto updateTeacher(TeacherInDto teacherInDto, long id) throws EntityNotFoundException;
+    EmployeeDto updateTeacher(EmployeeInDto employeeInDto, long id) throws EntityNotFoundException;
 
     void deleteTeacher(long id);
     

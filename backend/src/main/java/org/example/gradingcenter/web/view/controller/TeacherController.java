@@ -33,27 +33,27 @@ public class TeacherController {
 
     @GetMapping
     public String getTeachers(Model model) {
-        List<TeacherViewModel> teachers = mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel);
+        List<EmployeeViewModel> teachers = mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel);
         model.addAttribute("teachers", teachers);
-        model.addAttribute("searchTeacher", new TeacherSearchViewModel());
+        model.addAttribute("searchTeacher", new EmployeeSearchViewModel());
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
         return "teachers";
     }
 
     @PostMapping("/filter")
-    public String getFilteredStudents(Model model, @ModelAttribute("searchTeacher") TeacherSearchViewModel searchTeacher) {
+    public String getFilteredTeachers(Model model, @ModelAttribute("searchTeacher") EmployeeSearchViewModel searchTeacher) {
         Specification<Teacher> spec = TeacherSpecification.filterRecords(
                 searchTeacher.getFirstName(),
                 searchTeacher.getLastName(),
                 searchTeacher.getSchoolId());
-        List<TeacherViewModel> students = mapList(teacherService.filterTeachers(spec), MapperUtil::dtoToViewModel);
-        model.addAttribute("teachers", students);
+        List<EmployeeViewModel> teachers = mapList(teacherService.filterTeachers(spec), MapperUtil::dtoToViewModel);
+        model.addAttribute("teachers", teachers);
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
         return "teachers";
     }
 
     @GetMapping("/edit-teacher/{id}")
-    public String showEditStudentForm(Model model, @PathVariable Long id) {
+    public String showEditTeacherForm(Model model, @PathVariable Long id) {
         model.addAttribute("teacher", dtoToViewModel(teacherService.getTeacher(id)));
         model.addAttribute("newSubject", new SubjectViewModel());
         addNeededAttributesForEditTeacherProfileView(model, id);
@@ -62,7 +62,7 @@ public class TeacherController {
 
     @PostMapping("/update/{id}")
     public String updateTeacher(@PathVariable Long id,
-                                @Valid @ModelAttribute("teacher") TeacherViewModel teacher,
+                                @Valid @ModelAttribute("teacher") EmployeeViewModel teacher,
                                 BindingResult bindingResult,
                                 Model model) {
         if (bindingResult.hasErrors()) {
@@ -79,20 +79,20 @@ public class TeacherController {
                           @ModelAttribute("newSubject") @Valid SubjectViewModel subjectViewModel,
                           BindingResult bindingResult,
                           Model model) {
-        TeacherViewModel teacherViewModel = dtoToViewModel(teacherService.getTeacher(teacherId));
+        EmployeeViewModel employeeViewModel = dtoToViewModel(teacherService.getTeacher(teacherId));
         if (bindingResult.hasErrors()) {
-            model.addAttribute("teacher", teacherViewModel);
+            model.addAttribute("teacher", employeeViewModel);
             addNeededAttributesForEditTeacherProfileView(model, teacherId);
             return "teacher-profile";
         }
         SubjectDto subjectDto = viewModelToDto(subjectViewModel);
         subjectDto.setTeacherId(teacherId);
-        subjectDto.setSchoolId(teacherViewModel.getSchoolId());
+        subjectDto.setSchoolId(employeeViewModel.getSchoolId());
         try {
             subjectService.createSubject(subjectDto);
         } catch (DuplicateEntityException ex) {
             bindingResult.rejectValue("name", "record_error", ex.getMessage());
-            model.addAttribute("teacher", teacherViewModel);
+            model.addAttribute("teacher", employeeViewModel);
             addNeededAttributesForEditTeacherProfileView(model, teacherId);
             return "teacher-profile";
         }
