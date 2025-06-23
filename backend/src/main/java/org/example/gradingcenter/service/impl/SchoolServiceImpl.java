@@ -10,11 +10,15 @@ import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;
+import org.example.gradingcenter.util.MapperUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.example.gradingcenter.util.MapperUtil.mapList;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +40,11 @@ public class SchoolServiceImpl implements SchoolService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public SchoolOutDto getSchool(long id) {
         return mapperConfig.getModelMapper().map(fetchSchool(id), SchoolOutDto.class);
+    }
+
+    @Override
+    public List<SchoolOutDto> filterSchools(Specification<School> specification) {
+        return mapList(schoolRepository.findAll(specification), MapperUtil::entityToDto);
     }
 
     @Override

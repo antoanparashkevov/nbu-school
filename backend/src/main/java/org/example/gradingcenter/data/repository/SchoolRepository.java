@@ -2,12 +2,13 @@ package org.example.gradingcenter.data.repository;
 
 import org.example.gradingcenter.data.entity.School;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface SchoolRepository extends JpaRepository<School, Long> {
+public interface SchoolRepository extends JpaRepository<School, Long>, JpaSpecificationExecutor<School> {
 
     Optional<School> findByName(String name);
 

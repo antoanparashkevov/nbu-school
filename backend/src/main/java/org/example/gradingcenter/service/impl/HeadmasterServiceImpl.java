@@ -101,7 +101,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
-    public EmployeeDto updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException {
+    public void updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException {
         Headmaster headmaster = this.headmasterRepository.findById(id)
                 .map((headmasterToUpdate) -> {
                     headmasterToUpdate.setFirstName(headmasterInDto.getFirstName());
@@ -116,7 +116,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
                     return headmasterRepository.save(headmasterToUpdate);
                 })
                 .orElseThrow(() -> new EntityNotFoundException(Headmaster.class, "id", id));
-        return entityToDto(headmaster);
+        entityToDto(headmaster);
     }
 
     @Override

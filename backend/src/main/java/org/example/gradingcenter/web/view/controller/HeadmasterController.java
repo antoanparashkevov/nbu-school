@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.repository.specification.HeadmasterSpecification;
-import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.exceptions.InvalidBusinessDataException;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;

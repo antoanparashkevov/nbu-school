@@ -18,7 +18,7 @@ public interface HeadmasterService {
 
     EmployeeDto createHeadmaster(Long userId);
 
-    EmployeeDto updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException;
+    void updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException;
 
     void deleteHeadmaster(long id);
 
