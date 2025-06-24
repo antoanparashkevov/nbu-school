@@ -13,4 +13,8 @@ public class SchoolOutDto extends SchoolDto {
 
     private long id;
 
+    private String headmasterFirstName;
+
+    private String headmasterLastName;
+
 }

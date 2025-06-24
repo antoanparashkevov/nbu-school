@@ -143,6 +143,8 @@ public class MapperUtil {
         schoolDto.setName(school.getName());
         schoolDto.setAddress(school.getAddress());
         schoolDto.setHeadmasterId(school.getHeadmaster().getId());
+        schoolDto.setHeadmasterFirstName(school.getHeadmaster().getFirstName());
+        schoolDto.setHeadmasterLastName(school.getHeadmaster().getLastName());
         return schoolDto;
     }
 
@@ -163,6 +165,9 @@ public class MapperUtil {
         SchoolViewModel schoolViewModel = new SchoolViewModel();
         schoolViewModel.setId(schoolOutDto.getId());
         schoolViewModel.setName(schoolOutDto.getName());
+        schoolViewModel.setAddress(schoolOutDto.getAddress());
+        schoolViewModel.setHeadmasterFirstName(schoolOutDto.getHeadmasterFirstName());
+        schoolViewModel.setHeadmasterLastName(schoolOutDto.getHeadmasterLastName());
         return schoolViewModel;
     }
 
@@ -213,6 +218,18 @@ public class MapperUtil {
         user.setCredentialsNonExpired(userRegisterDto.isCredentialsNonExpired());
         user.setEnabled(userRegisterDto.isEnabled());
         return user;
+    }
+
+    public static School dtoToEntity(SchoolDto schoolDto) {
+        School school = new School();
+        school.setName(schoolDto.getName());
+        school.setAddress(schoolDto.getAddress());
+        return school;
+    }
+
+    public static void dtoToEntity(SchoolDto schoolDto, School school) {
+        school.setName(schoolDto.getName());
+        school.setAddress(schoolDto.getAddress());
     }
 
 }

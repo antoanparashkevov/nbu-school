@@ -28,4 +28,8 @@ public class SchoolViewModel {
     @NotNull(message = "Headmaster must be selected")
     private Long headmasterId;
 
+    private String headmasterFirstName;
+
+    private String headmasterLastName;
+
 }

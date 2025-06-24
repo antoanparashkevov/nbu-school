@@ -3,10 +3,13 @@ package org.example.gradingcenter.web.view.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.users.Headmaster;
+import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.specification.HeadmasterSpecification;
 import org.example.gradingcenter.data.repository.specification.SchoolSpecification;
+import org.example.gradingcenter.data.repository.specification.TeacherSpecification;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;
+import org.example.gradingcenter.service.TeacherService;
 import org.example.gradingcenter.util.MapperUtil;
 import org.example.gradingcenter.web.view.model.EmployeeSearchViewModel;
 import org.example.gradingcenter.web.view.model.EmployeeViewModel;
@@ -29,6 +32,7 @@ public class SchoolController {
 
     private final HeadmasterService headmasterService;
     private final SchoolService schoolService;
+    private final TeacherService teacherService;
 
     @GetMapping
     public String getSchools(Model model) {
@@ -51,11 +55,13 @@ public class SchoolController {
         return "schools";
     }
 
-    @GetMapping("/edit-headmaster/{id}")
+    @GetMapping("/edit-school/{id}")
     public String showEditTeacherForm(Model model, @PathVariable Long id) {
-        model.addAttribute("headmaster", dtoToViewModel(headmasterService.getHeadmaster(id)));
-        model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
-        return "headmaster-profile";
+        model.addAttribute("school", dtoToViewModel(schoolService.getSchool(id)));
+        model.addAttribute("headmasters", mapList(headmasterService.getHeadmasters(), MapperUtil::dtoToViewModel));
+        model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterRecords(null, null, id)),
+                                               MapperUtil::dtoToViewModel));
+        return "school-edit";
     }
 
 }
