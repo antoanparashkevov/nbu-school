@@ -19,6 +19,9 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Student extends User {
 
+    @Column(nullable = false)
+    private String egn;
+
     @Column(columnDefinition = "INT DEFAULT 0")
     private int absences;
 
@@ -30,4 +33,5 @@ public class Student extends User {
 
     @ManyToOne(optional = false)
     private School school;
+
 }

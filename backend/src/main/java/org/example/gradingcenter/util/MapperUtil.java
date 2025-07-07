@@ -11,10 +11,7 @@ import org.example.gradingcenter.data.entity.users.*;
 import org.example.gradingcenter.web.view.model.*;
 import org.example.gradingcenter.data.entity.Role;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -44,6 +41,7 @@ public class MapperUtil {
         userRegisterDto.setConfirmPassword(signupViewModel.getConfirmPassword());
         userRegisterDto.setRole(Roles.valueOf(signupViewModel.getRole()));
         userRegisterDto.setSchoolId(signupViewModel.getSchoolId());
+        userRegisterDto.setEgn(signupViewModel.getEgn());
         return userRegisterDto;
     }
 
@@ -57,12 +55,20 @@ public class MapperUtil {
 
     public static StudentInDto viewModelToDto(StudentViewModel studentViewModel) {
         StudentInDto studentInDto = new StudentInDto();
+        studentInDto.setEgn(studentViewModel.getEgn());
         studentInDto.setFirstName(studentViewModel.getFirstName());
         studentInDto.setLastName(studentViewModel.getLastName());
         studentInDto.setAbsences(studentViewModel.getAbsences());
         studentInDto.setGradeName(studentViewModel.getGradeName());
         studentInDto.setSchoolId(studentViewModel.getSchoolId());
         return studentInDto;
+    }
+
+    public static ParentDto viewModelToDto(ParentViewModel parentViewModel) {
+        ParentDto parentDto = new ParentDto();
+        parentDto.setFirstName(parentViewModel.getFirstName());
+        parentDto.setLastName(parentViewModel.getLastName());
+        return parentDto;
     }
 
     public static EmployeeInDto viewModelToDto(EmployeeViewModel employeeViewModel) {
@@ -90,9 +96,20 @@ public class MapperUtil {
         return userOutDto;
     }
 
+    public static ParentDto entityToDto(Parent parent) {
+        ParentDto parentDto = new ParentDto();
+        parentDto.setId(parent.getId());
+        parentDto.setFirstName(parent.getFirstName());
+        parentDto.setLastName(parent.getLastName());
+        parentDto.setUsername(parent.getUsername());
+        parentDto.setAuthorities(parent.getAuthorities().stream().map(Role::getAuthorityName).collect(Collectors.toSet()));
+        return parentDto;
+    }
+
     public static StudentOutDto entityToDto(Student student) {
         StudentOutDto studentOut = new StudentOutDto();
         studentOut.setId(student.getId());
+        studentOut.setEgn(student.getEgn());
         studentOut.setFirstName(student.getFirstName());
         studentOut.setLastName(student.getLastName());
         studentOut.setUsername(student.getUsername());
@@ -105,14 +122,14 @@ public class MapperUtil {
     }
 
     public static EmployeeDto entityToDto(Teacher teacher) {
-        return employeeDto(teacher);
+        return employeeToDto(teacher);
     }
 
     public static EmployeeDto entityToDto(Headmaster headmaster) {
-        return employeeDto(headmaster);
+        return employeeToDto(headmaster);
     }
 
-    private static <E extends Employee> EmployeeDto employeeDto(E employee) {
+    private static <E extends Employee> EmployeeDto employeeToDto(E employee) {
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
         employeeDto.setFirstName(employee.getFirstName());
@@ -151,6 +168,7 @@ public class MapperUtil {
     public static StudentViewModel dtoToViewModel(StudentOutDto studentOutDto) {
         StudentViewModel studentViewModel = new StudentViewModel();
         studentViewModel.setId(studentOutDto.getId());
+        studentViewModel.setEgn(studentOutDto.getEgn());
         studentViewModel.setFirstName(studentOutDto.getFirstName());
         studentViewModel.setLastName(studentOutDto.getLastName());
         studentViewModel.setAbsences(studentOutDto.getAbsences());
@@ -173,8 +191,10 @@ public class MapperUtil {
 
     public static ParentViewModel dtoToViewModel(ParentDto parentDto) {
         ParentViewModel parentViewModel = new ParentViewModel();
+        parentViewModel.setId(parentDto.getId());
         parentViewModel.setFirstName(parentDto.getFirstName());
         parentViewModel.setLastName(parentDto.getLastName());
+        parentViewModel.setNumberOfChildren(Optional.ofNullable(parentDto.getChildrenIds()).map(Collection::size).orElse(0));
         return parentViewModel;
     }
 

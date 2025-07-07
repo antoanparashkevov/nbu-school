@@ -15,6 +15,10 @@ import org.example.gradingcenter.data.entity.enums.Roles;
 @ToString
 public class SignupViewModel {
 
+    @NotBlank(message = "EGN can not be empty")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid EGN format.")
+    private String egn;
+
     @NotBlank
     @Size(min = 3, max = 20, message="First name must be between 3 and 20 characters")
     private String firstName;

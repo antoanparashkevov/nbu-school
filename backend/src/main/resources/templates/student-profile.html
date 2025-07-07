@@ -110,6 +110,12 @@
                 <form class="needs-validation" novalidate th:action="@{/students/update/{id}(id=${student.id})}" th:object="${student}" method="post">
                     <div class="row g-3">
                         <div class="col-sm-6">
+                            <label for="egn" class="form-label">Egn</label>
+                            <input type="text" class="form-control" id="egn" placeholder="" value="" required th:field="*{egn}">
+                            <span class="text-danger" th:if="${#fields.hasErrors('egn')}" th:errors="*{egn}"></span>
+                        </div>
+
+                        <div class="col-sm-6">
                             <label for="firstName" class="form-label">First name</label>
                             <input type="text" class="form-control" id="firstName" placeholder="" value="" required th:field="*{firstName}">
                             <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>

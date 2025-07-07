@@ -12,6 +12,8 @@ import org.example.gradingcenter.data.entity.enums.Roles;
 @AllArgsConstructor
 public class UserRegisterDto {
 
+    private String egn;
+
     private String firstName;
 
     private String lastName;

@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = MapperUtil.dtoToEntity(userRegisterDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userService.createUser(user);
-        assignRole(savedUser.getId(), userRegisterDto.getRole(), userRegisterDto.getSchoolId());
+        assignRole(savedUser.getId(), userRegisterDto.getRole(), userRegisterDto.getSchoolId(), userRegisterDto.getEgn());
 
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userRegisterDto.getUsername(),
@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new AuthorizationFailureException("There is not a logged in user");
     }
 
-    private void assignRole(Long userId, Roles roles, Long schoolId) {
+    private void assignRole(Long userId, Roles roles, Long schoolId, String egn) {
         switch (roles) {
             case Roles.ROLE_TEACHER -> {
                 teacherService.createTeacher(new EmployeeInDto(userId, schoolId));
@@ -77,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 headmasterService.createHeadmaster(userId);
             }
             case Roles.ROLE_STUDENT -> {
-                studentService.createStudent(new StudentInDto(userId, schoolId));
+                studentService.createStudent(new StudentInDto(userId, schoolId, egn));
             }
             case Roles.ROLE_ADMIN -> {
                 System.out.println("Admins cannot be systematically created");

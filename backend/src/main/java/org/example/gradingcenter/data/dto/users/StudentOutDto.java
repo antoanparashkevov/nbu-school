@@ -18,6 +18,8 @@ public class StudentOutDto extends UserOutDto {
 
     private long id;
 
+    private String egn;
+
     private Integer absences;
 
     private List<Long> parentIds;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/parents")
+@RequestMapping("/api/parents")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ParentApiController {
 

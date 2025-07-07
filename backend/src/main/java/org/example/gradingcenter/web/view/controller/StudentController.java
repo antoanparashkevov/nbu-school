@@ -48,6 +48,7 @@ public class StudentController {
     @PostMapping("/filter")
     public String getFilteredStudents(Model model, @ModelAttribute("searchStudent") StudentSearchViewModel searchStudent) {
         Specification<Student> spec = StudentSpecification.filterRecords(
+                searchStudent.getEgn(),
                 searchStudent.getFirstName(),
                 searchStudent.getLastName(),
                 searchStudent.getGradeName(),

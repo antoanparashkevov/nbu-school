@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.users.StudentInDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
 import org.example.gradingcenter.data.entity.Grade;
@@ -25,7 +24,6 @@ import org.example.gradingcenter.service.RoleService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.service.UserService;
 import org.example.gradingcenter.util.DataUtil;
-import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static org.example.gradingcenter.util.MapperUtil.entityToDto;
+import static org.example.gradingcenter.util.MapperUtil.entityToDtoAsList;
 
 @Service
 @RequiredArgsConstructor
@@ -59,17 +59,22 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentOutDto> getStudents() {
-        return MapperUtil.entityToDtoAsList(studentRepository.findAll());
+        return entityToDtoAsList(studentRepository.findAll());
+    }
+
+    @Override
+    public List<StudentOutDto> getStudentsByParentId(Long parentId) {
+        return entityToDtoAsList(studentRepository.findAllByParents_Id(parentId));
     }
 
     @Override
     public StudentOutDto getStudent(long id) {
-        return MapperUtil.entityToDto(fetchStudent(id));
+        return entityToDto(fetchStudent(id));
     }
 
     @Override
     public List<StudentOutDto> filterStudents(Specification<Student> specification) {
-        return MapperUtil.entityToDtoAsList(studentRepository.findAll(specification));
+        return entityToDtoAsList(studentRepository.findAll(specification));
     }
 
     @Override
@@ -89,13 +94,14 @@ public class StudentServiceImpl implements StudentService {
         userRepository.save(user);
         DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class);
         entityManager.createNativeQuery(
-                        " INSERT INTO student (id, school_id) VALUES (:userId, :school_id) ")
+                        " INSERT INTO student (id, school_id, egn) VALUES (:userId, :school_id, :egn) ")
                 .setParameter("userId", user.getId())
                 .setParameter("school_id", student.getSchoolId())
+                .setParameter("egn", student.getEgn())
                 .executeUpdate();
         entityManager.flush();
         entityManager.clear();
-        return MapperUtil.entityToDto(studentRepository.save(fetchStudent(student.getUserId())));
+        return entityToDto(studentRepository.save(fetchStudent(student.getUserId())));
     }
 
     @Override
@@ -117,7 +123,7 @@ public class StudentServiceImpl implements StudentService {
         if (student.getSchoolId() != null){
             studentToUpdate.setSchool(DataUtil.fetchObjectFromDb(schoolRepository, student.getSchoolId(), School.class));
         }
-        return MapperUtil.entityToDto(studentRepository.save(studentToUpdate));
+        return entityToDto(studentRepository.save(studentToUpdate));
     }
 
     @Override

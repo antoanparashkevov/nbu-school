@@ -1,0 +1,113 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parent Profile</title>
+
+    <link rel="canonical" th:href="@{https://getbootstrap.com/docs/5.3/examples/checkout/}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/@docsearch/css@3}">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/profile.css}" rel="stylesheet">
+</head>
+<header th:replace="fragments :: header"></header>
+<body class="bg-body-tertiary">
+<br>
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+    </symbol>
+    <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+    </symbol>
+    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+    </symbol>
+    <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+    </symbol>
+</svg>
+
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" th:src="@{/assets/parent-icon.svg}" alt="" width="72" height="57">
+            <h2 th:text="${parent.firstName} + ' ' + ${parent.lastName}">Checkout form</h2>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-7 col-lg-8">
+
+                <div class="mt-4">
+                    <h4 class="mb-3">Children</h4>
+                    <table class="table table-dark table-striped align-middle">
+                        <thead>
+                        <tr>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">EGN</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="child : ${children}">
+                            <td th:text="${child.firstName}">Ivan</td>
+                            <td th:text="${child.lastName}">Ivan</td>
+                            <td th:text="${child.egn}">Mr Smith</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-danger"
+                                   th:href="@{/parents/{parentId}/children/remove/{childId}(parentId=${parent.id}, childId=${child.id})}">
+                                    Remove
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <h5 class="mt-4">Add child</h5>
+                    <form class="row g-3" th:action="@{/parents/{parentId}/children/add(parentId=${parent.id})}" th:object="${newChild}" method="post">
+                        <div class="col-md-2">
+                            <label class="form-label">EGN</label>
+                            <input type="text" class="form-control" th:field="*{egn}"/>
+                            <span class="text-danger" th:if="${#fields.hasErrors('egn')}" th:errors="*{egn}"></span>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-success w-100">Add</button>
+                        </div>
+                    </form>
+                </div>
+                <hr class="my-4">
+                <h4 class="mb-3">Parent Information</h4>
+                <form class="needs-validation" novalidate th:action="@{/parents/update/{id}(id=${parent.id})}" th:object="${parent}" method="post">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label">First name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required th:field="*{firstName}">
+                            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Last name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required th:field="*{lastName}">
+                            <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Save</button>
+                    <br>
+                </form>
+                <br>
+                <a class="w-100 btn btn-danger btn-lg" th:href="@{/parents/delete/{id}(id=${parent.id})}">Delete</a>
+            </div>
+        </div>
+    </main>
+
+</div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/js/profile.js}"></script>
+</body>
+</html>

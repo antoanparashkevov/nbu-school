@@ -18,6 +18,10 @@ public class StudentInDto {
     @Positive(message = "User Id must be a positive number")
     private Long userId;
 
+    @NotBlank(message = "EGN can not be empty")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid EGN format.")
+    private String egn;
+
     @Size(min = 3, max = 30, message="Last name must be between 3 and 30 characters")
     private String firstName;
 
@@ -37,7 +41,8 @@ public class StudentInDto {
     @Positive(message = "School Id must be a positive number")
     private Long schoolId;
 
-    public StudentInDto(Long userId, Long schoolId) {
+    public StudentInDto(Long userId, Long schoolId, String egn) {
+        this.egn = egn;
         this.userId = userId;
         this.schoolId = schoolId;
     }

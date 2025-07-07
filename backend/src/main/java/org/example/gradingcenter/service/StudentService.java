@@ -12,6 +12,8 @@ public interface StudentService {
     
     List<StudentOutDto> getStudents();
 
+    List<StudentOutDto> getStudentsByParentId(Long parentId);
+
     StudentOutDto getStudent(long id);
 
     List<StudentOutDto> filterStudents(Specification<Student> specification);
