@@ -1,11 +1,10 @@
 package org.example.gradingcenter.web.view.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.example.gradingcenter.data.entity.enums.Roles;
+
+import java.util.Set;
 
 @EqualsAndHashCode
 @Getter
@@ -43,8 +42,8 @@ public class SignupViewModel {
     )
     private String confirmPassword;
 
-    @NotBlank
-    private String role;
+    @NotEmpty(message = "Select at least one role")
+    private Set<String> roles;
 
     private Long schoolId;
 

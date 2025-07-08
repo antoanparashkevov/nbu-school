@@ -39,7 +39,10 @@ public class MapperUtil {
         userRegisterDto.setUsername(signupViewModel.getUsername());
         userRegisterDto.setPassword(signupViewModel.getPassword());
         userRegisterDto.setConfirmPassword(signupViewModel.getConfirmPassword());
-        userRegisterDto.setRole(Roles.valueOf(signupViewModel.getRole()));
+        userRegisterDto.setRoles(signupViewModel.getRoles()
+                .stream()
+                .map(Roles::valueOf)
+                .collect(Collectors.toSet()));
         userRegisterDto.setSchoolId(signupViewModel.getSchoolId());
         userRegisterDto.setEgn(signupViewModel.getEgn());
         return userRegisterDto;

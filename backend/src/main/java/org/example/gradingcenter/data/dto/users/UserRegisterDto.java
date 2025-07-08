@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.gradingcenter.data.entity.enums.Roles;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class UserRegisterDto {
 
     private String confirmPassword;
 
-    private Roles role;
+    private Set<Roles> roles;
 
     private Long schoolId;
 
