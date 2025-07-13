@@ -15,7 +15,7 @@ import java.time.DayOfWeek;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Program extends BaseEntity {
+public class ProgramSlot extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -27,8 +27,6 @@ public class Program extends BaseEntity {
     private int subjectSequence;
 
     @ManyToOne(optional = false)
-    private Grade grade;
-
-    @ManyToOne(optional = false)
     private Subject subject;
+
 }

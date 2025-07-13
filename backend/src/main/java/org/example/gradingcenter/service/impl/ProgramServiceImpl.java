@@ -2,7 +2,7 @@ package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
-import org.example.gradingcenter.data.entity.Program;
+import org.example.gradingcenter.data.entity.ProgramSlot;
 import org.example.gradingcenter.data.repository.ProgramRepository;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.ProgramService;
@@ -19,30 +19,30 @@ public class ProgramServiceImpl implements ProgramService {
     private final ModelMapperConfig mapperConfig;
 
     @Override
-    public List<Program> getPrograms() {
+    public List<ProgramSlot> getPrograms() {
         return programRepository.findAll();
     }
 
     @Override
-    public Program getProgram(long id) {
+    public ProgramSlot getProgram(long id) {
         return programRepository
                 .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Program.class, "id", id));
+                .orElseThrow(() -> new EntityNotFoundException(ProgramSlot.class, "id", id));
     }
 
     @Override
-    public Program createProgram(Program program) {
-        return programRepository.save(program);
+    public ProgramSlot createProgram(ProgramSlot programSlot) {
+        return programRepository.save(programSlot);
     }
 
     @Override
-    public Program updateProgram(Program program, long id) {
+    public ProgramSlot updateProgram(ProgramSlot programSlot, long id) {
         return this.programRepository.findById(id)
-                .map(program1 -> {
-                    mapperConfig.getModelMapper().map(program, program1);
-                    return this.programRepository.save(program1);
+                .map(programSlot1 -> {
+                    mapperConfig.getModelMapper().map(programSlot, programSlot1);
+                    return this.programRepository.save(programSlot1);
                 }).orElseGet(() ->
-                        this.programRepository.save(program)
+                        this.programRepository.save(programSlot)
                 );
     }
 

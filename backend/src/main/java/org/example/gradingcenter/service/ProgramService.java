@@ -1,18 +1,18 @@
 package org.example.gradingcenter.service;
 
-import org.example.gradingcenter.data.entity.Program;
+import org.example.gradingcenter.data.entity.ProgramSlot;
 
 import java.util.List;
 
 public interface ProgramService {
 
-    List<Program> getPrograms();
+    List<ProgramSlot> getPrograms();
 
-    Program getProgram(long id);
+    ProgramSlot getProgram(long id);
 
-    Program createProgram(Program Program);
+    ProgramSlot createProgram(ProgramSlot ProgramSlot);
 
-    Program updateProgram(Program Program, long id);
+    ProgramSlot updateProgram(ProgramSlot ProgramSlot, long id);
 
     void deleteProgram(long id);
     

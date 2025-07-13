@@ -56,12 +56,12 @@ INSERT INTO `parent` VALUES (14);
 UNLOCK TABLES;
 
 --
--- Dumping data for table `program`
+-- Dumping data for table `programSlot`
 --
 
-LOCK TABLES `program` WRITE;
-/*!40000 ALTER TABLE `program` DISABLE KEYS */;
-/*!40000 ALTER TABLE `program` ENABLE KEYS */;
+LOCK TABLES `programSlot` WRITE;
+/*!40000 ALTER TABLE `programSlot` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programSlot` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -80,7 +80,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (4,10,1,1);
+INSERT INTO `student` VALUES (4, '022222222', 10,1,1);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Programs</title>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/users.css}" rel="stylesheet">
+</head>
+
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+</svg>
+
+<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+</div>
+
+<header th:replace="fragments :: header"></header>
+
+<main>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Programs</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form class="row g-3"  method="post">
+                    <div class="col-md-4">
+                        <label for="validationDefault01" class="form-label">Grade</label>
+                        <input type="text" class="form-control" id="validationDefault01" value="Mark">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="validationDefault02" class="form-label">School</label>
+                        <input type="text" class="form-control" id="validationDefault02" value="Otto"
+                               >
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="album py-5">
+        <form method="post" action="#">     <!-- adjust action / th:action as needed -->
+            <div class="container-fluid bg-secondary bg-opacity-25 py-4 rounded-3">
+
+                <div class="row row-cols-1 row-cols-lg-5 g-2 justify-content-center">
+
+                    <!-- Monday ---------------------------------------------------------->
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-header fw-semibold">Mon</div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="mon_1" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Math</option><option>Physics</option><option>PE</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="mon_2" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Math</option><option>Physics</option><option>PE</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="mon_3" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Math</option><option>Physics</option><option>PE</option>
+                                    </select>
+                                </li>
+
+                                <!-- Save button row -->
+                                <li class="list-group-item p-2">
+                                    <button type="submit" name="save_day" value="mon"
+                                            class="btn btn-success w-100">
+                                        Save
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Tuesday --------------------------------------------------------->
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-header fw-semibold">Tue</div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="tue_1" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Chemistry</option><option>English</option><option>History</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="tue_2" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Chemistry</option><option>English</option><option>History</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="tue_3" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Chemistry</option><option>English</option><option>History</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <button type="submit" name="save_day" value="tue"
+                                            class="btn btn-success w-100">
+                                        Save
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Wednesday ------------------------------------------------------->
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-header fw-semibold">Wed</div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="wed_1" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>IT Lab</option><option>Biology</option><option>Art</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="wed_2" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>IT Lab</option><option>Biology</option><option>Art</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="wed_3" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>IT Lab</option><option>Biology</option><option>Art</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <button type="submit" name="save_day" value="wed"
+                                            class="btn btn-success w-100">
+                                        Save
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Thursday -------------------------------------------------------->
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-header fw-semibold">Thu</div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="thu_1" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Geography</option><option>Math</option><option>Music</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="thu_2" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Geography</option><option>Math</option><option>Music</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="thu_3" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Geography</option><option>Math</option><option>Music</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <button type="submit" name="save_day" value="thu"
+                                            class="btn btn-success w-100">
+                                        Save
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Friday ---------------------------------------------------------->
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-header fw-semibold">Fri</div>
+                            <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="fri_1" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Economics</option><option>French</option><option>Drama</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="fri_2" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Economics</option><option>French</option><option>Drama</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <select class="form-select form-select-sm" name="fri_3" required>
+                                        <option selected disabled value="">Choose subject</option>
+                                        <option>Economics</option><option>French</option><option>Drama</option>
+                                    </select>
+                                </li>
+
+                                <li class="list-group-item p-2">
+                                    <button type="submit" name="save_day" value="fri"
+                                            class="btn btn-success w-100">
+                                        Save
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div><!-- /.row -->
+
+            </div><!-- /.container-fluid -->
+        </form>
+    </div><!-- /.album -->
+
+
+
+
+
+</main>
+
+<footer class="text-body-secondary py-5">
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+        </p>
+    </div>
+</footer>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
