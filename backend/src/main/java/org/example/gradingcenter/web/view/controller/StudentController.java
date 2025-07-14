@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.MarkDto;
 import org.example.gradingcenter.data.dto.users.StudentOutDto;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Student;
 import org.example.gradingcenter.data.repository.specification.StudentSpecification;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
@@ -35,9 +36,13 @@ public class StudentController {
     private final TeacherService teacherService;
     private final SubjectService subjectService;
     private final MarkService markService;
+    private final AuthorizationService authService;
 
     @GetMapping
     public String getStudents(Model model) {
+        if (authService.hasAnyRole(Roles.ROLE_STUDENT)){
+            return "redirect:/students/edit-student/" + authService.getLoggedInUser().getId();
+        }
         List<StudentViewModel> students = mapList(studentService.getStudents(), MapperUtil::dtoToViewModel);
         model.addAttribute("students", students);
         model.addAttribute("searchStudent", new StudentSearchViewModel());

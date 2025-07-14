@@ -14,4 +14,18 @@ public class EmployeeDto extends UserOutDto {
 
     private SchoolOutDto school;
 
+    public Long getSchoolId() {
+        if (school == null) {
+            return null;
+        }
+        return school.getId();
+    }
+
+    public String getSchoolName() {
+        if (school == null) {
+            return null;
+        }
+        return school.getName();
+    }
+
 }

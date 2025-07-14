@@ -16,6 +16,7 @@ import org.example.gradingcenter.data.repository.TeacherRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.SubjectService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +60,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public SubjectOutDto createSubject(SubjectDto subject) throws DuplicateEntityException {
         if (subjectRepository.existsByNameAndGrade_NameAndSchool_IdAndTeacher_Id(subject.getName(), subject.getGradeName(), subject.getSchoolId(), subject.getTeacherId())) {
             throw new DuplicateEntityException(Subject.class, List.of("name", "grade", "schoolId", "teacherId"),
@@ -73,6 +75,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public SubjectOutDto updateSubject(SubjectDto subject, long id) {
         return subjectRepository.findById(id)
                 .map(subjectToUpdate -> {
@@ -88,6 +91,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public void deleteSubject(long id) {
         subjectRepository.deleteById(id);
     }

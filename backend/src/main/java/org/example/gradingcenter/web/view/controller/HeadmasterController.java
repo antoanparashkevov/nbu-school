@@ -2,9 +2,11 @@ package org.example.gradingcenter.web.view.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.repository.specification.HeadmasterSpecification;
 import org.example.gradingcenter.exceptions.InvalidBusinessDataException;
+import org.example.gradingcenter.service.AuthorizationService;
 import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.util.MapperUtil;
@@ -27,9 +29,13 @@ public class HeadmasterController {
 
     private final HeadmasterService headmasterService;
     private final SchoolService schoolService;
+    private final AuthorizationService authService;
 
     @GetMapping
     public String getHeadmasters(Model model) {
+        if (!authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            return "redirect:/headmasters/edit-headmaster/" + authService.getLoggedInUser().getId();
+        }
         List<EmployeeViewModel> headmasters = mapList(headmasterService.getHeadmasters(), MapperUtil::dtoToViewModel);
         model.addAttribute("headmasters", headmasters);
         model.addAttribute("searchHeadmaster", new EmployeeSearchViewModel());
@@ -50,7 +56,7 @@ public class HeadmasterController {
     }
 
     @GetMapping("/edit-headmaster/{id}")
-    public String showEditTeacherForm(Model model, @PathVariable Long id) {
+    public String showEditHeadmasterForm(Model model, @PathVariable Long id) {
         model.addAttribute("headmaster", dtoToViewModel(headmasterService.getHeadmaster(id)));
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
         return "headmaster-profile";

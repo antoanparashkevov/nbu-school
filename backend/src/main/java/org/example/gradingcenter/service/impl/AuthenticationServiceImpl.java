@@ -5,7 +5,7 @@ import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.users.*;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.User;
-import org.example.gradingcenter.exceptions.AuthorizationFailureException;
+import org.example.gradingcenter.exceptions.AuthenticationFailureException;
 import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,16 +55,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserLoginResponseDto loginResponse = mapperConfig.getModelMapper().map(savedUser, UserLoginResponseDto.class);
         //loginResponse.setJwt(token);
         return loginResponse;
-    }
-
-    @Override
-    public UserOutDto getLoggedInUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
-            User loggedInUser = (User) authentication.getPrincipal();
-            return MapperUtil.entityToDto(loggedInUser);
-        }
-        throw new AuthorizationFailureException("There is not a logged in user");
     }
 
     private void assignRole(Long userId, Set<Roles> roles, Long schoolId, String egn) {

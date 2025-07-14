@@ -3,10 +3,12 @@ package org.example.gradingcenter.web.view.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.dto.SubjectDto;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.enums.SubjectName;
 import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.specification.TeacherSpecification;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
+import org.example.gradingcenter.service.AuthorizationService;
 import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.service.SubjectService;
 import org.example.gradingcenter.service.TeacherService;
@@ -30,9 +32,13 @@ public class TeacherController {
     private final TeacherService teacherService;
     private final SchoolService schoolService;
     private final SubjectService subjectService;
+    private final AuthorizationService authService;
 
     @GetMapping
     public String getTeachers(Model model) {
+        if (!authService.hasAnyRole(Roles.ROLE_HEADMASTER, Roles.ROLE_ADMIN)){
+            return "redirect:/teachers/edit-teacher/" + authService.getLoggedInUser().getId();
+        }
         List<EmployeeViewModel> teachers = mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel);
         model.addAttribute("teachers", teachers);
         model.addAttribute("searchTeacher", new EmployeeSearchViewModel());

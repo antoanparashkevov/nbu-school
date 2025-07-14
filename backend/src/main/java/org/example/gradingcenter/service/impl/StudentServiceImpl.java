@@ -17,12 +17,10 @@ import org.example.gradingcenter.data.repository.GradeRepository;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.data.repository.StudentRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.AuthorizationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
-import org.example.gradingcenter.service.ParentService;
-import org.example.gradingcenter.service.RoleService;
-import org.example.gradingcenter.service.StudentService;
-import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.DataUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,6 +54,8 @@ public class StudentServiceImpl implements StudentService {
     private final ParentService parentService;
 
     private final GradeRepository gradeRepository;
+
+    private final AuthorizationService authService;
 
     @Override
     public List<StudentOutDto> getStudents() {
@@ -105,8 +105,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_STUDENT')")
     public StudentOutDto updateStudent(StudentInDto student, long id) throws EntityNotFoundException {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Student.class, "update");
+        }
         return this.studentRepository.findById(id)
                 .map(studentToUpdate -> modifyUser(student, studentToUpdate))
                 .orElseThrow(() -> new EntityNotFoundException(Student.class, "id", id));
@@ -127,8 +130,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_STUDENT')")
     public void deleteStudent(long id) {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Student.class, "delete");
+        }
         studentRepository.deleteById(id);
     }
 

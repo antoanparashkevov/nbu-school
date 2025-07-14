@@ -206,8 +206,8 @@ public class MapperUtil {
         employeeViewModel.setId(employeeDto.getId());
         employeeViewModel.setFirstName(employeeDto.getFirstName());
         employeeViewModel.setLastName(employeeDto.getLastName());
-        employeeViewModel.setSchoolId(employeeDto.getSchool().getId());
-        employeeViewModel.setSchoolName(employeeDto.getSchool().getName());
+        employeeViewModel.setSchoolId(employeeDto.getSchoolId());
+        employeeViewModel.setSchoolName(employeeDto.getSchoolName());
         return employeeViewModel;
     }
 

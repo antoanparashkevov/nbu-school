@@ -13,6 +13,8 @@ public interface SchoolService {
 
     SchoolOutDto getSchool(long id);
 
+    SchoolOutDto getSchoolByHeadmaster(long headmasterId);
+
     List<SchoolOutDto> filterSchools(Specification<School> specification);
 
     SchoolOutDto createSchool(SchoolDto schoolDto);

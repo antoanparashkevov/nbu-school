@@ -14,12 +14,11 @@ import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.HeadmasterRepository;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.AuthorizationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.exceptions.InvalidBusinessDataException;
-import org.example.gradingcenter.service.HeadmasterService;
-import org.example.gradingcenter.service.RoleService;
-import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +38,8 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
     private final HeadmasterRepository headmasterRepository;
 
+    private final AuthorizationService authService;
+
     private final UserService userService;
 
     private final UserRepository userRepository;
@@ -51,7 +52,6 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     private EntityManager entityManager;
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<EmployeeDto> getHeadmasters() {
         return mapList(headmasterRepository.findAll(), MapperUtil::entityToDto);
     }
@@ -62,13 +62,11 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public EmployeeDto getHeadmaster(long id) {
         return entityToDto(fetchHeadmaster(id));
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Headmaster fetchHeadmaster(long id) {
         return headmasterRepository
                 .findById(id)
@@ -77,7 +75,6 @@ public class HeadmasterServiceImpl implements HeadmasterService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public EmployeeDto createHeadmaster(Long userId) {
         Optional<Headmaster> existingHeadmaster = headmasterRepository.findById(userId);
         if (existingHeadmaster.isPresent()) {
@@ -101,7 +98,11 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')")
     public void updateHeadmaster(EmployeeInDto headmasterInDto, long id) throws EntityNotFoundException {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Headmaster.class, "update");
+        }
         Headmaster headmaster = this.headmasterRepository.findById(id)
                 .map((headmasterToUpdate) -> {
                     headmasterToUpdate.setFirstName(headmasterInDto.getFirstName());
@@ -120,8 +121,11 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')")
     public void deleteHeadmaster(long id) {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Headmaster.class, "delete");
+        }
         headmasterRepository.deleteById(id);
     }
 

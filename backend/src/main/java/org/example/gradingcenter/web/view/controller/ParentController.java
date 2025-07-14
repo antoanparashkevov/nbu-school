@@ -2,9 +2,11 @@ package org.example.gradingcenter.web.view.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.users.Parent;
 import org.example.gradingcenter.data.repository.specification.ParentSpecification;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.example.gradingcenter.service.AuthorizationService;
 import org.example.gradingcenter.service.ParentService;
 import org.example.gradingcenter.service.StudentService;
 import org.example.gradingcenter.util.MapperUtil;
@@ -26,9 +28,13 @@ public class ParentController {
 
     private final ParentService parentService;
     private final StudentService studentService;
+    private final AuthorizationService authService;
 
     @GetMapping
     public String getParents(Model model) {
+        if (!authService.hasAnyRole(Roles.ROLE_HEADMASTER, Roles.ROLE_ADMIN)){
+            return "redirect:/parents/edit-parent/" + authService.getLoggedInUser().getId();
+        }
         List<ParentViewModel> parents = mapList(parentService.getParents(), MapperUtil::dtoToViewModel);
         model.addAttribute("parents", parents);
         model.addAttribute("searchParent", new ParentSearchViewModel());

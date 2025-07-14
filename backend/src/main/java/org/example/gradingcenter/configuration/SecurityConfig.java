@@ -64,9 +64,43 @@ public class SecurityConfig {
                     auth.requestMatchers("/.well-known/**").permitAll(); // Chrome PWA probes
                     auth.requestMatchers("/error").permitAll(); // Spring’s error page
                     auth.requestMatchers("/auth/**", "/css/**", "/js/**", "/assets/**").permitAll();
-                    auth.requestMatchers("/headmasters/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
-                    auth.requestMatchers("/grades/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
-                    auth.requestMatchers("/schools/**").hasAnyAuthority(Roles.ROLE_ADMIN.name());
+
+                    auth.requestMatchers("/schools").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/schools/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/schools/edit-school/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/schools/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name());
+                    auth.requestMatchers("/schools/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name());
+
+                    auth.requestMatchers("/headmasters").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/headmasters/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name());
+                    auth.requestMatchers("/headmasters/edit-headmaster/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/headmasters/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/headmasters/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+
+                    auth.requestMatchers("/teachers").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/teachers/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/teachers/edit-teacher/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/teachers/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/teachers/*/subjects/add").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/teachers/*/subjects/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/teachers/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+
+                    auth.requestMatchers("/parents").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/parents/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/parents/edit-parent/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_HEADMASTER.name());
+                    auth.requestMatchers("/parents/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
+                    auth.requestMatchers("/parents/*/children/add").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
+                    auth.requestMatchers("/parents/*/children/remove/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
+                    auth.requestMatchers("/parents/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
+
+                    auth.requestMatchers("/students").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/edit-student/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_STUDENT.name());
+                    auth.requestMatchers("/students/*/marks/add").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/*/marks/remove/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_STUDENT.name());
+
                     auth.requestMatchers("/").permitAll();
                     auth.anyRequest().authenticated();
                 })

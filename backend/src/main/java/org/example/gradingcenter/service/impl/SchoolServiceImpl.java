@@ -1,7 +1,6 @@
 package org.example.gradingcenter.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.SchoolDto;
 import org.example.gradingcenter.data.dto.SchoolOutDto;
 import org.example.gradingcenter.data.entity.School;
@@ -31,15 +30,18 @@ public class SchoolServiceImpl implements SchoolService {
     private final HeadmasterService headmasterService;
 
     @Override
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<SchoolOutDto> getSchools() {
         return mapList(schoolRepository.findAll(), MapperUtil::entityToDto);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public SchoolOutDto getSchool(long id) {
         return entityToDto(fetchSchool(id));
+    }
+
+    @Override
+    public SchoolOutDto getSchoolByHeadmaster(long headmasterId) {
+        return entityToDto(schoolRepository.findByHeadmasterId(headmasterId).orElseThrow(() -> new EntityNotFoundException(School.class, "headmaster Id", headmasterId)));
     }
 
     @Override

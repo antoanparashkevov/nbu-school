@@ -23,9 +23,9 @@ public class ProgramController {
 
     @GetMapping
     public String getParents(Model model) {
-        List<ParentViewModel> parents = mapList(parentService.getParents(), MapperUtil::dtoToViewModel);
-        model.addAttribute("program", parents);
-        model.addAttribute("searchParent", new ParentSearchViewModel());
+//        List<ParentViewModel> parents = mapList(parentService.getParents(), MapperUtil::dtoToViewModel);
+//        model.addAttribute("program", parents);
+//        model.addAttribute("searchParent", new ParentSearchViewModel());
         return "programs";
     }
 

@@ -9,16 +9,16 @@ import org.example.gradingcenter.data.dto.users.EmployeeInDto;
 import org.example.gradingcenter.data.entity.Role;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.enums.Roles;
+import org.example.gradingcenter.data.entity.users.Headmaster;
 import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.entity.users.User;
 import org.example.gradingcenter.data.repository.SchoolRepository;
 import org.example.gradingcenter.data.repository.TeacherRepository;
 import org.example.gradingcenter.data.repository.UserRepository;
+import org.example.gradingcenter.exceptions.AuthorizationFailureException;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
-import org.example.gradingcenter.service.RoleService;
-import org.example.gradingcenter.service.TeacherService;
-import org.example.gradingcenter.service.UserService;
+import org.example.gradingcenter.service.*;
 import org.example.gradingcenter.util.MapperUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,19 +49,20 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final RoleService roleService;
 
+    private final AuthorizationService authService;
+
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public List<EmployeeDto> getTeachers() {
         return mapList(teacherRepository.findAll(), MapperUtil::entityToDto);
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public EmployeeDto getTeacher(long id) {
         return entityToDto(fetchObjectFromDb(teacherRepository, id, Teacher.class));
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public List<EmployeeDto> filterTeachers(Specification<Teacher> specification) {
         return mapList(teacherRepository.findAll(specification), MapperUtil::entityToDto);
     }
@@ -94,6 +95,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
     public EmployeeDto updateTeacher(EmployeeInDto employeeInDto, long id) throws EntityNotFoundException {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Teacher.class, "update");
+        }
         Teacher teacher = this.teacherRepository.findById(id)
                 .map((studentToUpdate) -> {
                     studentToUpdate.setFirstName(employeeInDto.getFirstName());
@@ -108,8 +112,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_TEACHER')")
     public void deleteTeacher(long id) {
+        if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            throw new AuthorizationFailureException(Teacher.class, "delete");
+        }
         teacherRepository.deleteById(id);
     }
 

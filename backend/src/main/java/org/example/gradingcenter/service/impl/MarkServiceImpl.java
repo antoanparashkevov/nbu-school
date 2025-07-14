@@ -12,6 +12,7 @@ import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.*;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
 import org.example.gradingcenter.service.MarkService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public MarkOutDto createMark(MarkDto mark) {
         Mark markToCreate = new Mark();
         setSubject(markToCreate, mark);
@@ -74,6 +76,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public void deleteMark(long id) {
         markRepository.deleteById(id);
     }
