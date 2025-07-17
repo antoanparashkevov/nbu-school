@@ -17,27 +17,26 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated()"
-                           class="nav-link active" aria-current="page" href="#" th:href="@{/students}">Students</a>
+                        <a class="nav-link active" aria-current="page" href="#" th:href="@{/students}">Students</a>
                     </li>
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER')"
+                        <a sec:authorize="!isAuthenticated() or hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER')"
                            class="nav-link active" aria-current="page" href="#" th:href="@{/teachers}">Teachers</a>
                     </li>
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
+                        <a sec:authorize="!isAuthenticated() or hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
                            class="nav-link active" aria-current="page" href="#" th:href="@{/headmasters}">Headmasters</a>
                     </li>
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
+                        <a sec:authorize="!isAuthenticated() or hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')"
                            class="nav-link active" aria-current="page" href="#" th:href="@{/schools}">Schools</a>
                     </li>
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_PARENTS')"
+                        <a sec:authorize="!isAuthenticated() or hasAnyAuthority('ROLE_ADMIN', 'ROLE_PARENTS')"
                            class="nav-link active" aria-current="page" href="#" th:href="@{/parents}">Parents</a>
                     </li>
                     <li class="nav-item">
-                        <a sec:authorize="isAuthenticated() and hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER', 'ROLE_STUDENT')"
+                        <a sec:authorize="!isAuthenticated() or hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER', 'ROLE_STUDENT')"
                            class="nav-link active" aria-current="page" href="#" th:href="@{/programs}">Programs</a>
                     </li>
                 </ul>
@@ -46,6 +45,8 @@
                     <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger" type="submit">Logout
                     </button>
                 </form>
+                <a sec:authorize="!isAuthenticated()"
+                   class="btn btn-outline-info" aria-current="page" href="#" th:href="@{/auth/login}">Login</a>
             </div>
         </div>
     </nav>

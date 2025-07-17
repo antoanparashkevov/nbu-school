@@ -45,8 +45,7 @@
                         <label for="validationDefault04" class="form-label">Headmaster</label>
                         <select class="form-control" id="validationDefault04" th:field="*{headmasterId}">
                             <option value="">Choose headmaster...</option>
-                            <option th:each="headmaster : ${headmasters}" th:text="${headmaster.firstName} + ' ' + ${headmaster.lastName}"
-                                    th:value="${headmaster.id}">United States
+                            <option th:each="headmaster : ${headmasters}" th:text="${headmaster.firstName} + ' ' + ${headmaster.lastName}" th:value="${headmaster.id}">United States
                             </option>
                         </select>
                     </div>
@@ -54,6 +53,8 @@
                         <button class="btn btn-primary" type="submit">Search</button>
                     </div>
                 </form>
+                <hr class="my-4">
+                <a class="btn btn-success" th:href="@{/schools/create-school}"> Create new </a>
             </div>
         </div>
     </div>

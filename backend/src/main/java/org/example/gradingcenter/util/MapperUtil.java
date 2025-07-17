@@ -32,6 +32,14 @@ public class MapperUtil {
         return students.stream().map(MapperUtil::entityToDto).collect(Collectors.toList());
     }
 
+    public static SchoolDto viewModelToDto(SchoolViewModel schoolViewModel) {
+        SchoolDto schoolDto = new SchoolDto();
+        schoolDto.setName(schoolViewModel.getName());
+        schoolDto.setAddress(schoolViewModel.getAddress());
+        schoolDto.setHeadmasterId(schoolViewModel.getHeadmasterId());
+        return schoolDto;
+    }
+
     public static UserRegisterDto viewModelToDto(SignupViewModel signupViewModel) {
         UserRegisterDto userRegisterDto = new UserRegisterDto();
         userRegisterDto.setFirstName(signupViewModel.getFirstName());
@@ -162,9 +170,11 @@ public class MapperUtil {
         schoolDto.setId(school.getId());
         schoolDto.setName(school.getName());
         schoolDto.setAddress(school.getAddress());
-        schoolDto.setHeadmasterId(school.getHeadmaster().getId());
-        schoolDto.setHeadmasterFirstName(school.getHeadmaster().getFirstName());
-        schoolDto.setHeadmasterLastName(school.getHeadmaster().getLastName());
+        if (school.getHeadmaster() != null) {
+            schoolDto.setHeadmasterId(school.getHeadmaster().getId());
+            schoolDto.setHeadmasterFirstName(school.getHeadmaster().getFirstName());
+            schoolDto.setHeadmasterLastName(school.getHeadmaster().getLastName());
+        }
         return schoolDto;
     }
 

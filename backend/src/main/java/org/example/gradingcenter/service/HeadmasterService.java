@@ -22,5 +22,5 @@ public interface HeadmasterService {
 
     void deleteHeadmaster(long id);
 
-    Headmaster fetchHeadmaster(long id);
+    Headmaster fetchHeadmaster(Long id);
 }

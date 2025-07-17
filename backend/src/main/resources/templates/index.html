@@ -1,37 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home page</title>
-    <link rel="canonical" th:href="@{https://getbootstrap.com/docs/5.3/examples/sign-in/}">
-    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/@docsearch/css@3}">
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/sign-up.css}" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - School Management</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/users.css}" rel="stylesheet">
 </head>
 <body>
+
+<header th:replace="~{fragments :: header}"></header>
+
 <main>
-    <h1>Welcome to My Website</h1>
-    <h2>This is the index page </h2>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Welcome to the School Management System</h1>
+                <p class="lead text-body-secondary">
+                    Your central hub for managing students, teachers, school information and much more. Select an option below to get started.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Admin button -->
-    <a href="/admin/users" class="btn btn-primary mt-3">Admin Panel</a>
-    <header th:replace="fragments :: header"></header>
-    <h1>Home page</h1>
-    <!--    TODO: Temporary, to visualize the user-->
-    <div th:if="${user != null}">
-        <h1>Welcome, <span th:text="${user.username}">User</span>!</h1>
-        <p>Your role: <span th:text="${user.role}">ROLE</span></p>
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-        <!-- Optional: Role-based dialogs or logic -->
-        <div th:if="${user.role == 'ADMIN'}">
-            <!-- Dialog or options for admin -->
-            <button>Manage Schools</button>
-            <button>Manage Teachers</button>
+                <div class="col" sec:authorize="isAuthenticated()">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/assets/student-icon.svg}" class="bd-placeholder-img rounded-circle mx-auto d-block mt-3" width="140" height="140" alt="Students Icon"/>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Manage Students</h5>
+                            <p class="card-text">View, edit, and manage student profiles, marks, and absences.</p>
+                            <a th:href="@{/students}" class="btn btn-primary">Go to Students</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER', 'ROLE_TEACHER')">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/assets/teacher-icon.svg}" class="bd-placeholder-img rounded-circle mx-auto d-block mt-3" width="140" height="140" alt="Teachers Icon"/>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Manage Teachers</h5>
+                            <p class="card-text">View and manage teacher profiles and their assigned subjects.</p>
+                            <a th:href="@{/teachers}" class="btn btn-primary">Go to Teachers</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_HEADMASTER')">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/assets/school-icon.svg}" class="bd-placeholder-img rounded-circle mx-auto d-block mt-3" width="140" height="140" alt="Schools Icon"/>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Manage Schools</h5>
+                            <p class="card-text">Edit school details, assign headmasters, and manage staff.</p>
+                            <a th:href="@{/schools}" class="btn btn-primary">Go to Schools</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </main>
-<script th:src="@{/js/index.js}"></script>
+
+<footer class="text-body-secondary py-5">
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+        </p>
+    </div>
+</footer>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

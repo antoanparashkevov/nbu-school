@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Headmaster Profile</title>
+    <title>Edit School</title>
 
     <link rel="canonical" th:href="@{https://getbootstrap.com/docs/5.3/examples/checkout/}">
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/@docsearch/css@3}">
@@ -32,31 +32,36 @@
 <div class="container">
     <main>
         <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" th:src="@{/assets/headmaster-icon.svg}" alt="" width="72" height="57">
-            <h2 th:text="${headmaster.firstName} + ' ' + ${headmaster.lastName}">Checkout form</h2>
+            <img class="d-block mx-auto mb-4" th:src="@{/assets/school-icon.svg}" alt="" width="72" height="57">
+            <h2 th:text="${school.name}">Checkout form</h2>
         </div>
 
         <div class="row g-5">
             <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Headmaster Information</h4>
-                <form class="needs-validation" novalidate th:action="@{/headmasters/update/{id}(id=${headmaster.id})}" th:object="${headmaster}" method="post">
+                <h4 class="mb-3">School Information</h4>
+                <form class="needs-validation" novalidate th:action="@{/schools/create}" th:object="${school}" method="post">
                     <div class="row g-3">
                         <div class="col-sm-6">
-                            <label for="firstName" class="form-label">First name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required th:field="*{firstName}">
-                            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                            <label for="firstName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required th:field="*{name}">
+                            <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                         </div>
 
                         <div class="col-sm-6">
-                            <label for="lastName" class="form-label">Last name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required th:field="*{lastName}">
-                            <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                            <label for="lastName" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required th:field="*{address}">
+                            <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
                         </div>
 
                         <div class="col-md-5">
-                            <label for="country" class="form-label">School</label>
-                            <h6 type="text" class="form-control" id="country" th:text="${headmaster.schoolName}">Third item</h6>
+                            <label for="country" class="form-label">Headmaster</label>
+                            <select class="form-select" id="country" required th:field="*{headmasterId}">
+                                <option value="">Choose headmaster...</option>
+                                <option th:each="headmaster : ${headmasters}" th:text="${headmaster.firstName} + ' ' + ${headmaster.lastName}" th:value="${headmaster.id}">United States</option>
+                            </select>
+                            <span class="text-danger" th:if="${#fields.hasErrors('headmasterId')}" th:errors="*{headmasterId}"></span>
                         </div>
+
                     </div>
 
                     <hr class="my-4">
@@ -64,8 +69,6 @@
                     <button class="w-100 btn btn-primary btn-lg" type="submit">Save</button>
                     <br>
                 </form>
-                <br>
-                <a class="w-100 btn btn-danger btn-lg" th:href="@{/headmasters/delete/{id}(id=${headmaster.id})}">Delete</a>
             </div>
         </div>
     </main>

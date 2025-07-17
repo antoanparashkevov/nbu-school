@@ -25,7 +25,6 @@ public class SchoolViewModel {
     @Size(min = 5, max = 100, message = "Address must be between 5 and 100 characters")
     private String address;
 
-    @NotNull(message = "Headmaster must be selected")
     private Long headmasterId;
 
     private String headmasterFirstName;

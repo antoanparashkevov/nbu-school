@@ -67,7 +67,7 @@ public class HeadmasterServiceImpl implements HeadmasterService {
     }
 
     @Override
-    public Headmaster fetchHeadmaster(long id) {
+    public Headmaster fetchHeadmaster(Long id) {
         return headmasterRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Headmaster.class, "id", id));
@@ -103,21 +103,20 @@ public class HeadmasterServiceImpl implements HeadmasterService {
         if (authService.getLoggedInUser().getId() != id && !authService.hasAnyRole(Roles.ROLE_ADMIN)) {
             throw new AuthorizationFailureException(Headmaster.class, "update");
         }
-        Headmaster headmaster = this.headmasterRepository.findById(id)
-                .map((headmasterToUpdate) -> {
-                    headmasterToUpdate.setFirstName(headmasterInDto.getFirstName());
-                    headmasterToUpdate.setLastName(headmasterInDto.getLastName());
-                    if (headmasterInDto.getSchoolId() != null) {
-                        School school = fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class);
-                        if (school.getHeadmaster() != null && school.getHeadmaster().getId() != headmasterToUpdate.getId()) {
-                            throw new InvalidBusinessDataException("School " + school.getName() + " already has a headmaster");
-                        }
-                        headmasterToUpdate.setSchool(fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class));
-                    }
-                    return headmasterRepository.save(headmasterToUpdate);
-                })
-                .orElseThrow(() -> new EntityNotFoundException(Headmaster.class, "id", id));
-        entityToDto(headmaster);
+        this.headmasterRepository.findById(id).map((headmasterToUpdate) -> {
+            headmasterToUpdate.setFirstName(headmasterInDto.getFirstName());
+            headmasterToUpdate.setLastName(headmasterInDto.getLastName());
+            if (headmasterInDto.getSchoolId() != null) {
+                School school = fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class);
+                if (school.getHeadmaster() != null && school.getHeadmaster().getId() != headmasterToUpdate.getId()) {
+                    throw new InvalidBusinessDataException("School " + school.getName() + " already has a headmaster");
+                }
+                headmasterToUpdate.setSchool(fetchObjectFromDb(schoolRepository, headmasterInDto.getSchoolId(), School.class));
+            } else {
+                headmasterToUpdate.setSchool(null);
+            }
+            return headmasterRepository.save(headmasterToUpdate);
+        }).orElseThrow(() -> new EntityNotFoundException(Headmaster.class, "id", id));
     }
 
     @Override

@@ -40,22 +40,11 @@
             <div class="col-md-7 col-lg-8">
 
                 <div class="mt-4">
-                    <h4 class="mb-3">Subjects</h4>
+                    <h4 class="mb-3">Teachers</h4>
                     <table class="table table-dark table-striped align-middle">
-                        <thead>
-                        <tr>
-                            <th scope="col">Teacher</th>
-                            <th scope="col" class="text-end">Actions</th>
-                        </tr>
-                        </thead>
                         <tbody>
                         <tr th:each="teacher : ${teachers}">
                             <td th:text="${teacher.firstName} + ' ' + ${teacher.lastName}">Mathematics</td>
-                            <td class="text-end">
-                                <a class="btn btn-sm btn-outline-danger">
-                                    Delete
-                                </a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>

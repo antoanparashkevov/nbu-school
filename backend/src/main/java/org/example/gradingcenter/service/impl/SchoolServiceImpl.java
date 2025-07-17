@@ -66,7 +66,11 @@ public class SchoolServiceImpl implements SchoolService {
         validateName(schoolDto.getName(), id);
         School updatedSchool = fetchSchool(id);
         dtoToEntity(schoolDto, updatedSchool);
-        updatedSchool.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
+        if (schoolDto.getHeadmasterId() != null) {
+            updatedSchool.setHeadmaster(headmasterService.fetchHeadmaster(schoolDto.getHeadmasterId()));
+        } else {
+            updatedSchool.setHeadmaster(null);
+        }
         return entityToDto(schoolRepository.save(updatedSchool));
     }
 
