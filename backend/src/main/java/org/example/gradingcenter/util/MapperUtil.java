@@ -2,15 +2,13 @@ package org.example.gradingcenter.util;
 
 import org.example.gradingcenter.data.dto.*;
 import org.example.gradingcenter.data.dto.users.*;
-import org.example.gradingcenter.data.entity.BaseEntity;
-import org.example.gradingcenter.data.entity.Grade;
-import org.example.gradingcenter.data.entity.School;
+import org.example.gradingcenter.data.entity.*;
 import org.example.gradingcenter.data.entity.enums.Roles;
 import org.example.gradingcenter.data.entity.enums.SubjectName;
 import org.example.gradingcenter.data.entity.users.*;
 import org.example.gradingcenter.web.view.model.*;
-import org.example.gradingcenter.data.entity.Role;
 
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -132,6 +130,27 @@ public class MapperUtil {
         return studentOut;
     }
 
+    public static SubjectOutDto entityToDto(Subject subject) {
+        SubjectOutDto subjectDto = new SubjectOutDto();
+        subjectDto.setId(subject.getId());
+        subjectDto.setSchoolId(subject.getSchool().getId());
+        subjectDto.setName(subject.getName());
+        subjectDto.setTeacherId(subject.getTeacher().getId());
+        subjectDto.setGradeName(subject.getGrade().getName());
+        return subjectDto;
+    }
+
+    public static ProgramSlotDto entityToDto(ProgramSlot programSlot) {
+        ProgramSlotDto programSlotDto = new ProgramSlotDto();
+        programSlotDto.setSubjectSequence(programSlot.getSubjectSequence());
+        programSlotDto.setDayOfWeek(programSlot.getDayOfWeek());
+        programSlotDto.setGrade(entityToDto(programSlot.getSubject().getGrade()));
+        programSlotDto.setSubject(entityToDto(programSlot.getSubject()));
+        programSlotDto.setTeacherFirstName(programSlot.getSubject().getTeacher().getFirstName());
+        programSlotDto.setTeacherLastName(programSlot.getSubject().getTeacher().getLastName());
+        return programSlotDto;
+    }
+
     public static EmployeeDto entityToDto(Teacher teacher) {
         return employeeToDto(teacher);
     }
@@ -200,6 +219,15 @@ public class MapperUtil {
         schoolViewModel.setHeadmasterFirstName(schoolOutDto.getHeadmasterFirstName());
         schoolViewModel.setHeadmasterLastName(schoolOutDto.getHeadmasterLastName());
         return schoolViewModel;
+    }
+
+    public static ProgramSlotViewModel dtoToViewModel(ProgramSlotDto programSlotDto) {
+        ProgramSlotViewModel programSlotViewModel = new ProgramSlotViewModel();
+        programSlotViewModel.setDayOfWeek(programSlotDto.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        programSlotViewModel.setSubjectSequence(programSlotDto.getSubjectSequence());
+        programSlotViewModel.setSubjectName(programSlotDto.getSubject().getName().toString());
+        programSlotViewModel.setTeacherName(programSlotDto.getTeacherFirstName().charAt(0) + ". " + programSlotDto.getTeacherLastName());
+        return programSlotViewModel;
     }
 
     public static ParentViewModel dtoToViewModel(ParentDto parentDto) {

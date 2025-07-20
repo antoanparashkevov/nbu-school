@@ -1,16 +1,20 @@
 package org.example.gradingcenter.data.dto;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import org.example.gradingcenter.data.entity.Grade;
-import org.example.gradingcenter.data.entity.Subject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.DayOfWeek;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProgramSlotDto {
 
     @Enumerated(EnumType.STRING)
@@ -20,8 +24,12 @@ public class ProgramSlotDto {
     @Max(7)
     private int subjectSequence;
 
-    private Long gradeName;
+    private GradeDto grade;
 
-    private Long subjectId;
+    private SubjectOutDto subject;
+
+    private String teacherFirstName;
+
+    private String teacherLastName;
 
 }

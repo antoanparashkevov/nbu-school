@@ -10,8 +10,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class StudentSpecification {
 
-    public static Specification<Student> filterRecords(String egn, String firstName, String lastName, String gradeName,
-                                                       Long schoolId, Integer absencesFrom, Integer absencesTo) {
+    public static Specification<Student> filterStudents(String egn, String firstName, String lastName, String gradeName,
+                                                        Long schoolId, Integer absencesFrom, Integer absencesTo) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

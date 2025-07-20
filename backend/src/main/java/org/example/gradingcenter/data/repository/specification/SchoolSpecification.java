@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SchoolSpecification {
 
-    public static Specification<School> filterRecords(String name, String address, Long headmasterId) {
+    public static Specification<School> filterSchools(String name, String address, Long headmasterId) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (DataUtil.isNotEmpty(name)) {

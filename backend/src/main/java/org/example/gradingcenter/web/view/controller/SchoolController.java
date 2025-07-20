@@ -13,7 +13,6 @@ import org.example.gradingcenter.service.HeadmasterService;
 import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.service.TeacherService;
 import org.example.gradingcenter.util.MapperUtil;
-import org.example.gradingcenter.web.view.model.EmployeeViewModel;
 import org.example.gradingcenter.web.view.model.SchoolSearchViewModel;
 import org.example.gradingcenter.web.view.model.SchoolViewModel;
 import org.springframework.data.jpa.domain.Specification;
@@ -53,7 +52,7 @@ public class SchoolController {
 
     @PostMapping("/filter")
     public String getFilteredSchools(Model model, @ModelAttribute("searchSchool") SchoolSearchViewModel searchSchool) {
-        Specification<School> spec = SchoolSpecification.filterRecords(
+        Specification<School> spec = SchoolSpecification.filterSchools(
                 searchSchool.getName(),
                 searchSchool.getAddress(),
                 searchSchool.getHeadmasterId());
@@ -92,7 +91,7 @@ public class SchoolController {
     public String showEditSchoolForm(Model model, @PathVariable Long id) {
         model.addAttribute("school", dtoToViewModel(schoolService.getSchool(id)));
         model.addAttribute("headmasters", mapList(headmasterService.getHeadmasters(), MapperUtil::dtoToViewModel));
-        model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterRecords(null, null, id)),
+        model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterTeachers(null, null, id)),
                                                MapperUtil::dtoToViewModel));
         return "school-edit";
     }
@@ -104,7 +103,7 @@ public class SchoolController {
         Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("headmasters", mapList(headmasterService.getHeadmasters(), MapperUtil::dtoToViewModel));
-            model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterRecords(null, null, id)),
+            model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterTeachers(null, null, id)),
                                                    MapperUtil::dtoToViewModel));
             return "school-edit";
         }
@@ -113,7 +112,7 @@ public class SchoolController {
         } catch (InvalidBusinessDataException ex) {
             bindingResult.rejectValue("headmasterId", "headmaster_error", ex.getMessage());
             model.addAttribute("headmasters", mapList(headmasterService.getHeadmasters(), MapperUtil::dtoToViewModel));
-            model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterRecords(null, null, id)),
+            model.addAttribute("teachers", mapList(teacherService.filterTeachers(TeacherSpecification.filterTeachers(null, null, id)),
                                                    MapperUtil::dtoToViewModel));
             return "school-edit";
         }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HeadmasterSpecification {
 
-    public static Specification<Headmaster> filterRecords(String firstName, String lastName, Long schoolId) {
+    public static Specification<Headmaster> filterHeadmasters(String firstName, String lastName, Long schoolId) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (DataUtil.isNotEmpty(firstName)) {

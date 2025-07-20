@@ -45,7 +45,7 @@ public class HeadmasterController {
 
     @PostMapping("/filter")
     public String getFilteredTeachers(Model model, @ModelAttribute("searchHeadmaster") EmployeeSearchViewModel searchHeadmaster) {
-        Specification<Headmaster> spec = HeadmasterSpecification.filterRecords(
+        Specification<Headmaster> spec = HeadmasterSpecification.filterHeadmasters(
                 searchHeadmaster.getFirstName(),
                 searchHeadmaster.getLastName(),
                 searchHeadmaster.getSchoolId());

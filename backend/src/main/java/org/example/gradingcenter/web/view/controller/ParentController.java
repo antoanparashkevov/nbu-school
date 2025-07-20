@@ -43,7 +43,7 @@ public class ParentController {
 
     @PostMapping("/filter")
     public String getFilteredTeachers(Model model, @ModelAttribute("searchParent") ParentSearchViewModel searchParent) {
-        Specification<Parent> spec = ParentSpecification.filterRecords(
+        Specification<Parent> spec = ParentSpecification.filterParents(
                 searchParent.getFirstName(),
                 searchParent.getLastName());
         List<ParentViewModel> parents = mapList(parentService.filterParents(spec), MapperUtil::dtoToViewModel);

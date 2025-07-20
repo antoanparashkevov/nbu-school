@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ParentSpecification {
 
-    public static Specification<Parent> filterRecords(String firstName, String lastName) {
+    public static Specification<Parent> filterParents(String firstName, String lastName) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (DataUtil.isNotEmpty(firstName)) {

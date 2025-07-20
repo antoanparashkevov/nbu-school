@@ -52,7 +52,7 @@ public class StudentController {
 
     @PostMapping("/filter")
     public String getFilteredStudents(Model model, @ModelAttribute("searchStudent") StudentSearchViewModel searchStudent) {
-        Specification<Student> spec = StudentSpecification.filterRecords(
+        Specification<Student> spec = StudentSpecification.filterStudents(
                 searchStudent.getEgn(),
                 searchStudent.getFirstName(),
                 searchStudent.getLastName(),
