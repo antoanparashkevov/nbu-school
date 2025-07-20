@@ -104,10 +104,13 @@ public class SecurityConfig {
                     auth.requestMatchers("/").permitAll();
                     auth.anyRequest().authenticated();
                 })
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/access-denied")
+                )
                 .formLogin(fl -> fl
-                        .loginPage("/auth/login")        // <-- your custom page
-                        .loginProcessingUrl("/auth/login")// <-- where the form POSTs
-                        .defaultSuccessUrl("/", true)     // <-- always go to index
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

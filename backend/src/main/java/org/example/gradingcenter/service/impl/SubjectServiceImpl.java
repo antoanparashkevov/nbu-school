@@ -1,5 +1,7 @@
 package org.example.gradingcenter.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.configuration.ModelMapperConfig;
 import org.example.gradingcenter.data.dto.SubjectDto;
@@ -28,6 +30,9 @@ import static org.example.gradingcenter.util.DataUtil.fetchObjectFromDb;
 @RequiredArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final SubjectRepository subjectRepository;
 
     private final GradeRepository gradeRepository;
@@ -45,6 +50,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<SubjectOutDto> getSubjects(String gradeName, Long schoolId) {
+        entityManager.clear();
         return mapperConfig.mapList(subjectRepository.findAllByGrade_NameAndSchool_Id(gradeName, schoolId), SubjectOutDto.class);
     }
 

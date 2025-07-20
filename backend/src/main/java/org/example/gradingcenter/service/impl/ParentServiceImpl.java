@@ -48,31 +48,37 @@ public class ParentServiceImpl implements ParentService {
 
     @Override
     public List<ParentDto> getParents() {
+        entityManager.clear();
         return mapperConfig.mapList(parentRepository.findAll(), ParentDto.class);
     }
 
     @Override
     public List<ParentDto> getParents(List<Long> parentIds) {
+        entityManager.clear();
         return mapperConfig.mapList(parentRepository.findAllById(parentIds), ParentDto.class);
     }
 
     @Override
     public List<ParentDto> getParents(Long childId) {
+        entityManager.clear();
         return mapperConfig.mapList(parentRepository.findAllByChildrenId(childId), ParentDto.class);
     }
 
     @Override
     public List<ParentDto> filterParents(Specification<Parent> specification) {
+        entityManager.clear();
         return mapList(parentRepository.findAll(specification), MapperUtil::entityToDto);
     }
 
     @Override
     public ParentDto getParent(long id) {
+        entityManager.clear();
         return mapperConfig.getModelMapper().map(fetchParent(id), ParentDto.class);
     }
 
     @Override
     public Parent fetchParent(long id) {
+        entityManager.clear();
         return parentRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Parent.class, "id", id));

@@ -2,9 +2,7 @@ package org.example.gradingcenter.web.view.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.gradingcenter.data.entity.ProgramSlot;
-import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.specification.ProgramSpecification;
-import org.example.gradingcenter.data.repository.specification.TeacherSpecification;
 import org.example.gradingcenter.service.ProgramService;
 import org.example.gradingcenter.service.SchoolService;
 import org.example.gradingcenter.util.MapperUtil;

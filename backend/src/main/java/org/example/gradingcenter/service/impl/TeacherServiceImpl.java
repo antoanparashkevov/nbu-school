@@ -53,17 +53,20 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<EmployeeDto> getTeachers() {
+        entityManager.clear();
         return mapList(teacherRepository.findAll(), MapperUtil::entityToDto);
     }
 
     @Override
     public EmployeeDto getTeacher(long id) {
+        entityManager.clear();
         return entityToDto(fetchObjectFromDb(teacherRepository, id, Teacher.class));
     }
 
     @Override
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
     public List<EmployeeDto> filterTeachers(Specification<Teacher> specification) {
+        entityManager.clear();
         return mapList(teacherRepository.findAll(specification), MapperUtil::entityToDto);
     }
 
