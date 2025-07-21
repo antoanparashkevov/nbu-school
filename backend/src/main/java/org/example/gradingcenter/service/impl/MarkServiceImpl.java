@@ -53,7 +53,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
     public MarkOutDto createMark(MarkDto mark) {
         Mark markToCreate = new Mark();
         setSubject(markToCreate, mark);
@@ -76,7 +76,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
     public void deleteMark(long id) {
         markRepository.deleteById(id);
     }

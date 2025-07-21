@@ -66,7 +66,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
     public SubjectOutDto createSubject(SubjectDto subject) throws DuplicateEntityException {
         if (subjectRepository.existsByNameAndGrade_NameAndSchool_IdAndTeacher_Id(subject.getName(), subject.getGradeName(), subject.getSchoolId(), subject.getTeacherId())) {
             throw new DuplicateEntityException(Subject.class, List.of("name", "grade", "schoolId", "teacherId"),
@@ -81,7 +81,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
     public SubjectOutDto updateSubject(SubjectDto subject, long id) {
         return subjectRepository.findById(id)
                 .map(subjectToUpdate -> {
@@ -97,7 +97,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_HEADMASTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
     public void deleteSubject(long id) {
         subjectRepository.deleteById(id);
     }

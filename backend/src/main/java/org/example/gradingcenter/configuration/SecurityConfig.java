@@ -82,7 +82,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/teachers/edit-teacher/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name(), Roles.ROLE_HEADMASTER.name());
                     auth.requestMatchers("/teachers/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
                     auth.requestMatchers("/teachers/*/subjects/add").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
-                    auth.requestMatchers("/teachers/*/subjects/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/teachers/*/subjects/delete").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
                     auth.requestMatchers("/teachers/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
 
                     auth.requestMatchers("/parents").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_HEADMASTER.name());
@@ -93,12 +93,12 @@ public class SecurityConfig {
                     auth.requestMatchers("/parents/*/children/remove/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
                     auth.requestMatchers("/parents/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_PARENT.name());
 
-                    auth.requestMatchers("/students").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name(), Roles.ROLE_STUDENT.name());
                     auth.requestMatchers("/students/filter").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
-                    auth.requestMatchers("/students/edit-student/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/edit-student/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_HEADMASTER.name(), Roles.ROLE_PARENT.name(), Roles.ROLE_TEACHER.name(), Roles.ROLE_STUDENT.name());
                     auth.requestMatchers("/students/update/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_STUDENT.name());
                     auth.requestMatchers("/students/*/marks/add").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
-                    auth.requestMatchers("/students/*/marks/remove/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
+                    auth.requestMatchers("/students/*/marks/remove").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_TEACHER.name());
                     auth.requestMatchers("/students/delete/*").hasAnyAuthority(Roles.ROLE_ADMIN.name(), Roles.ROLE_STUDENT.name());
 
                     auth.requestMatchers("/").permitAll();
