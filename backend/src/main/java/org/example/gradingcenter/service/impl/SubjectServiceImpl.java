@@ -9,7 +9,6 @@ import org.example.gradingcenter.data.dto.SubjectOutDto;
 import org.example.gradingcenter.data.entity.Grade;
 import org.example.gradingcenter.data.entity.School;
 import org.example.gradingcenter.data.entity.Subject;
-import org.example.gradingcenter.data.entity.users.Student;
 import org.example.gradingcenter.data.entity.users.Teacher;
 import org.example.gradingcenter.data.repository.GradeRepository;
 import org.example.gradingcenter.data.repository.SchoolRepository;
@@ -17,6 +16,7 @@ import org.example.gradingcenter.data.repository.SubjectRepository;
 import org.example.gradingcenter.data.repository.TeacherRepository;
 import org.example.gradingcenter.exceptions.DuplicateEntityException;
 import org.example.gradingcenter.exceptions.EntityNotFoundException;
+import org.example.gradingcenter.service.AuthorizationService;
 import org.example.gradingcenter.service.SubjectService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -43,9 +43,17 @@ public class SubjectServiceImpl implements SubjectService {
 
     private final ModelMapperConfig mapperConfig;
 
+    private final AuthorizationService authService;
+
     @Override
     public List<SubjectOutDto> getSubjects() {
         return mapperConfig.mapList(subjectRepository.findAll(), SubjectOutDto.class);
+    }
+
+    @Override
+    public List<SubjectOutDto> getSubjects(String gradeName, Long schoolId, Long teacherId) {
+        entityManager.clear();
+        return mapperConfig.mapList(subjectRepository.findAllByGrade_NameAndSchool_IdAndTeacher_Id(gradeName, schoolId, teacherId), SubjectOutDto.class);
     }
 
     @Override

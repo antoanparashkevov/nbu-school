@@ -130,9 +130,18 @@ public class StudentController {
     private void addNeededAttributesForEditStudentProfileView(Model model, StudentViewModel student) {
         model.addAttribute("schools", mapList(schoolService.getSchools(), MapperUtil::dtoToViewModel));
         model.addAttribute("parents", mapList(parentService.getParents(student.getId()), MapperUtil::dtoToViewModel));
-        model.addAttribute("subjects", mapList(subjectService.getSubjects(student.getGradeName(), student.getSchoolId()), MapperUtil::dtoToViewModel));
-        model.addAttribute("teachers", mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel));
         model.addAttribute("marks", mapList(markService.getMarks(student.getId()), markOutDto -> dtoToViewModel(markOutDto, teacherService.getTeachers())));
+        if (authService.hasAnyRole(Roles.ROLE_ADMIN)) {
+            model.addAttribute("teachers", mapList(teacherService.getTeachers(), MapperUtil::dtoToViewModel));
+            model.addAttribute("subjects", mapList(subjectService.getSubjects(student.getGradeName(), student.getSchoolId()), MapperUtil::dtoToViewModel));
+        } else {
+            model.addAttribute("subjects", mapList(subjectService.getSubjects(student.getGradeName(),
+                            student.getSchoolId(),
+                            authService.getLoggedInUser().getId()),
+                    MapperUtil::dtoToViewModel));
+            model.addAttribute("teachers", List.of(MapperUtil.dtoToViewModel(teacherService.getTeacher(authService.getLoggedInUser().getId()))));
+
+        }
     }
 
 }
